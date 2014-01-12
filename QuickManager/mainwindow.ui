@@ -18,7 +18,7 @@
     <item>
      <widget class="QStackedWidget" name="AllStackWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="MainStackWidget">
        <layout class="QGridLayout" name="gridLayout">
@@ -129,7 +129,21 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="HomeStackWidget"/>
+      <widget class="QWidget" name="HomeStackWidget">
+       <widget class="QPushButton" name="pushButtonAddTaluka">
+        <property name="geometry">
+         <rect>
+          <x>740</x>
+          <y>30</y>
+          <width>75</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Add Taluka</string>
+        </property>
+       </widget>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -164,6 +178,8 @@
     <property name="title">
      <string>Settings</string>
     </property>
+    <addaction name="actionAdd_User"/>
+    <addaction name="actionAdd_Admin"/>
     <addaction name="actionLog_out"/>
    </widget>
    <addaction name="menuFile"/>
@@ -197,6 +213,16 @@
   <action name="actionLog_out">
    <property name="text">
     <string>Log out</string>
+   </property>
+  </action>
+  <action name="actionAdd_User">
+   <property name="text">
+    <string>Add User</string>
+   </property>
+  </action>
+  <action name="actionAdd_Admin">
+   <property name="text">
+    <string>Add Admin</string>
    </property>
   </action>
  </widget>

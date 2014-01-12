@@ -6,6 +6,7 @@
 #include <QDebug>
 
 #include "maindatabase.h"
+#include "alltaluka.h"
 
 namespace Ui {
 class MainWindow;
@@ -20,16 +21,25 @@ public:
     ~MainWindow();
 
 private slots:
+    void initializeComponent();
+
     void on_pushButtonLogin_clicked();
 
     void on_actionLog_out_triggered();
+
+    void on_actionAdd_User_triggered();
+
+    void on_actionAdd_Admin_triggered();
+
+    void on_pushButtonAddTaluka_clicked();
 
 private:
     Ui::MainWindow *ui;
     QSqlQuery *query;
     MainDatabase *db;
-    QString queryStatement;
+    AllTaluka *talukas;
     bool isCorrect;
+    QString queryStatement;
 };
 
 #endif // MAINWINDOW_H
