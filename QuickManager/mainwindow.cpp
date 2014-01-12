@@ -6,9 +6,10 @@
 #include "maindatabase.h"
 #include "adduser.h"
 #include "talukadialog.h"
+#include "schooldialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent), talukas(0), isCorrect(false),
+    QMainWindow(parent), isCorrect(false),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -18,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     query = new QSqlQuery(*db->getDatabase());
 
     talukas = new AllTaluka();
+    schools = new AllSchool();
 }
 
 MainWindow::~MainWindow()
@@ -30,7 +32,7 @@ void MainWindow::initializeComponent(){
     ui->lineEditPassword->setEchoMode(QLineEdit::Password);
     ui->actionAdd_User->setDisabled(true);
     ui->actionAdd_Admin->setDisabled(true);
-    ui->AllStackWidget->setCurrentIndex(0);
+    ui->AllStackWidget->setCurrentIndex(1);
 }
 
 void MainWindow::on_pushButtonLogin_clicked()
@@ -87,5 +89,13 @@ void MainWindow::on_actionAdd_Admin_triggered()
 void MainWindow::on_pushButtonAddTaluka_clicked()
 {
     TalukaDialog *t = new TalukaDialog();
+    t->setWindowTitle("Add Taluka Information");
     t->open();
+}
+
+void MainWindow::on_pushButtonAddTaluka_2_clicked()
+{
+    SchoolDialog *s = new SchoolDialog();
+    s->setWindowTitle("Add School Information");
+    s->open();
 }

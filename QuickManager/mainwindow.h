@@ -7,6 +7,7 @@
 
 #include "maindatabase.h"
 #include "alltaluka.h"
+#include "allschool.h"
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +18,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    bool isCorrect;
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
@@ -33,12 +35,14 @@ private slots:
 
     void on_pushButtonAddTaluka_clicked();
 
+    void on_pushButtonAddTaluka_2_clicked();
+
 private:
     Ui::MainWindow *ui;
     QSqlQuery *query;
     MainDatabase *db;
     AllTaluka *talukas;
-    bool isCorrect;
+    AllSchool *schools;
     QString queryStatement;
 };
 

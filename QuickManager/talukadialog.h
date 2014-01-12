@@ -3,6 +3,7 @@
 
 #include <QDebug>
 #include <QDialog>
+#include <alltaluka.h>
 #include <maindatabase.h>
 
 namespace Ui {
@@ -26,9 +27,11 @@ private slots:
 
 private:
     Ui::TalukaDialog *ui;
+    AllTaluka* talukas;
     MainDatabase *db;
     QSqlQuery *query;
     int TID;
+    QString oldTaluka,oldDistrict;
 };
 
 #endif // TALUKADIALOG_H

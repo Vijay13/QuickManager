@@ -12,9 +12,9 @@ void AllTaluka::Initialize(){
     db = MainDatabase::Instance();
     query = new QSqlQuery(*db->getDatabase());
 
-    if(query->exec(getAllTalukaQuery())){
+    if(query->exec(db->getAllTalukaQuery())){
         while(query->next()){
-            talukaList->append(new Taluka(query->value(0).toInt(), query->value(1).toString(), query->value(0).toString()));
+            talukaList->append(new Taluka(query->value(0).toInt(), query->value(1).toString(), query->value(2).toString()));
         }
     }else{
         qDebug() << "Didnt get all talukas";
@@ -54,9 +54,5 @@ void AllTaluka::removeFromList(QString taluka, QString district){
    if(i != -1){
        talukaList->removeAt(i);
    }
-}
-
-QString AllTaluka::getAllTalukaQuery(){
-    return "SELECT * FROM TALUKAS";
 }
 

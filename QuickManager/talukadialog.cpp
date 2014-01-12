@@ -11,6 +11,10 @@ TalukaDialog::TalukaDialog(QWidget *parent, int tid) :
 
     db = MainDatabase::Instance();
     query = new QSqlQuery(*db->getDatabase());
+
+    talukas = AllTaluka::Instance();
+    oldTaluka = ui->lineEditTaluka->text();
+    oldDistrict = ui->lineEditDistrict->text();
 }
 
 TalukaDialog::~TalukaDialog()
@@ -22,18 +26,12 @@ void TalukaDialog::on_pushButtonSave_clicked()
 {
     if(this->Check()){
         if(TID == -1){
-            if(query->exec(db->getInsertTalukaQuery(ui->lineEditTaluka->text(), ui->lineEditDistrict->text()))){
-                this->close();
-            }else{
-                qDebug() << "Could not insert Taluka";
-            }
+            talukas->getTalukaList()->append(new Taluka(ui->lineEditTaluka->text(), ui->lineEditDistrict->text()));
         }else if(TID > -1){
-            if(query->exec(db->getUpdateTalukaQuery(TID,ui->lineEditTaluka->text(), ui->lineEditDistrict->text()))){
-                this->close();
-            }else{
-                qDebug() << "Could not update Taluka";
-            }
+            talukas->removeTaluka(oldTaluka, oldDistrict);
+            talukas->getTalukaList()->append(new Taluka(TID, ui->lineEditTaluka->text(), ui->lineEditDistrict->text()));
         }
+        this->close();
     }
 }
 

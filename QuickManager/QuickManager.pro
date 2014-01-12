@@ -18,15 +18,22 @@ SOURCES += main.cpp\
     alltaluka.cpp \
     taluka.cpp \
     adduser.cpp \
-    talukadialog.cpp
+    talukadialog.cpp \
+    school.cpp \
+    allschool.cpp \
+    schooldialog.cpp
 
 HEADERS  += mainwindow.h \
     maindatabase.h \
     alltaluka.h \
     taluka.h \
     adduser.h \
-    talukadialog.h
+    talukadialog.h \
+    school.h \
+    allschool.h \
+    schooldialog.h
 
 FORMS    += mainwindow.ui \
     adduser.ui \
-    talukadialog.ui
+    talukadialog.ui \
+    schooldialog.ui

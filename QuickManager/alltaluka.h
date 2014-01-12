@@ -22,8 +22,6 @@ public:
 
     void removeFromList(QString taluka, QString district);
 
-    QString getAllTalukaQuery();
-
     QList<Taluka*>* getTalukaList(){return talukaList;}
 
 private:
