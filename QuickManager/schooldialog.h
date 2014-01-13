@@ -25,6 +25,8 @@ public:
 
     bool Check();
 
+    void setUpFields(School* school);
+
 private slots:
     void on_pushButtonSave_clicked();
 

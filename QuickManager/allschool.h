@@ -14,9 +14,13 @@ public:
 
     void addSchool(School* school);
 
-    void removeSchool(QString centerNo, QString taluka);
+    void removeSchoolFromDB(QString centerNo, QString taluka);
 
     void removeFromList(QString centerNo, QString taluka);
+
+    int indexOfSchoolWith(QString centerNo, QString taluka);
+
+    int indexOfSchoolWith(int sid);
 
     QList<School*>* getSchoolList(){return schoolList;}
 

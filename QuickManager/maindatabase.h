@@ -4,6 +4,7 @@
 #include <QSql>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QDebug>
 
 class MainDatabase
 {
@@ -13,6 +14,8 @@ public:
     static MainDatabase* Create();
 
     static MainDatabase* Instance();
+
+    void Open(QString dirToDatabase);
 
     //initialises database
     void Initialize();
@@ -31,6 +34,12 @@ public:
     QString getAllTalukaQuery();
 
     QString getInsertSchoolQuery(QString centerNo,QString taluka,
+                                 QString schoolName,QString address,QString principal,
+                                 QString principalMobNo,QString principalLandline,
+                                 QString teacher,QString teacherMobno,QString principalAddress,
+                                 QString routNo,QString girlMixboy,QString type,QString isprimary);
+
+    QString getUpdateSchoolQuery(int SID, QString centerNo,QString taluka,
                                  QString schoolName,QString address,QString principal,
                                  QString principalMobNo,QString principalLandline,
                                  QString teacher,QString teacherMobno,QString principalAddress,

@@ -1,5 +1,6 @@
 #include "schooldialog.h"
 #include "ui_schooldialog.h"
+#include "schoolmanager.h"
 
 SchoolDialog::SchoolDialog(QWidget *parent, int sid):
     QDialog(parent),
@@ -23,6 +24,10 @@ void SchoolDialog::initializeComponent(){
     }
 
     ui->labelError->setText("");
+
+    if(SID > -1){
+        setUpFields(schools->getSchoolList()->at(schools->indexOfSchoolWith(SID)));
+    }
 }
 
 void SchoolDialog::Initialize(){
@@ -65,13 +70,47 @@ bool SchoolDialog::Check(){
     return true;
 }
 
+void SchoolDialog::setUpFields(School* school){
+    ui->lineEditCenterNo->setText(school->CenterNo);
+    ui->comboBoxTaluka->setCurrentText(school->Taluka);
+    ui->lineEditSchoolName->setText(school->SchoolName);
+    ui->textEditSchoolAddress->setText(school->Address);
+    ui->lineEditPrincipal->setText(school->Principal);
+    ui->lineEditPrincipalMobNo->setText(school->PrincipalMobNo);
+    ui->lineEditPrincipalLandNo->setText(school->PrincipalLandline);
+    ui->lineEditTeacherName->setText(school->Teacher);
+    ui->lineEditTeacherMobNo->setText(school->TeacherMobNo);
+    ui->textEditPrincipalAddress->setText(school->PrincipalAddress);
+    ui->lineEditRoutNo->setText(school->RoutNo);
+    ui->comboBoxGender->setCurrentText(school->girlMIXboy);
+    ui->comboBoxType->setCurrentText(school->Type);
+    ui->comboBoxStd->setCurrentText(school->isPrimary);
+}
+
 void SchoolDialog::on_pushButtonSave_clicked()
 {
-    if(Check() && SID == -1){
-        schools->addSchool(new School(CenterNo,Taluka,SchoolName,
+    if(Check()){
+        if(SID == -1){
+            schools->addSchool(new School(CenterNo,Taluka,SchoolName,
+                                                        Address,Principal,PrincipalMobNo,PrincipalLandline,
+                                                        Teacher,TeacherMobNo,PrincipalAddress,RoutNo,girlMIXboy,
+                                                        Type,isPrimary));
+        }else if(SID > -1){
+            if(query->exec(db->getUpdateSchoolQuery(SID,CenterNo,Taluka,SchoolName,
                                                     Address,Principal,PrincipalMobNo,PrincipalLandline,
                                                     Teacher,TeacherMobNo,PrincipalAddress,RoutNo,girlMIXboy,
-                                                    Type,isPrimary));
+                                                    Type,isPrimary))){
+                schools->getSchoolList()->removeAt(schools->indexOfSchoolWith(SID));
+                schools->addSchool(new School(SID,CenterNo,Taluka,SchoolName,
+                                                            Address,Principal,PrincipalMobNo,PrincipalLandline,
+                                                            Teacher,TeacherMobNo,PrincipalAddress,RoutNo,girlMIXboy,
+                                                            Type,isPrimary));
+
+            }else{
+                qDebug() << "Could not update school";
+            }
+        }
+        SchoolManager::Instance()->setUpTable();
         this->close();
     }
 }

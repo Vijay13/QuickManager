@@ -8,7 +8,6 @@
 class Taluka
 {
 public:
-    bool inserted;
 
     Taluka();
 
@@ -34,6 +33,7 @@ private:
     int TID;
     QString TalukaName;
     QString DistrictName;
+    bool inserted;
     MainDatabase *db;
     QSqlQuery *query;
 };

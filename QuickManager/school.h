@@ -22,11 +22,12 @@ public:
 
     void Initialize();
 
+    int SID;
+
     QString CenterNo, Taluka, SchoolName, Address, Principal, PrincipalMobNo, PrincipalLandline,
         Teacher, TeacherMobNo, PrincipalAddress, RoutNo, girlMIXboy, Type, isPrimary;
 
 private:
-    int SID;
     MainDatabase *db;
     QSqlQuery *query;
 };

@@ -1,25 +1,28 @@
 
 #include <QSqlRecord>
+#include <QFileDialog>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "maindatabase.h"
 #include "adduser.h"
 #include "talukadialog.h"
-#include "schooldialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent), isCorrect(false),
-    ui(new Ui::MainWindow)
+    QMainWindow(parent),
+    ui(new Ui::MainWindow),
+    isCorrect(false), queryStatement(""), dirToDatabase("")
 {
     ui->setupUi(this);
     initializeComponent();
 
     db = new MainDatabase();
+    db->Open(dirToDatabase);
     query = new QSqlQuery(*db->getDatabase());
 
     talukas = new AllTaluka();
     schools = new AllSchool();
+    sm = new SchoolManager(ui->tableViewSchools);
 }
 
 MainWindow::~MainWindow()
@@ -28,27 +31,48 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::initializeComponent(){
+    this->setWindowTitle("Quick Manager Akshaypatra");
     ui->ErrorLable->setText("");
     ui->lineEditPassword->setEchoMode(QLineEdit::Password);
-    ui->actionAdd_User->setDisabled(true);
-    ui->actionAdd_Admin->setDisabled(true);
+    ui->actionAddUser->setDisabled(true);
+    ui->actionAddAdmin->setDisabled(true);
     ui->AllStackWidget->setCurrentIndex(1);
+
+    QObject::connect(ui->actionChooseDatabase,SIGNAL(triggered()),this,SLOT(ChooseDatabase()));
+    QObject::connect(ui->pushButtonLogin,SIGNAL(clicked()),this,SLOT(Login()));
+    QObject::connect(ui->actionLogout,SIGNAL(triggered()),this,SLOT(Logout()));
+    QObject::connect(ui->actionAddUser,SIGNAL(triggered()),this,SLOT(AddUserEvent()));
+    QObject::connect(ui->actionAddAdmin,SIGNAL(triggered()),this,SLOT(AddAdminEvent()));
+    QObject::connect(ui->pushButtonSchoolManager,SIGNAL(clicked()),this,SLOT(SchoolManagerEvent()));
+    QObject::connect(ui->pushButtonAddTaluka,SIGNAL(clicked()),this,SLOT(AddTalukaEvent()));
+    QObject::connect(ui->pushButtonAddSchool,SIGNAL(clicked()),this,SLOT(AddSchoolEvent()));
+    QObject::connect(ui->pushButtonEditSchool,SIGNAL(clicked()),this,SLOT(EditSchoolEvent()));
+    QObject::connect(ui->pushButtonRemoveSchool,SIGNAL(clicked()),this,SLOT(RemoveSchoolEvent()));
 }
 
-void MainWindow::on_pushButtonLogin_clicked()
+void MainWindow::ChooseDatabase()
+{
+    dirToDatabase =  QFileDialog::getExistingDirectory(this, "Select Folder","/",QFileDialog::ShowDirsOnly
+                                                       | QFileDialog::DontResolveSymlinks);
+
+    db = new MainDatabase();
+    db->Open(dirToDatabase);
+    query = new QSqlQuery(*db->getDatabase());
+}
+
+void MainWindow::Login()
 {
     int isAdmin = ui->comboBoxUserAdmin->currentIndex();
     isCorrect = false;
     queryStatement = "SELECT * FROM USERS WHERE isAdmin = " + QString::number(isAdmin);
 
     if(query->exec(queryStatement)){
-        int userFieldAt = query->record().indexOf("UserName");
-        int passwordFieldAt = query->record().indexOf("Password");
         while(query->next()){
-            QString userName = query->value(userFieldAt).toString();
-            QString passWord = query->value(passwordFieldAt).toString();
+            QString userName = query->value(query->record().indexOf("UserName")).toString();
+            QString passWord = query->value(query->record().indexOf("Password")).toString();
             if(userName == ui->lineEditUsername->text() && passWord == ui->lineEditUsername->text()){
                 isCorrect = true;
+                break;
             }
         }
     }
@@ -56,15 +80,15 @@ void MainWindow::on_pushButtonLogin_clicked()
     if(isCorrect){
         ui->AllStackWidget->setCurrentIndex(1);
         if(isAdmin){
-            ui->actionAdd_User->setEnabled(true);
-            ui->actionAdd_Admin->setEnabled(true);
+            ui->actionAddUser->setEnabled(true);
+            ui->actionAddAdmin->setEnabled(true);
         }
     }else{
         ui->ErrorLable->setText("Incorrect Username or Password");
     }
 }
 
-void MainWindow::on_actionLog_out_triggered()
+void MainWindow::Logout()
 {
     ui->AllStackWidget->setCurrentIndex(0);
     ui->lineEditUsername->setText("");
@@ -72,30 +96,40 @@ void MainWindow::on_actionLog_out_triggered()
     ui->ErrorLable->setText("");
 }
 
-void MainWindow::on_actionAdd_User_triggered()
+void MainWindow::AddUserEvent()
 {
     AddUser *addUser = new AddUser( this, true);
     addUser->setWindowTitle("Add User");
     addUser->open();
 }
 
-void MainWindow::on_actionAdd_Admin_triggered()
+void MainWindow::AddAdminEvent()
 {
     AddUser *addUser = new AddUser( this, false);
     addUser->setWindowTitle("Add Admin");
     addUser->open();
 }
 
-void MainWindow::on_pushButtonAddTaluka_clicked()
+void MainWindow::AddTalukaEvent()
 {
     TalukaDialog *t = new TalukaDialog();
     t->setWindowTitle("Add Taluka Information");
     t->open();
 }
 
-void MainWindow::on_pushButtonAddTaluka_2_clicked()
+void MainWindow::SchoolManagerEvent()
 {
-    SchoolDialog *s = new SchoolDialog();
-    s->setWindowTitle("Add School Information");
-    s->open();
+    ui->AllStackWidget->setCurrentIndex(2);
+}
+
+void MainWindow::AddSchoolEvent(){
+    sm->addSchool();
+}
+
+void MainWindow::EditSchoolEvent(){
+    sm->editSchool();
+}
+
+void MainWindow::RemoveSchoolEvent(){
+    sm->removeSchool();
 }

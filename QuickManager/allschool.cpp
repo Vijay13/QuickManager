@@ -44,7 +44,7 @@ void AllSchool::addSchool(School* school){
     schoolList->append(school);
 }
 
-void AllSchool::removeSchool(QString centerNo, QString taluka){
+void AllSchool::removeSchoolFromDB(QString centerNo, QString taluka){
     if(query->exec(db->getDeleteSchoolQuery(centerNo, taluka))){
         removeFromList(centerNo, taluka);
     }else{
@@ -53,14 +53,30 @@ void AllSchool::removeSchool(QString centerNo, QString taluka){
 }
 
 void AllSchool::removeFromList(QString centerNo, QString taluka){
-   int i = -1;
-   for(int j = 0; j<schoolList->length(); j++){
-       if(schoolList->at(j)->CenterNo == centerNo && schoolList->at(j)->Taluka == taluka){
-           i = j;
-           break;
-       }
-   }
-   if(i != -1){
+   int i = indexOfSchoolWith(centerNo,taluka);
+   if(i > -1){
        schoolList->removeAt(i);
    }
+}
+
+int AllSchool::indexOfSchoolWith(QString centerNo, QString taluka){
+    int i = -1;
+    for(int j = 0; j<schoolList->length(); j++){
+        if(schoolList->at(j)->CenterNo == centerNo && schoolList->at(j)->Taluka == taluka){
+            i = j;
+            break;
+        }
+    }
+    return i;
+}
+
+int AllSchool::indexOfSchoolWith(int sid){
+    int i = -1;
+    for(int j = 0; j<schoolList->length(); j++){
+        if(schoolList->at(j)->SID == sid){
+            i = j;
+            break;
+        }
+    }
+    return i;
 }

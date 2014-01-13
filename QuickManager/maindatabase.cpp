@@ -4,7 +4,16 @@ MainDatabase::MainDatabase()
 {
     instance = this;
     mydb = QSqlDatabase::addDatabase("QSQLITE");
-    mydb.setDatabaseName("C:/Users/Vijay13/Documents/Database/database.db");
+}
+
+void MainDatabase::Open(QString dirToDatabase){
+    if(!dirToDatabase.isEmpty()){
+        mydb.setDatabaseName(dirToDatabase + "/database.db");
+    }else{
+        mydb.setDatabaseName("C:/Users/Vijay13/Documents/Database/database.db");
+    }
+
+    qDebug() << "Dir: " + dirToDatabase;
 
     if(!mydb.open())
         qDebug("Could not open database");
@@ -13,7 +22,6 @@ MainDatabase::MainDatabase()
 
     this->Initialize();
 }
-
 
 MainDatabase* MainDatabase::instance = 0;
 
@@ -33,7 +41,11 @@ void MainDatabase::Initialize(){
     QString createQurey = "CREATE TABLE IF NOT EXISTS USERS(UID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, UserName NOT NULL UNIQUE, Password TEXT NOT NULL, isAdmin BOOL NOT NULL DEFAULT 0);";
 
     Q_ASSERT(query.exec(createQurey));
-    Q_ASSERT(query.exec(getInsertUserQuery("Admin","Admin",true)));
+
+    if(query.exec(getInsertUserQuery("Admin","Admin",true))){
+    }else{
+        qDebug("Could not insert Admin");
+    }
 
     createQurey = "CREATE TABLE IF NOT EXISTS TALUKAS(TID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Taluka TEXT NOT NULL UNIQUE, District TEXT NOT NULL);";
     Q_ASSERT(query.exec(createQurey));
@@ -113,8 +125,46 @@ QString MainDatabase::getInsertSchoolQuery(QString centerNo,QString taluka,
     return toReturn;
 }
 
+QString MainDatabase::getUpdateSchoolQuery(int SID, QString centerNo,QString taluka,
+                                           QString schoolName,QString address,QString principal,
+                                           QString principalMobNo,QString principalLandline,
+                                           QString teacher,QString teacherMobno,QString principalAddress,
+                                           QString routNo,QString girlMixboy,QString type,QString isprimary){
+    QString toReturn;
+    toReturn = "UPDATE SCHOOLS SET CenterNo = ";
+    toReturn += getText(centerNo) + ",";
+    toReturn += "Taluka = ";
+    toReturn += getText(taluka)+ ", ";
+    toReturn += "SchoolName = ";
+    toReturn += getText(schoolName)+ ", ";
+    toReturn += "Address = ";
+    toReturn += getText(address)+ ", ";
+    toReturn += "Principal = ";
+    toReturn += getText(principal)+ ", ";
+    toReturn += "PrincipalMobNo = ";
+    toReturn += getText(principalMobNo) + ", ";
+    toReturn += "PrincipalLandLine =";
+    toReturn += getText(principalLandline)+ ", ";
+    toReturn += "Teacher =";
+    toReturn += getText(teacher)+ ", ";
+    toReturn += "TeacherNo =";
+    toReturn += getText(teacherMobno)+ ", ";
+    toReturn += "PrincipalAddress =";
+    toReturn += getText(principalAddress)+ ", ";
+    toReturn += "RoutNo =";
+    toReturn += getText(routNo)+ ", ";
+    toReturn += "girlMIXboy =";
+    toReturn += getText(girlMixboy) + ", ";
+    toReturn += "Type =";
+    toReturn += getText(type)+ ", ";
+    toReturn += "isPrimary =";
+    toReturn += getText(isprimary)+ " WHERE SID = " + QString::number(SID) + ";";
+
+    return toReturn;
+}
+
 QString MainDatabase::getDeleteSchoolQuery(QString centerNo, QString taluka){
-    return "DELETE FROM SCHOOLS WHERE Taluka = '" + taluka + "' AND CenterNo = '" + centerNo + "' ;";
+    return "DELETE FROM SCHOOLS WHERE Taluka = " + getText(taluka) + " AND CenterNo = " + getText(centerNo) + ";";
 }
 
 QString MainDatabase::getAllSchoolQuery(){

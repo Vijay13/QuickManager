@@ -133,9 +133,9 @@
        <widget class="QPushButton" name="pushButtonAddTaluka">
         <property name="geometry">
          <rect>
-          <x>740</x>
+          <x>724</x>
           <y>30</y>
-          <width>75</width>
+          <width>91</width>
           <height>23</height>
          </rect>
         </property>
@@ -143,21 +143,138 @@
          <string>Add Taluka</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButtonAddTaluka_2">
+       <widget class="QPushButton" name="pushButtonSchoolManager">
         <property name="geometry">
          <rect>
-          <x>740</x>
+          <x>724</x>
           <y>70</y>
-          <width>75</width>
+          <width>91</width>
           <height>23</height>
          </rect>
         </property>
         <property name="text">
-         <string>Add School</string>
+         <string>School Manager</string>
         </property>
        </widget>
       </widget>
-      <widget class="QWidget" name="SchoolsPage"/>
+      <widget class="QWidget" name="SchoolsManager">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QGroupBox" name="groupBoxSchoolManagerMain">
+          <property name="title">
+           <string/>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QTableView" name="tableViewSchools"/>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBoxManager">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="title">
+              <string/>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_3">
+              <item>
+               <widget class="QPushButton" name="pushButtonAddSchool">
+                <property name="text">
+                 <string>Add School</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButtonEditSchool">
+                <property name="text">
+                 <string>Edit School</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButtonRemoveSchool">
+                <property name="text">
+                 <string>Remove School</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBoxSchoolManagerControl">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>50</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="title">
+           <string/>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButtonBack">
+             <property name="minimumSize">
+              <size>
+               <width>60</width>
+               <height>25</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Back</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -176,12 +293,7 @@
      <string>File</string>
     </property>
     <addaction name="separator"/>
-    <addaction name="actionExport"/>
-    <addaction name="actionImport"/>
-    <addaction name="separator"/>
-    <addaction name="separator"/>
-    <addaction name="separator"/>
-    <addaction name="actionMenu"/>
+    <addaction name="actionChooseDatabase"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -192,9 +304,9 @@
     <property name="title">
      <string>Settings</string>
     </property>
-    <addaction name="actionAdd_User"/>
-    <addaction name="actionAdd_Admin"/>
-    <addaction name="actionLog_out"/>
+    <addaction name="actionAddUser"/>
+    <addaction name="actionAddAdmin"/>
+    <addaction name="actionLogout"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuAbout"/>
@@ -209,34 +321,24 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionExport">
-   <property name="text">
-    <string>Export</string>
-   </property>
-  </action>
-  <action name="actionImport">
-   <property name="text">
-    <string>Import</string>
-   </property>
-  </action>
-  <action name="actionMenu">
-   <property name="text">
-    <string>Menu</string>
-   </property>
-  </action>
-  <action name="actionLog_out">
+  <action name="actionLogout">
    <property name="text">
     <string>Log out</string>
    </property>
   </action>
-  <action name="actionAdd_User">
+  <action name="actionAddUser">
    <property name="text">
     <string>Add User</string>
    </property>
   </action>
-  <action name="actionAdd_Admin">
+  <action name="actionAddAdmin">
    <property name="text">
     <string>Add Admin</string>
+   </property>
+  </action>
+  <action name="actionChooseDatabase">
+   <property name="text">
+    <string>Choose Database</string>
    </property>
   </action>
  </widget>

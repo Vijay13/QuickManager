@@ -8,6 +8,7 @@
 #include "maindatabase.h"
 #include "alltaluka.h"
 #include "allschool.h"
+#include "schoolmanager.h"
 
 namespace Ui {
 class MainWindow;
@@ -18,24 +19,31 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    bool isCorrect;
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
 private slots:
     void initializeComponent();
 
-    void on_pushButtonLogin_clicked();
+    void Login();
 
-    void on_actionLog_out_triggered();
+    void Logout();
 
-    void on_actionAdd_User_triggered();
+    void ChooseDatabase();
 
-    void on_actionAdd_Admin_triggered();
+    void AddUserEvent();
 
-    void on_pushButtonAddTaluka_clicked();
+    void AddAdminEvent();
 
-    void on_pushButtonAddTaluka_2_clicked();
+    void AddTalukaEvent();
+
+    void SchoolManagerEvent();
+
+    void AddSchoolEvent();
+
+    void EditSchoolEvent();
+
+    void RemoveSchoolEvent();
 
 private:
     Ui::MainWindow *ui;
@@ -43,7 +51,10 @@ private:
     MainDatabase *db;
     AllTaluka *talukas;
     AllSchool *schools;
+    SchoolManager *sm;
+    bool isCorrect;
     QString queryStatement;
+    QString dirToDatabase;
 };
 
 #endif // MAINWINDOW_H
