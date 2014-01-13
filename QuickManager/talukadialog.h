@@ -15,6 +15,9 @@ class TalukaDialog : public QDialog
     Q_OBJECT
 
 public:
+    int TID;
+    QString oldTaluka,oldDistrict;
+
     explicit TalukaDialog(QWidget *parent = 0, int tid = -1);
     ~TalukaDialog();
 
@@ -25,13 +28,16 @@ private slots:
 
     void on_pushButtonCancle_clicked();
 
+signals:
+    void closed();
+
 private:
     Ui::TalukaDialog *ui;
     AllTaluka* talukas;
     MainDatabase *db;
     QSqlQuery *query;
-    int TID;
-    QString oldTaluka,oldDistrict;
+
+    void setUpFields();
 };
 
 #endif // TALUKADIALOG_H

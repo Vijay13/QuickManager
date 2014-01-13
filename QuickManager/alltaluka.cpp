@@ -35,6 +35,15 @@ void AllTaluka::addTaluka(QString taluka, QString district){
     talukaList->append(new Taluka( taluka, district));
 }
 
+Taluka* AllTaluka::getTaluka(int TID){
+    for(int j = 0; j<talukaList->length(); j++){
+        if(talukaList->at(j)->getTID() == TID){
+            return talukaList->at(j);
+        }
+    }
+    return 0;
+}
+
 void AllTaluka::removeTaluka(QString taluka, QString district){
     if(query->exec(db->getDeleteTalukaQuery(taluka, district))){
         removeFromList(taluka, district);

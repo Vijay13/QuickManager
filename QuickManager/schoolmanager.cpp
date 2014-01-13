@@ -62,7 +62,7 @@ void SchoolManager::addSchool(){
 void SchoolManager::editSchool(){
     int i = sortModel->mapToSource(this->table->currentIndex()).row();
 
-    if(i<schools->getSchoolList()->length() && i > -1){
+    if(i < schools->getSchoolList()->length() && i > -1){
         SchoolDialog *sc = new SchoolDialog(0, schools->getSchoolList()->at(i)->SID);
         sc->setWindowTitle("Update School Information");
         sc->open();

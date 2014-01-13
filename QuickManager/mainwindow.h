@@ -8,6 +8,7 @@
 #include "maindatabase.h"
 #include "alltaluka.h"
 #include "allschool.h"
+#include "talukamanager.h"
 #include "schoolmanager.h"
 
 namespace Ui {
@@ -35,7 +36,7 @@ private slots:
 
     void AddAdminEvent();
 
-    void AddTalukaEvent();
+    void TalukaManagerEvent();
 
     void SchoolManagerEvent();
 
@@ -44,6 +45,8 @@ private slots:
     void EditSchoolEvent();
 
     void RemoveSchoolEvent();
+
+    void BackEvent();
 
 private:
     Ui::MainWindow *ui;

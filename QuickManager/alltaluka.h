@@ -18,6 +18,8 @@ public:
 
     void addTaluka(QString taluka, QString district);
 
+    Taluka* getTaluka(int TID);
+
     void removeTaluka(QString taluka, QString district);
 
     void removeFromList(QString taluka, QString district);

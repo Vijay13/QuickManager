@@ -130,7 +130,7 @@
        </layout>
       </widget>
       <widget class="QWidget" name="HomeStackWidget">
-       <widget class="QPushButton" name="pushButtonAddTaluka">
+       <widget class="QPushButton" name="pushButtonTalukaManager">
         <property name="geometry">
          <rect>
           <x>724</x>
@@ -140,7 +140,7 @@
          </rect>
         </property>
         <property name="text">
-         <string>Add Taluka</string>
+         <string> Taluka Manager</string>
         </property>
        </widget>
        <widget class="QPushButton" name="pushButtonSchoolManager">
@@ -160,7 +160,7 @@
       <widget class="QWidget" name="SchoolsManager">
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QGroupBox" name="groupBoxSchoolManagerMain">
+         <widget class="QGroupBox" name="groupBoxMain">
           <property name="title">
            <string/>
           </property>

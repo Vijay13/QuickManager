@@ -3,7 +3,7 @@
 
 TalukaDialog::TalukaDialog(QWidget *parent, int tid) :
     QDialog(parent),
-    TID(tid),
+    TID(tid), oldTaluka(""), oldDistrict(""),
     ui(new Ui::TalukaDialog)
 {
     ui->setupUi(this);
@@ -13,8 +13,10 @@ TalukaDialog::TalukaDialog(QWidget *parent, int tid) :
     query = new QSqlQuery(*db->getDatabase());
 
     talukas = AllTaluka::Instance();
-    oldTaluka = ui->lineEditTaluka->text();
-    oldDistrict = ui->lineEditDistrict->text();
+
+    if(TID > -1){
+        this->setUpFields();
+    }
 }
 
 TalukaDialog::~TalukaDialog()
@@ -28,9 +30,14 @@ void TalukaDialog::on_pushButtonSave_clicked()
         if(TID == -1){
             talukas->getTalukaList()->append(new Taluka(ui->lineEditTaluka->text(), ui->lineEditDistrict->text()));
         }else if(TID > -1){
-            talukas->removeTaluka(oldTaluka, oldDistrict);
-            talukas->getTalukaList()->append(new Taluka(TID, ui->lineEditTaluka->text(), ui->lineEditDistrict->text()));
+            if(query->exec(db->getUpdateTalukaQuery( TID, ui->lineEditTaluka->text(), ui->lineEditDistrict->text()))){
+                talukas->removeTaluka(oldTaluka, oldDistrict);
+                talukas->getTalukaList()->append(new Taluka(TID, ui->lineEditTaluka->text(), ui->lineEditDistrict->text()));
+            }else{
+                qDebug() << "Taluka not updated";
+            }
         }
+        emit closed();
         this->close();
     }
 }
@@ -47,7 +54,18 @@ bool TalukaDialog::Check(){
     return true;
 }
 
+void TalukaDialog::setUpFields(){
+    Taluka *t = talukas->getTaluka(TID);
+    if(t != 0){
+       oldTaluka = t->getTaluka();
+       oldDistrict = t->getDistrict();
+       ui->lineEditTaluka->setText(oldTaluka);
+       ui->lineEditDistrict->setText(oldDistrict);
+    }
+}
+
 void TalukaDialog::on_pushButtonCancle_clicked()
 {
+    emit closed();
     this->close();
 }

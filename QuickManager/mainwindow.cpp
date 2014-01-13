@@ -6,7 +6,6 @@
 #include "ui_mainwindow.h"
 #include "maindatabase.h"
 #include "adduser.h"
-#include "talukadialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -44,10 +43,11 @@ void MainWindow::initializeComponent(){
     QObject::connect(ui->actionAddUser,SIGNAL(triggered()),this,SLOT(AddUserEvent()));
     QObject::connect(ui->actionAddAdmin,SIGNAL(triggered()),this,SLOT(AddAdminEvent()));
     QObject::connect(ui->pushButtonSchoolManager,SIGNAL(clicked()),this,SLOT(SchoolManagerEvent()));
-    QObject::connect(ui->pushButtonAddTaluka,SIGNAL(clicked()),this,SLOT(AddTalukaEvent()));
+    QObject::connect(ui->pushButtonTalukaManager,SIGNAL(clicked()),this,SLOT(TalukaManagerEvent()));
     QObject::connect(ui->pushButtonAddSchool,SIGNAL(clicked()),this,SLOT(AddSchoolEvent()));
     QObject::connect(ui->pushButtonEditSchool,SIGNAL(clicked()),this,SLOT(EditSchoolEvent()));
     QObject::connect(ui->pushButtonRemoveSchool,SIGNAL(clicked()),this,SLOT(RemoveSchoolEvent()));
+    QObject::connect(ui->pushButtonBack,SIGNAL(clicked()),this,SLOT(BackEvent()));
 }
 
 void MainWindow::ChooseDatabase()
@@ -55,9 +55,11 @@ void MainWindow::ChooseDatabase()
     dirToDatabase =  QFileDialog::getExistingDirectory(this, "Select Folder","/",QFileDialog::ShowDirsOnly
                                                        | QFileDialog::DontResolveSymlinks);
 
-    db = new MainDatabase();
-    db->Open(dirToDatabase);
-    query = new QSqlQuery(*db->getDatabase());
+    if(!dirToDatabase.isEmpty()){
+        db = new MainDatabase();
+        db->Open(dirToDatabase);
+        query = new QSqlQuery(*db->getDatabase());
+    }
 }
 
 void MainWindow::Login()
@@ -110,11 +112,11 @@ void MainWindow::AddAdminEvent()
     addUser->open();
 }
 
-void MainWindow::AddTalukaEvent()
+void MainWindow::TalukaManagerEvent()
 {
-    TalukaDialog *t = new TalukaDialog();
-    t->setWindowTitle("Add Taluka Information");
-    t->open();
+    TalukaManager *tm = new TalukaManager();
+    tm->setWindowTitle("Taluka Manager");
+    tm->open();
 }
 
 void MainWindow::SchoolManagerEvent()
@@ -122,14 +124,22 @@ void MainWindow::SchoolManagerEvent()
     ui->AllStackWidget->setCurrentIndex(2);
 }
 
-void MainWindow::AddSchoolEvent(){
+void MainWindow::AddSchoolEvent()
+{
     sm->addSchool();
 }
 
-void MainWindow::EditSchoolEvent(){
+void MainWindow::EditSchoolEvent()
+{
     sm->editSchool();
 }
 
-void MainWindow::RemoveSchoolEvent(){
+void MainWindow::RemoveSchoolEvent()
+{
     sm->removeSchool();
+}
+
+void MainWindow::BackEvent()
+{
+    ui->AllStackWidget->setCurrentIndex(1);
 }

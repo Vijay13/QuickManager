@@ -21,9 +21,9 @@ public:
 
     void setDistrict(QString district){DistrictName = district;}
 
-    void updateTaluka(int TID, QString newTalukaValue, QString newDistrictValue);
+    int getTID(){return TID;}
 
-    int getTID();
+    void setTID();
 
     QString getTaluka(){return TalukaName;}
 

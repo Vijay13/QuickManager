@@ -12,6 +12,7 @@ Taluka::Taluka(QString talukaName, QString districtName) : TID(-1), TalukaName(t
 {
     this->Initialize();
     if(query->exec(db->getInsertTalukaQuery( TalukaName, DistrictName))){
+        this->setTID();
         inserted = true;
     }else{
         qDebug() << "Taluka not inserted";
@@ -23,20 +24,13 @@ void Taluka::Initialize(){
     query = new QSqlQuery(*db->getDatabase());
 }
 
-void Taluka::updateTaluka(int TID, QString newTalukaValue, QString newDistrictValue){
-    if(query->exec(db->getUpdateTalukaQuery( TID, newTalukaValue, newDistrictValue))){
-        inserted = true;
-    }else{
-        qDebug() << "Taluka not updated";
-    }
-}
-
-int Taluka::getTID(){
-    if(query->exec("SELECT * FROM TALUKAS WHERE Taluka = '" + TalukaName + "' AND District = '" + DistrictName + "' );")){
+void Taluka::setTID(){
+    if(query->exec("SELECT * FROM TALUKAS WHERE Taluka = '" + TalukaName + "' AND District = '" + DistrictName + "';")){
         while(query->next()){
-            return query->value(0).toInt();
+            TID = query->value(0).toInt();
+            return;
         }
     }
     qDebug() << "Could not find TID";
-    return -1;
+    TID = -1;
 }

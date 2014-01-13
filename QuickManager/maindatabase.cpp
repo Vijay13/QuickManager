@@ -13,8 +13,6 @@ void MainDatabase::Open(QString dirToDatabase){
         mydb.setDatabaseName("C:/Users/Vijay13/Documents/Database/database.db");
     }
 
-    qDebug() << "Dir: " + dirToDatabase;
-
     if(!mydb.open())
         qDebug("Could not open database");
     else
