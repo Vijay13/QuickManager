@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     db->Open(dirToDatabase);
     query = new QSqlQuery(*db->getDatabase());
 
+    fm = new FileManager();
     talukas = new AllTaluka();
     schools = new AllSchool();
     sm = new SchoolManager(ui->tableViewSchools);
@@ -48,6 +49,8 @@ void MainWindow::initializeComponent(){
     QObject::connect(ui->pushButtonEditSchool,SIGNAL(clicked()),this,SLOT(EditSchoolEvent()));
     QObject::connect(ui->pushButtonRemoveSchool,SIGNAL(clicked()),this,SLOT(RemoveSchoolEvent()));
     QObject::connect(ui->pushButtonBack,SIGNAL(clicked()),this,SLOT(BackEvent()));
+    QObject::connect(ui->pushButtonPrintSchools,SIGNAL(clicked()),this,SLOT(PrintSchoolEvent()));
+    QObject::connect(ui->pushButtonExportSchools,SIGNAL(clicked()),this,SLOT(ExportSchoolEvent()));
 }
 
 void MainWindow::ChooseDatabase()
@@ -137,6 +140,16 @@ void MainWindow::EditSchoolEvent()
 void MainWindow::RemoveSchoolEvent()
 {
     sm->removeSchool();
+}
+
+void MainWindow::PrintSchoolEvent(){
+    fm->setTable(ui->tableViewSchools);
+    fm->printTable();
+}
+
+void MainWindow::ExportSchoolEvent(){
+    fm->setTable(ui->tableViewSchools);
+    fm->exportCSV();
 }
 
 void MainWindow::BackEvent()

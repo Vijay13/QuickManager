@@ -131,6 +131,32 @@
        </spacer>
       </item>
       <item>
+       <widget class="QPushButton" name="pushButtonPrintTaluka">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Print</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButtonExportTaluka">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Export</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="pushButtonClose">
         <property name="minimumSize">
          <size>
@@ -153,6 +179,8 @@
   <tabstop>pushButtonAddTaluka</tabstop>
   <tabstop>pushButtonEditTaluka</tabstop>
   <tabstop>pushButtonRemoveTaluka</tabstop>
+  <tabstop>pushButtonPrintTaluka</tabstop>
+  <tabstop>pushButtonExportTaluka</tabstop>
   <tabstop>pushButtonClose</tabstop>
  </tabstops>
  <resources/>

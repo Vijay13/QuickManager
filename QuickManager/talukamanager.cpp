@@ -18,6 +18,8 @@ TalukaManager::TalukaManager(QWidget *parent) :
     connect(ui->pushButtonEditTaluka,SIGNAL(clicked()),this,SLOT(editTaluka()));
     connect(ui->pushButtonRemoveTaluka,SIGNAL(clicked()),this,SLOT(removeTaluka()));
     connect(ui->pushButtonClose,SIGNAL(clicked()),this,SLOT(close()));
+    connect(ui->pushButtonPrintTaluka,SIGNAL(clicked()),this,SLOT(printTaluka()));
+    connect(ui->pushButtonExportTaluka,SIGNAL(clicked()),this,SLOT(exportTaluka()));
 }
 
 TalukaManager::~TalukaManager()
@@ -27,6 +29,7 @@ TalukaManager::~TalukaManager()
 
 void TalukaManager::initialize(){
     talukas = AllTaluka::Instance();
+    fm = FileManager::Instance();
 
     viewModel = new QStandardItemModel(0,0);
     sortModel = new QSortFilterProxyModel();
@@ -52,6 +55,8 @@ void TalukaManager::setUpTable(){
         viewModel->appendRow(itemList);
         itemList.clear();
     }
+
+    fm->setTable(table);
 }
 
 void TalukaManager::addTaluka(){
@@ -86,6 +91,13 @@ void TalukaManager::removeTaluka(){
     this->setUpTable();
 }
 
+void TalukaManager::printTaluka(){
+    fm->printTable();
+}
+
+void TalukaManager::exportTaluka(){
+    fm->exportCSV();
+}
 void TalukaManager::updateTableView(){
     this->setUpTable();
 }

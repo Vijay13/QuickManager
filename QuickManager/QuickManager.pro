@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       += core gui sql printsupport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     allschool.cpp \
     schooldialog.cpp \
     schoolmanager.cpp \
-    talukamanager.cpp
+    talukamanager.cpp \
+    filemanager.cpp
 
 HEADERS  += mainwindow.h \
     maindatabase.h \
@@ -35,7 +36,8 @@ HEADERS  += mainwindow.h \
     allschool.h \
     schooldialog.h \
     schoolmanager.h \
-    talukamanager.h
+    talukamanager.h \
+    filemanager.h
 
 FORMS    += mainwindow.ui \
     adduser.ui \

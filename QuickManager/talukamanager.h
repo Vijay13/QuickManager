@@ -5,7 +5,8 @@
 #include <QTableView>
 #include <QStandardItemModel>
 #include <QSortFilterProxyModel>
-#include <alltaluka.h>
+#include "filemanager.h"
+#include "alltaluka.h"
 
 namespace Ui {
 class TalukaManager;
@@ -32,10 +33,15 @@ private slots:
 
     void updateTableView();
 
+    void printTaluka();
+
+    void exportTaluka();
+
 private:
     Ui::TalukaManager *ui;
     QTableView* table;
     AllTaluka* talukas;
+    FileManager* fm;
     QStandardItemModel* viewModel;
     QSortFilterProxyModel* sortModel;
 };

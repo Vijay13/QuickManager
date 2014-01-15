@@ -8,6 +8,7 @@
 #include "maindatabase.h"
 #include "alltaluka.h"
 #include "allschool.h"
+#include "filemanager.h"
 #include "talukamanager.h"
 #include "schoolmanager.h"
 
@@ -46,12 +47,17 @@ private slots:
 
     void RemoveSchoolEvent();
 
+    void PrintSchoolEvent();
+
+    void ExportSchoolEvent();
+
     void BackEvent();
 
 private:
     Ui::MainWindow *ui;
     QSqlQuery *query;
     MainDatabase *db;
+    FileManager *fm;
     AllTaluka *talukas;
     AllSchool *schools;
     SchoolManager *sm;
