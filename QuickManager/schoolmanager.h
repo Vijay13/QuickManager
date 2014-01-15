@@ -21,6 +21,10 @@ public:
 
     void removeSchool();
 
+    void search(QString searchText);
+
+    void setFilter(QString selectedTaluka, QString selectedRout);
+
 private:
     static SchoolManager* instance;
     QTableView* table;

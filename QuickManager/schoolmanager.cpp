@@ -32,7 +32,6 @@ SchoolManager* SchoolManager::Instance(){
 
 void SchoolManager::setUpTable(){
     viewModel->clear();
-
     viewModel->setHorizontalHeaderLabels( QStringList() << "Center No."
                                           << "School Name" << "Taluka"
                                           << "Rout No." << "Principal"
@@ -86,5 +85,44 @@ void SchoolManager::removeSchool(){
         }
     }else{
         QMessageBox::information(0,"Select School","Please Select School to Delete",0,0);
+    }
+}
+
+
+void SchoolManager::search(QString searchText){
+    sortModel->setFilterKeyColumn(1);
+    sortModel->setFilterFixedString( searchText );
+}
+
+void SchoolManager::setFilter(QString selectedTaluka, QString selectedRout){
+    viewModel->clear();
+    viewModel->setHorizontalHeaderLabels( QStringList() << "Center No."
+                                          << "School Name" << "Taluka"
+                                          << "Rout No." << "Principal"
+                                          << "Principal Mob no." << "Address" );
+
+    QList<QStandardItem*> itemList;
+    for(int i=0; i < schools->getSchoolList()->length(); i++){
+        School* temp = schools->getSchoolList()->at(i);
+
+        if(selectedTaluka != "All Taluka"){
+            if(temp->Taluka != selectedTaluka)
+                continue;
+        }
+
+        if(selectedRout != "All Routs"){
+            if(temp->RoutNo != selectedRout)
+                continue;
+        }
+
+        itemList << new QStandardItem(temp->CenterNo)
+                 << new QStandardItem(temp->SchoolName)
+                 << new QStandardItem(temp->Taluka)
+                 << new QStandardItem(temp->RoutNo)
+                 << new QStandardItem(temp->Principal)
+                 << new QStandardItem(temp->PrincipalMobNo)
+                 << new QStandardItem(temp->Address);
+        viewModel->appendRow(itemList);
+        itemList.clear();
     }
 }

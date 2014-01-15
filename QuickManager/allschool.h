@@ -24,9 +24,14 @@ public:
 
     QList<School*>* getSchoolList(){return schoolList;}
 
+    void setAllRouts();
+
+    QList<QString>* getAllRouts(){return routList;}
+
 private:
     static AllSchool* instance;
     QList<School*>* schoolList;
+    QList<QString>* routList;
     MainDatabase *db;
     QSqlQuery *query;
 };

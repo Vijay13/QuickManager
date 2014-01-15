@@ -41,6 +41,12 @@ private slots:
 
     void SchoolManagerEvent();
 
+    void SearchSchool();
+
+    void setFilter();
+
+    void ResetSchool();
+
     void AddSchoolEvent();
 
     void EditSchoolEvent();

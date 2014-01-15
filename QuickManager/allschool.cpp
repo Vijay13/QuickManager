@@ -3,6 +3,7 @@
 AllSchool::AllSchool()
 {
     schoolList = new QList<School*>();
+    routList = new QList<QString>();
     this->Initialize();
 
     instance = this;
@@ -38,15 +39,19 @@ void AllSchool::Initialize(){
     }else{
         qDebug() << "Didnt get all talukas";
     }
+
+    setAllRouts();
 }
 
 void AllSchool::addSchool(School* school){
     schoolList->append(school);
+    setAllRouts();
 }
 
 void AllSchool::removeSchoolFromDB(QString centerNo, QString taluka){
     if(query->exec(db->getDeleteSchoolQuery(centerNo, taluka))){
         removeFromList(centerNo, taluka);
+        setAllRouts();
     }else{
         qDebug() << "Could not remove school";
     }
@@ -79,4 +84,16 @@ int AllSchool::indexOfSchoolWith(int sid){
         }
     }
     return i;
+}
+
+void AllSchool::setAllRouts(){
+    routList->clear();
+    if(query->exec("SELECT DISTINCT RoutNo FROM SCHOOLS"))
+    {
+        while (query->next()) {
+            routList->append(query->value(0).toString());
+        }
+    }else{
+        qDebug() << "Could not get Rout nos";
+    }
 }

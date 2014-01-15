@@ -13,7 +13,6 @@ MainWindow::MainWindow(QWidget *parent) :
     isCorrect(false), queryStatement(""), dirToDatabase("")
 {
     ui->setupUi(this);
-    initializeComponent();
 
     db = new MainDatabase();
     db->Open(dirToDatabase);
@@ -23,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     talukas = new AllTaluka();
     schools = new AllSchool();
     sm = new SchoolManager(ui->tableViewSchools);
+    initializeComponent();
 }
 
 MainWindow::~MainWindow()
@@ -51,6 +51,12 @@ void MainWindow::initializeComponent(){
     QObject::connect(ui->pushButtonBack,SIGNAL(clicked()),this,SLOT(BackEvent()));
     QObject::connect(ui->pushButtonPrintSchools,SIGNAL(clicked()),this,SLOT(PrintSchoolEvent()));
     QObject::connect(ui->pushButtonExportSchools,SIGNAL(clicked()),this,SLOT(ExportSchoolEvent()));
+
+    QObject::connect(ui->lineEditSearchBox,SIGNAL(textChanged(const QString &)), SLOT( SearchSchool()) );
+    QObject::connect(ui->comboBoxSelectTaluka,SIGNAL(activated(int)), SLOT( setFilter()) );
+    QObject::connect(ui->comboBoxSelectRout,SIGNAL(activated(int)), SLOT( setFilter()) );
+    QObject::connect(ui->pushButtonSchoolSearch,SIGNAL(clicked()), SLOT( SearchSchool()) );
+    QObject::connect(ui->pushButtonResetSchoolSearch,SIGNAL(clicked()), SLOT( ResetSchool()) );
 }
 
 void MainWindow::ChooseDatabase()
@@ -125,6 +131,35 @@ void MainWindow::TalukaManagerEvent()
 void MainWindow::SchoolManagerEvent()
 {
     ui->AllStackWidget->setCurrentIndex(2);
+    ResetSchool();
+}
+
+void MainWindow::SearchSchool(){
+    sm->search(ui->lineEditSearchBox->text());
+}
+
+void MainWindow::setFilter(){
+    sm->setFilter(ui->comboBoxSelectTaluka->currentText(),
+                        ui->comboBoxSelectRout->currentText());
+}
+
+void MainWindow::ResetSchool(){
+    ui->comboBoxSelectTaluka->clear();
+    ui->comboBoxSelectTaluka->addItem("All Taluka");
+    for(int i=0; i<talukas->getTalukaList()->length(); i++){
+        ui->comboBoxSelectTaluka->addItem(talukas->getTalukaList()->at(i)->getTaluka());
+    }
+    ui->comboBoxSelectRout->clear();
+    ui->comboBoxSelectRout->addItem("All Routs");
+    for(int i=0; i<schools->getAllRouts()->length();i++){
+        ui->comboBoxSelectRout->addItem(schools->getAllRouts()->at(i));
+    }
+
+    ui->lineEditSearchBox->setText("");
+    ui->comboBoxSelectTaluka->setCurrentIndex(0);
+    ui->comboBoxSelectRout->setCurrentIndex(0);
+
+    sm->setUpTable();
 }
 
 void MainWindow::AddSchoolEvent()
