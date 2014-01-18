@@ -55,7 +55,6 @@ void MainWindow::initializeComponent(){
     QObject::connect(ui->lineEditSearchBox,SIGNAL(textChanged(const QString &)), SLOT( SearchSchool()) );
     QObject::connect(ui->comboBoxSelectTaluka,SIGNAL(activated(int)), SLOT( setFilter()) );
     QObject::connect(ui->comboBoxSelectRout,SIGNAL(activated(int)), SLOT( setFilter()) );
-    QObject::connect(ui->pushButtonSchoolSearch,SIGNAL(clicked()), SLOT( SearchSchool()) );
     QObject::connect(ui->pushButtonResetSchoolSearch,SIGNAL(clicked()), SLOT( ResetSchool()) );
 }
 
@@ -81,7 +80,7 @@ void MainWindow::Login()
         while(query->next()){
             QString userName = query->value(query->record().indexOf("UserName")).toString();
             QString passWord = query->value(query->record().indexOf("Password")).toString();
-            if(userName == ui->lineEditUsername->text() && passWord == ui->lineEditUsername->text()){
+            if(userName == ui->lineEditUsername->text() && passWord == ui->lineEditPassword->text()){
                 isCorrect = true;
                 break;
             }
@@ -105,6 +104,8 @@ void MainWindow::Logout()
     ui->lineEditUsername->setText("");
     ui->lineEditPassword->setText("");
     ui->ErrorLable->setText("");
+    ui->actionAddUser->setEnabled(false);
+    ui->actionAddAdmin->setEnabled(false);
 }
 
 void MainWindow::AddUserEvent()

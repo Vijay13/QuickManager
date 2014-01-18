@@ -35,6 +35,7 @@ void TalukaManager::initialize(){
     sortModel = new QSortFilterProxyModel();
     sortModel->setSourceModel(viewModel);
     this->table->setModel(sortModel);
+    this->table->setSelectionBehavior(QAbstractItemView::SelectRows);
     this->table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     this->table->setSortingEnabled(true);
     this->table->horizontalHeader()->setStretchLastSection( true );

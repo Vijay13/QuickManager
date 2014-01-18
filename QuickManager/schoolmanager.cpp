@@ -15,7 +15,9 @@ SchoolManager::SchoolManager(QTableView* table):
     viewModel = new QStandardItemModel(0,0);
     sortModel = new QSortFilterProxyModel();
     sortModel->setSourceModel(viewModel);
+    sortModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
     this->table->setModel(sortModel);
+    this->table->setSelectionBehavior(QAbstractItemView::SelectRows);
     this->table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     this->table->setSortingEnabled(true);
     this->table->horizontalHeader()->setStretchLastSection( true );
