@@ -232,9 +232,17 @@ void MainWindow::RemoveSchoolEvent()
 void MainWindow::PrintSchoolEvent(){
     if(ui->AllStackWidget->currentIndex() == 2)
     {
-        fm->setTable(ui->tableViewSchools);
+        fm->clearDocument();
+        fm->writeTable(ui->tableViewSchools);
+        fm->printTable();
+    }else if(ui->AllStackWidget->currentIndex() == 3)
+    {
+        fm->clearDocument();
+        fm->writeTable(ui->tableViewTotalBill);
+        fm->writeTable(ui->tableViewMainBill);
         fm->printTable();
     }
+
 }
 
 void MainWindow::ExportSchoolEvent(){

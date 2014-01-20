@@ -2,7 +2,6 @@
 
 #include <QDebug>
 #include <QFileDialog>
-#include <QTextStream>
 #include <QTextDocument>
 #include <QPrintDialog>
 
@@ -54,19 +53,28 @@ void FileManager::exportCSV(){
 
 void FileManager::printTable(){
 
+    QTextDocument *document = new QTextDocument();
+    document->setHtml(strStream);
+
+    QPrintDialog *dialog = new QPrintDialog(printer, NULL);
+    if (dialog->exec() == QDialog::Accepted) {
+        document->print(printer);
+    }
+}
+
+void FileManager::writeTable(QTableView* table)
+{
     if(table == NULL)
         return;
 
-    QString strStream;
     QTextStream out(&strStream);
-
     const int rowCount = table->model()->rowCount();
     const int columnCount = table->model()->columnCount();
 
     out <<  "<html>\n"
             "<head>\n"
             "<meta Content=\"Text/html; charset=Windows-1251\">\n"
-         <<  QString("<title>%1</title>\n").arg("strTitle")
+         <<  QString("<title>%1</title>\n").arg(table->accessibleName())
           <<  "</head>\n"
               "<body bgcolor=#ffffff link=#5000A0>\n"
               "<table border=1 cellspacing=0 cellpadding=2>\n";
@@ -91,13 +99,10 @@ void FileManager::printTable(){
     }
     out <<  "</table>\n"
             "</body>\n"
-            "</html>\n";
+            "</html>\n" << "<br /><br />";
+}
 
-    QTextDocument *document = new QTextDocument();
-    document->setHtml(strStream);
-
-    QPrintDialog *dialog = new QPrintDialog(printer, NULL);
-    if (dialog->exec() == QDialog::Accepted) {
-        document->print(printer);
-    }
+void FileManager::clearDocument()
+{
+    this->strStream = "";
 }

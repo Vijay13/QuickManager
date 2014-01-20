@@ -361,5 +361,3 @@ QString SchoolBillManager::dataForTable(int data)
         return QString::number(data);
     return "";
 }
-
-
