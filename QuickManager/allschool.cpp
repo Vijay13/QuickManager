@@ -43,6 +43,17 @@ void AllSchool::Initialize(){
     setAllRouts();
 }
 
+School* AllSchool::getSchool(QString schoolName)
+{
+    for(int i=0; i < schoolList->length(); i++)
+    {
+        if(schoolList->at(i)->SchoolName == schoolName)
+            return schoolList->at(i);
+    }
+
+    return 0;
+}
+
 void AllSchool::addSchool(School* school){
     schoolList->append(school);
     setAllRouts();

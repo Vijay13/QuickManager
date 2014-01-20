@@ -172,3 +172,34 @@ QString MainDatabase::getAllSchoolQuery(){
 QString MainDatabase::getText(QString string){
     return "'" + string + "'";
 }
+
+QString MainDatabase::getCreateSchoolBillTable(QString tableName)
+{
+    return "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
+            "DATE INTEGER PRIMARY KEY NOT NULL, " +
+            "SC_B INTEGER," + "SC_G INTEGER," + "ST_B INTEGER," + "ST_G INTEGER,"
+            + "OBC_B INTEGER," + "OBC_G INTEGER," +
+            "GEN_B INTEGER," + "GEN_G INTEGER," + "TOTAL_B INTEGER," + "TOTAL_G INTEGER,"
+            + "TOTAL INTEGER" + ")";
+}
+
+QString MainDatabase::getInsertSchoolBill(QString table, int date, int sc_b, int sc_g,
+                                          int st_b, int st_g, int obc_b,
+                                          int obc_g, int gen_b, int gen_g,
+                                          int total_b, int total_g, int total)
+{
+    return "INSERT OR REPLACE INTO " + table + "( DATE, SC_B, SC_G, ST_B, ST_G, OBC_B, OBC_G, GEN_B, GEN_G, TOTAL_B, TOTAL_G, TOTAL ) " +
+            "VALUES ( " +
+            QString::number(date) + ", " +
+            QString::number(sc_b) + ", " +
+            QString::number(sc_g) + ", " +
+            QString::number(st_b) + ", " +
+            QString::number(st_g) + ", " +
+            QString::number(obc_b) + ", " +
+            QString::number(obc_g) + ", " +
+            QString::number(gen_b) + ", " +
+            QString::number(gen_g) + ", " +
+            QString::number(total_b) + ", " +
+            QString::number(total_g) + ", " +
+            QString::number(total) + " ) ";
+}

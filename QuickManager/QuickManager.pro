@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     schooldialog.cpp \
     schoolmanager.cpp \
     talukamanager.cpp \
-    filemanager.cpp
+    filemanager.cpp \
+    schoolbillmanager.cpp
 
 HEADERS  += mainwindow.h \
     maindatabase.h \
@@ -37,7 +38,8 @@ HEADERS  += mainwindow.h \
     schooldialog.h \
     schoolmanager.h \
     talukamanager.h \
-    filemanager.h
+    filemanager.h \
+    schoolbillmanager.h
 
 FORMS    += mainwindow.ui \
     adduser.ui \

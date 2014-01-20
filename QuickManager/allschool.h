@@ -22,6 +22,8 @@ public:
 
     int indexOfSchoolWith(int sid);
 
+    School* getSchool(QString schoolName);
+
     QList<School*>* getSchoolList(){return schoolList;}
 
     void setAllRouts();

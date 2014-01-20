@@ -11,6 +11,7 @@
 #include "filemanager.h"
 #include "talukamanager.h"
 #include "schoolmanager.h"
+#include "schoolbillmanager.h"
 
 namespace Ui {
 class MainWindow;
@@ -27,6 +28,8 @@ public:
 private slots:
     void initializeComponent();
 
+    void updateBillOptions();
+
     void Login();
 
     void Logout();
@@ -40,6 +43,8 @@ private slots:
     void TalukaManagerEvent();
 
     void SchoolManagerEvent();
+
+    void SchoolBillManagerEvent();
 
     void SearchSchool();
 
@@ -59,6 +64,14 @@ private slots:
 
     void BackEvent();
 
+    void SelectedSchoolBillChanged(const QItemSelection& selection);
+
+    void SelectedCellChangedBillTable(const QItemSelection& selection);
+
+    void SelectedCellChangedHeaderTable(const QItemSelection& selection);
+
+    void SaveSchoolBillEvent();
+
 private:
     Ui::MainWindow *ui;
     QSqlQuery *query;
@@ -67,6 +80,7 @@ private:
     AllTaluka *talukas;
     AllSchool *schools;
     SchoolManager *sm;
+    SchoolBillManager *sbm;
     bool isCorrect;
     QString queryStatement;
     QString dirToDatabase;

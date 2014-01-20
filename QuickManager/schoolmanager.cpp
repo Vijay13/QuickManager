@@ -12,7 +12,7 @@ SchoolManager::SchoolManager(QTableView* table):
 {
     schools = AllSchool::Instance();
 
-    viewModel = new QStandardItemModel(0,0);
+    viewModel = new QStandardItemModel();
     sortModel = new QSortFilterProxyModel();
     sortModel->setSourceModel(viewModel);
     sortModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
