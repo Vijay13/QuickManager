@@ -72,6 +72,8 @@ private slots:
 
     void SaveSchoolBillEvent();
 
+    void DeleteSchoolBillEvent();
+
 private:
     Ui::MainWindow *ui;
     QSqlQuery *query;

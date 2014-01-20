@@ -39,7 +39,7 @@ void MainWindow::initializeComponent(){
     ui->lineEditPassword->setEchoMode(QLineEdit::Password);
     ui->actionAddUser->setDisabled(true);
     ui->actionAddAdmin->setDisabled(true);
-    ui->AllStackWidget->setCurrentIndex(1);
+    ui->AllStackWidget->setCurrentIndex(0);
     ui->groupBoxControl->setVisible(false);
     ui->progressBar->setVisible(false);
 
@@ -69,6 +69,7 @@ void MainWindow::initializeComponent(){
 
     QObject::connect(ui->pushButtonBMManager,SIGNAL(clicked()), SLOT( SchoolBillManagerEvent()) );
     QObject::connect(ui->pushButtonSaveSchoolBill,SIGNAL(clicked()),SLOT(SaveSchoolBillEvent()));
+    QObject::connect(ui->pushButtonDeleteSchoolBill,SIGNAL(clicked()),SLOT(DeleteSchoolBillEvent()));
     QObject::connect(ui->listViewSchools->selectionModel(),
                      SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
                      this, SLOT(SelectedSchoolBillChanged(QItemSelection)));
@@ -287,4 +288,9 @@ void MainWindow::SelectedCellChangedHeaderTable(const QItemSelection& selection)
 void MainWindow::SaveSchoolBillEvent()
 {
     sbm->SaveSchoolEvent();
+}
+
+void MainWindow::DeleteSchoolBillEvent()
+{
+    sbm->DeleteSchoolEvent();
 }

@@ -4,6 +4,7 @@
 #include <QSql>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QSqlError>
 #include <QDebug>
 
 class MainDatabase
@@ -57,6 +58,10 @@ public:
                                   int st_b, int st_g, int obc_b, int obc_g,
                                   int gen_b, int gen_g, int total_b,
                                   int total_g, int total);
+
+    QString getSchoolBillTable(QString tableName);
+
+    QString getDeleteSchoolBill(QString tableName);
 
 private:
     QSqlDatabase mydb;

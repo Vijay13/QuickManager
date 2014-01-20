@@ -6,7 +6,7 @@ SchoolBillManager::SchoolBillManager(QProgressBar* progressBar,QListView* list,
                                      QTableView* headerTable, QTableView* table,
                                      QLabel* center, QLabel* school):
     progressBar(progressBar), headerTable(headerTable),table(table),
-    list(list), centerNo(center), schoolName(school)
+    list(list), centerNo(center), schoolName(school), isTableReset(true)
 {
     schools = AllSchool::Instance();
     viewModelList = new QStandardItemModel();
@@ -40,9 +40,6 @@ void SchoolBillManager::setUpHeaderTable()
                                                      << "Gen-B" << "Gen-G"
                                                      << "Total-B" << "Total-G"
                                                      << "Total");
-    viewModelHeaderTable->setItem(0,8,new QStandardItem("0"));
-    viewModelHeaderTable->setItem(0,9,new QStandardItem("0"));
-    viewModelHeaderTable->setItem(0,10,new QStandardItem("0"));
 }
 
 void SchoolBillManager::setUpTable()
@@ -58,7 +55,39 @@ void SchoolBillManager::setUpTable()
                                                << "Gen-B" << "Gen-G"
                                                << "Total-B" << "Total-G"
                                                << "Total");
-    setUpZeroinMainTable();
+    setUpZeroinTable();
+}
+
+void SchoolBillManager::resetTable()
+{
+    for(int column=0; column<8; column++)
+    {
+        viewModelHeaderTable->setItem(0,column,new QStandardItem(""));
+    }
+
+    for(int row=0; row < 15; row++)
+    {
+        for(int column=1; column<9 ; column++)
+        {
+            viewModelTable->setItem(row,column,new QStandardItem(""));
+        }
+    }
+    setUpZeroinTable();
+}
+
+void SchoolBillManager::setUpZeroinTable()
+{
+    previousRow = -1;
+    previousColumn = -1;
+    for(int row=0; row<15; row++)
+    {
+        for(int column=9; column<12; column++)
+            viewModelTable->setItem(row,column,new QStandardItem("0"));
+    }
+
+    viewModelHeaderTable->setItem(0,8,new QStandardItem("0"));
+    viewModelHeaderTable->setItem(0,9,new QStandardItem("0"));
+    viewModelHeaderTable->setItem(0,10,new QStandardItem("0"));
 }
 
 void SchoolBillManager::setDates()
@@ -72,17 +101,6 @@ void SchoolBillManager::setDates()
     for(int i=0; i < 15 ; i++)
     {
         viewModelTable->setItem(i,0,new QStandardItem(QString::number(++start)));
-    }
-}
-
-void SchoolBillManager::setUpZeroinMainTable()
-{
-    previousRow = -1;
-    previousColumn = -1;
-    for(int row=0; row<15; row++)
-    {
-        for(int column=9; column<12; column++)
-            viewModelTable->setItem(row,column,new QStandardItem("0"));
     }
 }
 
@@ -134,6 +152,34 @@ void SchoolBillManager::schoolChanged()
         currentSchool = tempSchool->SchoolName;
         centerNo->setText(tempSchool->CenterNo);
         schoolName->setText(currentSchool);
+        if(query->exec(db->getSchoolBillTable(getCurrentTableName())))
+        {
+            progressBar->setValue(0);
+            progressBar->setVisible(true);
+            int row = 0;
+            query->next();
+            for(int column=0; column<11; column++)
+            {
+                viewModelHeaderTable->setItem(0,column,new QStandardItem(dataForTable(query->value(column).toInt())));
+            }
+
+            while (query->next()) {
+                for(int column=0; column<12; column++)
+                {
+                    viewModelTable->setItem(row,column,new QStandardItem(dataForTable(query->value(column).toInt())));
+                }
+                row++;
+                progressBar->setValue(row*7);
+            }
+            progressBar->setVisible(false);
+            isTableReset = false;
+        }
+        else
+        {
+            if(!isTableReset)
+                resetTable();
+        }
+        query->finish();
     }
 }
 
@@ -222,12 +268,11 @@ void SchoolBillManager::SelectedCellChangedHeaderTable()
     viewModelHeaderTable->setItem(0,10,new QStandardItem(QString::number(sumUp)));
 }
 
-
 void SchoolBillManager::SaveSchoolEvent()
 {
     if(currentSchool.isEmpty())
     {
-        QMessageBox::information(0,"Select School","Life is not Race",0,0);
+        QMessageBox::information(0,"Select School","Please select school",0,0);
         return;
     }
 
@@ -282,13 +327,39 @@ void SchoolBillManager::SaveSchoolEvent()
         }
         progressBar->setVisible(false);
     }else
-        qDebug() << "Failed to create school bill table";
+        qDebug() << db->getCreateSchoolBillTable(getCurrentTableName())
+                 << "Failed to create school bill table";
+}
+
+void SchoolBillManager::DeleteSchoolEvent()
+{
+    if(currentSchool.isEmpty())
+    {
+        QMessageBox::information(0,"Select School","Please select school",0,0);
+        return;
+    }
+
+    if(query->exec(db->getDeleteSchoolBill(getCurrentTableName())))
+    {
+        resetTable();
+    }
+    else
+        qDebug() << db->getDeleteSchoolBill(getCurrentTableName())
+                 << "Could not delete School Bill" <<  query->lastError().text()
+                    << query->isActive();
 }
 
 QString SchoolBillManager::getCurrentTableName()
 {
-    return "SchoolBill_" + currentSchool.trimmed() + "_" + currentSTD + "_" + currentPeriod
+    return "SchoolBill_" + currentSchool.remove(' ') + "_" + currentSTD + "_" + currentPeriod
             + "_" + currentMonth + "_" + currentYear;
+}
+
+QString SchoolBillManager::dataForTable(int data)
+{
+    if(data != 0)
+        return QString::number(data);
+    return "";
 }
 
 

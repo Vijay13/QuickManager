@@ -24,7 +24,9 @@ public:
 
     void setUpTable();
 
-    void setUpZeroinMainTable();
+    void resetTable();
+
+    void setUpZeroinTable();
 
     void schoolChanged();
 
@@ -32,11 +34,15 @@ public:
 
     int dataInTable(QTableView* tempTable, int r, int c);
 
+    QString dataForTable(int data);
+
     void SelectedCellChangedBillTable();
 
     void SelectedCellChangedHeaderTable();
 
     void SaveSchoolEvent();
+
+    void DeleteSchoolEvent();
 
     void setDates();
 
@@ -60,6 +66,7 @@ private:
     QLabel* schoolName;
     int previousRow,previousColumn;
     QString currentSchool, currentSTD, currentPeriod, currentMonth, currentYear;
+    bool isTableReset;
 };
 
 #endif // SCHOOLBILLMANAGER_H

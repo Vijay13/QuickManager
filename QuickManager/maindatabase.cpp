@@ -203,3 +203,13 @@ QString MainDatabase::getInsertSchoolBill(QString table, int date, int sc_b, int
             QString::number(total_g) + ", " +
             QString::number(total) + " ) ";
 }
+
+QString MainDatabase::getSchoolBillTable(QString tableName)
+{
+    return "SELECT * FROM " + tableName;
+}
+
+QString MainDatabase::getDeleteSchoolBill(QString tableName)
+{
+    return "DROP TABLE IF EXISTS " + tableName;
+}
