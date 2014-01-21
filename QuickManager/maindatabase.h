@@ -12,8 +12,6 @@ class MainDatabase
 public:
     MainDatabase();
 
-    static MainDatabase* Create();
-
     static MainDatabase* Instance();
 
     void Open(QString dirToDatabase);
@@ -63,9 +61,12 @@ public:
 
     QString getDeleteSchoolBill(QString tableName);
 
+    QString getAppDataPath() const{return appDataPath;}
+
 private:
     QSqlDatabase mydb;
     static MainDatabase* instance;
+    QString appDataPath;
 };
 
 #endif // MAINDATABASE_H

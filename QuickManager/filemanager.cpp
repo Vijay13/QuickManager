@@ -29,6 +29,10 @@ void FileManager::exportCSV(){
         return;
 
     QString filePath = QFileDialog::getSaveFileName(0,"Save","",".csv",0,0);
+
+    if(!filePath.contains(".csv"))
+        filePath.append(".csv");
+
     QFile file(filePath);
 
     if(file.open(QIODevice::WriteOnly)){

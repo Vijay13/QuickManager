@@ -15,6 +15,17 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    initialize();
+    initializeComponent();
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::initialize()
+{
     db = new MainDatabase();
     db->Open(dirToDatabase);
     query = new QSqlQuery(*db->getDatabase());
@@ -25,12 +36,6 @@ MainWindow::MainWindow(QWidget *parent) :
     sm = new SchoolManager(ui->tableViewSchools);
     sbm = new SchoolBillManager(ui->progressBar,ui->listViewSchools ,ui->tableViewTotalBill ,ui->tableViewMainBill,
                                 ui->labelBMCenterBody, ui->labelBMSchoolBody);
-    initializeComponent();
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
 }
 
 void MainWindow::initializeComponent(){
@@ -114,9 +119,7 @@ void MainWindow::ChooseDatabase()
                                                        | QFileDialog::DontResolveSymlinks);
 
     if(!dirToDatabase.isEmpty()){
-        db = new MainDatabase();
-        db->Open(dirToDatabase);
-        query = new QSqlQuery(*db->getDatabase());
+        initialize();
     }
 }
 

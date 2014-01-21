@@ -1,5 +1,9 @@
 #include "maindatabase.h"
 
+#include <stdlib.h>
+#include <QDir>
+#include <QCoreApplication>
+
 MainDatabase::MainDatabase()
 {
     instance = this;
@@ -7,27 +11,36 @@ MainDatabase::MainDatabase()
 }
 
 void MainDatabase::Open(QString dirToDatabase){
-    if(!dirToDatabase.isEmpty()){
+
+    // this is where stdlib.h is being used
+    appDataPath = getenv("LOCALAPPDATA");
+    appDataPath.replace("\\","/");
+    appDataPath += "/" + QCoreApplication::applicationName() + "/AppData";
+
+    if(!QDir(appDataPath).exists())
+    {
+        if(!QDir().mkpath(appDataPath))
+        {
+            qDebug() << "Could not create path for AppData";
+            return;
+        }
+    }
+
+    if(!dirToDatabase.isEmpty() && QDir(dirToDatabase).exists()){
         mydb.setDatabaseName(dirToDatabase + "/database.db");
     }else{
-        mydb.setDatabaseName("C:/Users/Vijay13/Documents/Database/database.db");
+        mydb.setDatabaseName(appDataPath + "/database.db");
     }
 
     if(!mydb.open())
-        qDebug("Could not open database");
+        qDebug() << "Could not open database " + mydb.databaseName();
     else
-        qDebug("Opened database");
+        qDebug() << "Opened database " + mydb.databaseName();
 
     this->Initialize();
 }
 
 MainDatabase* MainDatabase::instance = 0;
-
-MainDatabase* MainDatabase::Create(){
-    delete instance;
-    instance = new MainDatabase();
-    return instance;
-}
 
 MainDatabase* MainDatabase::Instance(){
     return instance;

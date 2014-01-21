@@ -26,6 +26,8 @@ public:
     ~MainWindow();
 
 private slots:
+    void initialize();
+
     void initializeComponent();
 
     void updateBillOptions();
