@@ -39,7 +39,7 @@ void MainWindow::initializeComponent(){
     ui->lineEditPassword->setEchoMode(QLineEdit::Password);
     ui->actionAddUser->setDisabled(true);
     ui->actionAddAdmin->setDisabled(true);
-    ui->AllStackWidget->setCurrentIndex(0);
+    ui->AllStackWidget->setCurrentIndex(1);
     ui->groupBoxControl->setVisible(false);
     ui->progressBar->setVisible(false);
 

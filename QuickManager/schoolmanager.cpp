@@ -76,6 +76,13 @@ void SchoolManager::removeSchool(){
     int i = sortModel->mapToSource(this->table->currentIndex()).row();
 
     if(i<schools->getSchoolList()->length() && i > -1){
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(0, "Delete School", "Are you sure to delete All detail of "
+                                      + schools->getSchoolList()->at(i)->SchoolName + " ?",QMessageBox::Yes|QMessageBox::No);
+        if (reply == QMessageBox::No) {
+            return;
+        }
+
         MainDatabase *db = MainDatabase::Instance();
         QSqlQuery *query = new QSqlQuery(*db->getDatabase());
         if(query->exec(db->getDeleteSchoolQuery(schools->getSchoolList()->at(i)->CenterNo,
