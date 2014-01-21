@@ -23,8 +23,12 @@ void MainDatabase::Open(QString dirToDatabase)
     {
         if(!loadDBpath()->isEmpty())
         {
-            mydb.setDatabaseName(loadDBpath()->at(loadDBpath()->length() - 1)+ dbFileName);
-        }else
+            for(int i = loadDBpath()->length() - 1; i >= 0; i--)
+            {
+                mydb.setDatabaseName(loadDBpath()->at(i)+ dbFileName);
+            }
+        }
+        else
         {
             mydb.setDatabaseName(appDataPath + dbFileName);
         }
