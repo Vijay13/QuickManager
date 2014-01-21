@@ -8,10 +8,38 @@ MainDatabase::MainDatabase()
 {
     instance = this;
     mydb = QSqlDatabase::addDatabase("QSQLITE");
+    dbFileName = "/database.db";
+    appDataFileName = "/data.txt";
+    setAppDataPath();
 }
 
-void MainDatabase::Open(QString dirToDatabase){
+void MainDatabase::Open(QString dirToDatabase)
+{
 
+    if(!dirToDatabase.isEmpty() && QDir(dirToDatabase).exists()){
+        mydb.setDatabaseName(dirToDatabase + dbFileName);
+        writeNewDBpath(dirToDatabase);
+    }else
+    {
+        if(!loadDBpath()->isEmpty())
+        {
+            mydb.setDatabaseName(loadDBpath()->at(loadDBpath()->length() - 1)+ dbFileName);
+        }else
+        {
+            mydb.setDatabaseName(appDataPath + dbFileName);
+        }
+    }
+
+    if(!mydb.open())
+        qDebug() << "Could not open database " + mydb.databaseName();
+    else
+        qDebug() << "Opened database " + mydb.databaseName();
+
+    this->Initialize();
+}
+
+void MainDatabase::setAppDataPath()
+{
     // this is where stdlib.h is being used
     appDataPath = getenv("LOCALAPPDATA");
     appDataPath.replace("\\","/");
@@ -21,23 +49,11 @@ void MainDatabase::Open(QString dirToDatabase){
     {
         if(!QDir().mkpath(appDataPath))
         {
-            qDebug() << "Could not create path for AppData";
-            return;
+            qDebug() << "Could not load appdata files";
         }
     }
 
-    if(!dirToDatabase.isEmpty() && QDir(dirToDatabase).exists()){
-        mydb.setDatabaseName(dirToDatabase + "/database.db");
-    }else{
-        mydb.setDatabaseName(appDataPath + "/database.db");
-    }
-
-    if(!mydb.open())
-        qDebug() << "Could not open database " + mydb.databaseName();
-    else
-        qDebug() << "Opened database " + mydb.databaseName();
-
-    this->Initialize();
+    writeNewDBpath(appDataPath);
 }
 
 MainDatabase* MainDatabase::instance = 0;
@@ -80,6 +96,47 @@ void MainDatabase::Initialize(){
 
     Q_ASSERT(query.exec(createQurey));
 
+}
+
+QList<QString>* MainDatabase::loadDBpath()
+{
+    QList<QString>* pathList = new QList<QString>();
+
+    QFile file(appDataPath + appDataFileName);
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream in(&file);
+    QString line = in.readLine();
+
+    while(!line.isNull())
+    {
+        if(line.contains("#DATABASEPATH: "))
+        {
+            pathList->append(line.remove("#DATABASEPATH: "));
+        }
+        line = in.readLine();
+    }
+    file.close();
+    return pathList;
+}
+
+void MainDatabase::writeNewDBpath(QString newPath)
+{
+    QFile file(appDataPath + appDataFileName);
+    file.open(QIODevice::WriteOnly | QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream in(&file);
+    QString toWrite;
+
+    while(!in.atEnd())
+    {
+        QString line = in.readLine();
+        if(!line.contains(newPath) && !line.isEmpty())
+            toWrite.append(line + "\n");
+    }
+
+    file.resize(0);
+    in << toWrite;
+    in << "#DATABASEPATH: " << newPath << endl;
+    file.close();
 }
 
 QString MainDatabase::getInsertUserQuery(QString user, QString pass, bool isAdmin){

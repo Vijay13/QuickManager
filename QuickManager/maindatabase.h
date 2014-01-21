@@ -19,6 +19,12 @@ public:
     //initialises database
     void Initialize();
 
+    void setAppDataPath();
+
+    QList<QString>* loadDBpath();
+
+    void writeNewDBpath(QString newPath);
+
     //returns pointer to main database file
     QSqlDatabase* getDatabase(){return &mydb;}
 
@@ -67,6 +73,7 @@ private:
     QSqlDatabase mydb;
     static MainDatabase* instance;
     QString appDataPath;
+    QString dbFileName, appDataFileName;
 };
 
 #endif // MAINDATABASE_H
