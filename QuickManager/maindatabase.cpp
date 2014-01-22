@@ -15,7 +15,6 @@ MainDatabase::MainDatabase()
 
 void MainDatabase::Open(QString dirToDatabase)
 {
-
     if(!dirToDatabase.isEmpty() && QDir(dirToDatabase).exists())
     {
         mydb.setDatabaseName(dirToDatabase + dbFileName);
@@ -60,8 +59,6 @@ void MainDatabase::setAppDataPath()
             qDebug() << "Could not load appdata files";
         }
     }
-
-    writeNewDBpath(appDataPath);
 }
 
 MainDatabase* MainDatabase::instance = 0;

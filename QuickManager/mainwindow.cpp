@@ -120,6 +120,7 @@ void MainWindow::ChooseDatabase()
 
     if(!dirToDatabase.isEmpty()){
         initialize();
+        updateBillOptions();
     }
 }
 
