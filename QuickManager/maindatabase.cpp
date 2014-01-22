@@ -16,28 +16,32 @@ MainDatabase::MainDatabase()
 void MainDatabase::Open(QString dirToDatabase)
 {
 
-    if(!dirToDatabase.isEmpty() && QDir(dirToDatabase).exists()){
+    if(!dirToDatabase.isEmpty() && QDir(dirToDatabase).exists())
+    {
         mydb.setDatabaseName(dirToDatabase + dbFileName);
         writeNewDBpath(dirToDatabase);
-    }else
+    }
+    else if(!loadDBpath()->isEmpty())
     {
-        if(!loadDBpath()->isEmpty())
+        for(int i = loadDBpath()->length() - 1; i >= 0; i--)
         {
-            for(int i = loadDBpath()->length() - 1; i >= 0; i--)
+            if(QDir(loadDBpath()->at(i)).exists())
             {
                 mydb.setDatabaseName(loadDBpath()->at(i)+ dbFileName);
+                break;
             }
         }
-        else
-        {
-            mydb.setDatabaseName(appDataPath + dbFileName);
-        }
+    }
+    else
+    {
+        mydb.setDatabaseName(appDataPath + dbFileName);
     }
 
     if(!mydb.open())
         qDebug() << "Could not open database " + mydb.databaseName();
     else
         qDebug() << "Opened database " + mydb.databaseName();
+
 
     this->Initialize();
 }
