@@ -28,7 +28,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="MainStackWidget">
        <layout class="QGridLayout" name="gridLayout">
@@ -684,37 +684,34 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLabel" name="labelCenterNoTitle">
+            <widget class="QLabel" name="labelMonthTitle">
              <property name="maximumSize">
               <size>
-               <width>60</width>
+               <width>50</width>
                <height>16777215</height>
               </size>
              </property>
              <property name="font">
               <font>
                <pointsize>10</pointsize>
-               <weight>50</weight>
-               <bold>false</bold>
-               <strikeout>false</strikeout>
               </font>
              </property>
              <property name="text">
-              <string>Center No.</string>
+              <string>Month:</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="labelBMCenterBody">
+            <widget class="QLabel" name="labelBMMonthBody">
              <property name="minimumSize">
               <size>
-               <width>50</width>
+               <width>0</width>
                <height>0</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>50</width>
+               <width>16777215</width>
                <height>16777215</height>
               </size>
              </property>
@@ -724,39 +721,37 @@
               </font>
              </property>
              <property name="text">
-              <string>0</string>
+              <string>None</string>
+             </property>
+             <property name="margin">
+              <number>0</number>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="labelSchoolTitle">
-             <property name="maximumSize">
+            <spacer name="horizontalSpacer_8">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
               <size>
-               <width>50</width>
-               <height>16777215</height>
+               <width>40</width>
+               <height>20</height>
               </size>
              </property>
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>School: </string>
-             </property>
-            </widget>
+            </spacer>
            </item>
            <item>
-            <widget class="QLabel" name="labelBMSchoolBody">
+            <widget class="QLabel" name="labelYearTitle">
              <property name="minimumSize">
               <size>
-               <width>100</width>
+               <width>40</width>
                <height>0</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>200</width>
+               <width>40</width>
                <height>16777215</height>
               </size>
              </property>
@@ -766,7 +761,67 @@
               </font>
              </property>
              <property name="text">
-              <string>Name</string>
+              <string>Year:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelBMYearBody">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>2014</string>
+             </property>
+             <property name="margin">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelTalukaTitle">
+             <property name="text">
+              <string>Taluka:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_9">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelBMTalukaBody">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Taluka</string>
              </property>
             </widget>
            </item>
@@ -798,13 +853,13 @@
             <widget class="QLabel" name="labelBMPeriodBody">
              <property name="minimumSize">
               <size>
-               <width>80</width>
+               <width>70</width>
                <height>0</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>80</width>
+               <width>70</width>
                <height>16777215</height>
               </size>
              </property>
@@ -816,7 +871,23 @@
              <property name="text">
               <string>1st to 15</string>
              </property>
+             <property name="margin">
+              <number>0</number>
+             </property>
             </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_10">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
            <item>
             <widget class="QLabel" name="labelSTD">
@@ -846,13 +917,13 @@
             <widget class="QLabel" name="labelBMSTDBody">
              <property name="minimumSize">
               <size>
-               <width>80</width>
+               <width>70</width>
                <height>0</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>90</width>
+               <width>70</width>
                <height>16777215</height>
               </size>
              </property>
@@ -864,10 +935,26 @@
              <property name="text">
               <string>1st to 5th</string>
              </property>
+             <property name="margin">
+              <number>0</number>
+             </property>
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="labelMonthTitle">
+            <spacer name="horizontalSpacer_11">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelSchoolTitle">
              <property name="maximumSize">
               <size>
                <width>50</width>
@@ -880,21 +967,21 @@
               </font>
              </property>
              <property name="text">
-              <string>Month:</string>
+              <string>School: </string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="labelBMMonthBody">
+            <widget class="QLabel" name="labelBMSchoolBody">
              <property name="minimumSize">
               <size>
-               <width>80</width>
+               <width>0</width>
                <height>0</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>80</width>
+               <width>16777215</width>
                <height>16777215</height>
               </size>
              </property>
@@ -904,42 +991,28 @@
               </font>
              </property>
              <property name="text">
-              <string>None</string>
+              <string>Name</string>
+             </property>
+             <property name="margin">
+              <number>0</number>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="labelYearTitle">
-             <property name="minimumSize">
+            <spacer name="horizontalSpacer_12">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
               <size>
                <width>40</width>
-               <height>0</height>
+               <height>20</height>
               </size>
              </property>
-             <property name="maximumSize">
-              <size>
-               <width>40</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>Year:</string>
-             </property>
-            </widget>
+            </spacer>
            </item>
            <item>
-            <widget class="QLabel" name="labelBMYearBody">
-             <property name="minimumSize">
-              <size>
-               <width>60</width>
-               <height>0</height>
-              </size>
-             </property>
+            <widget class="QLabel" name="labelCenterNoTitle">
              <property name="maximumSize">
               <size>
                <width>60</width>
@@ -949,10 +1022,23 @@
              <property name="font">
               <font>
                <pointsize>10</pointsize>
+               <weight>50</weight>
+               <bold>false</bold>
+               <strikeout>false</strikeout>
               </font>
              </property>
              <property name="text">
-              <string>2014</string>
+              <string>Center No.</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditBMCenter">
+             <property name="maximumSize">
+              <size>
+               <width>70</width>
+               <height>16777215</height>
+              </size>
              </property>
             </widget>
            </item>
@@ -1058,6 +1144,14 @@
                   <height>55</height>
                  </size>
                 </property>
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
+                <attribute name="horizontalHeaderVisible">
+                 <bool>true</bool>
+                </attribute>
                 <attribute name="horizontalHeaderDefaultSectionSize">
                  <number>70</number>
                 </attribute>
@@ -1079,6 +1173,9 @@
                 </property>
                 <attribute name="horizontalHeaderDefaultSectionSize">
                  <number>70</number>
+                </attribute>
+                <attribute name="verticalHeaderVisible">
+                 <bool>false</bool>
                 </attribute>
                </widget>
               </item>

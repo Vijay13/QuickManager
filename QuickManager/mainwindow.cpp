@@ -36,7 +36,7 @@ void MainWindow::initialize()
     schools = new AllSchool();
     sm = new SchoolManager(ui->tableViewSchools);
     sbm = new SchoolBillManager(ui->progressBar,ui->listViewSchools ,ui->tableViewTotalBill ,ui->tableViewMainBill,
-                                ui->labelBMCenterBody, ui->labelBMSchoolBody);
+                                ui->labelBMTalukaBody, ui->labelBMSchoolBody);
 }
 
 void MainWindow::initializeComponent(){
@@ -74,6 +74,7 @@ void MainWindow::initializeComponent(){
     QObject::connect(ui->pushButtonResetSchoolSearch,SIGNAL(clicked()), SLOT( ResetSchoolEvent()) );
 
     QObject::connect(ui->pushButtonBMManager,SIGNAL(clicked()), SLOT( SchoolBillManagerEvent()) );
+    QObject::connect(ui->lineEditBMCenter,SIGNAL(textChanged(QString)),this,SLOT(SchoolBillCenterFilterEvent()));
     QObject::connect(ui->pushButtonSaveSchoolBill,SIGNAL(clicked()),SLOT(SaveSchoolBillEvent()));
     QObject::connect(ui->pushButtonDeleteSchoolBill,SIGNAL(clicked()),SLOT(DeleteSchoolBillEvent()));
     QObject::connect(ui->listViewSchools->selectionModel(),
@@ -341,6 +342,11 @@ void MainWindow::SelectedCellChangedBillTable(const QItemSelection& selection)
 void MainWindow::SelectedCellChangedHeaderTable(const QItemSelection& selection)
 {
     sbm->SelectedCellChangedHeaderTable();
+}
+
+void MainWindow::SchoolBillCenterFilterEvent()
+{
+    sbm->SchoolCenterNameChanged(ui->lineEditBMCenter->text());
 }
 
 void MainWindow::SaveSchoolBillEvent()

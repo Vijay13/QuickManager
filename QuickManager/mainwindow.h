@@ -77,6 +77,8 @@ private slots:
 
     void SelectedCellChangedHeaderTable(const QItemSelection& selection);
 
+    void SchoolBillCenterFilterEvent();
+
     void SaveSchoolBillEvent();
 
     void DeleteSchoolBillEvent();

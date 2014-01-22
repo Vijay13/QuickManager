@@ -13,18 +13,20 @@ class SchoolBillManager
 {
 public:
     SchoolBillManager(QProgressBar* progressBar, QListView* list,QTableView* headerTable, QTableView* table,
-                      QLabel* center, QLabel* school);
+                      QLabel* taluka, QLabel* school);
 
     static SchoolBillManager* Instance();
 
     void navigatedToSBM(QString taluka, QString rout, int std, int period,
-                     QString month, QString year);
+                        QString month, QString year);
+
+    void setUpList();
 
     void setUpHeaderTable();
 
     void setUpTable();
 
-    void resetTable();
+    void resetTables();
 
     void setUpZeroinTable();
 
@@ -32,9 +34,7 @@ public:
 
     bool checkData();
 
-    int dataInTable(QTableView* tempTable, int r, int c);
-
-    QString dataForTable(int data);
+    void SchoolCenterNameChanged(QString centerNo);
 
     void SelectedCellChangedBillTable();
 
@@ -47,6 +47,10 @@ public:
     void setDates();
 
     QString getCurrentTableName();
+
+    int dataInTable(QTableView* tempTable, int r, int c);
+
+    QString dataForTable(int data);
 
 private:
     static SchoolBillManager* instance;
@@ -62,10 +66,11 @@ private:
     QSortFilterProxyModel* sortModelTable;
     QStandardItemModel* viewModelList;
     QSortFilterProxyModel* sortModelList;
-    QLabel* centerNo;
+    QLabel* taluka;
     QLabel* schoolName;
     int previousRow,previousColumn;
-    QString currentSchool, currentSTD, currentPeriod, currentMonth, currentYear;
+    QString currentSchool, currentSTD, currentTaluka, currentRout,
+    currentPeriod, currentMonth, currentYear;
     bool isTableReset;
 };
 

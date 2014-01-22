@@ -4,9 +4,9 @@
 
 SchoolBillManager::SchoolBillManager(QProgressBar* progressBar,QListView* list,
                                      QTableView* headerTable, QTableView* table,
-                                     QLabel* center, QLabel* school):
+                                     QLabel* taluka, QLabel* school):
     progressBar(progressBar), headerTable(headerTable),table(table),
-    list(list), centerNo(center), schoolName(school), isTableReset(true)
+    list(list), taluka(taluka), schoolName(school), isTableReset(true)
 {
     schools = AllSchool::Instance();
     viewModelList = new QStandardItemModel();
@@ -29,10 +29,32 @@ SchoolBillManager* SchoolBillManager::Instance()
     return instance;
 }
 
+void SchoolBillManager::setUpList()
+{
+    viewModelList->clear();
+    for(int i=0 ; i< schools->getSchoolList()->length() ; i++)
+    {
+        if(!currentTaluka.contains("All Taluka",Qt::CaseInsensitive))
+        {
+            if(currentTaluka != schools->getSchoolList()->at(i)->Taluka)
+                continue;
+        }
+
+        if(!currentRout.contains("All Rout",Qt::CaseInsensitive))
+        {
+            if(currentRout != schools->getSchoolList()->at(i)->RoutNo)
+                continue;
+        }
+
+        viewModelList->appendRow(new QStandardItem(schools->getSchoolList()->at(i)->SchoolName));
+    }
+}
+
 void SchoolBillManager::setUpHeaderTable()
 {
     viewModelHeaderTable = new QStandardItemModel(1,11);
     headerTable->setModel(viewModelHeaderTable);
+    viewModelHeaderTable->setVerticalHeaderLabels(QStringList() << "All Schools");
     viewModelHeaderTable->setHorizontalHeaderLabels( QStringList()
                                                      << "SC-B" << "SC-G"
                                                      << "ST-B" << "SC-G"
@@ -58,7 +80,7 @@ void SchoolBillManager::setUpTable()
     setUpZeroinTable();
 }
 
-void SchoolBillManager::resetTable()
+void SchoolBillManager::resetTables()
 {
     for(int column=0; column<8; column++)
     {
@@ -120,27 +142,11 @@ void SchoolBillManager::navigatedToSBM(QString taluka, QString rout, int std, in
     currentMonth = month;
     currentYear = year;
     currentSchool = "";
+    currentTaluka = taluka;
+    currentRout = rout;
 
     setDates();
-
-    viewModelList->clear();
-    for(int i=0 ; i< schools->getSchoolList()->length() ; i++)
-    {
-        if(!taluka.contains("All Taluka",Qt::CaseInsensitive))
-        {
-            if(taluka != schools->getSchoolList()->at(i)->Taluka)
-                continue;
-        }
-
-        if(!rout.contains("All Rout",Qt::CaseInsensitive))
-        {
-            if(rout != schools->getSchoolList()->at(i)->RoutNo)
-                continue;
-        }
-
-        viewModelList->appendRow(new QStandardItem(schools->getSchoolList()->at(i)->SchoolName));
-    }
-
+    setUpList();
 }
 
 void SchoolBillManager::schoolChanged()
@@ -150,7 +156,7 @@ void SchoolBillManager::schoolChanged()
     if(tempSchool != 0)
     {
         currentSchool = tempSchool->SchoolName;
-        centerNo->setText(tempSchool->CenterNo);
+        taluka->setText(tempSchool->Taluka);
         schoolName->setText(currentSchool);
         if(query->exec(db->getSchoolBillTable(getCurrentTableName())))
         {
@@ -177,7 +183,7 @@ void SchoolBillManager::schoolChanged()
         else
         {
             if(!isTableReset)
-                resetTable();
+                resetTables();
         }
         query->finish();
     }
@@ -210,14 +216,23 @@ bool SchoolBillManager::checkData()
     return true;
 }
 
-int SchoolBillManager::dataInTable(QTableView *tempTable, int r, int c)
+void SchoolBillManager::SchoolCenterNameChanged(QString centerNo)
 {
-    bool ok;
-    tempTable->model()->data(tempTable->model()->index(r,c)).toInt(&ok);
-    if(ok)
-        return tempTable->model()->data(tempTable->model()->index(r,c)).toInt();
-    else
-        return 0;
+    if(centerNo.isEmpty())
+    {
+        setUpList();
+        return;
+    }
+
+    viewModelList->clear();
+
+    for(int i=0 ; i< schools->getSchoolList()->length() ; i++)
+    {
+        if(!schools->getSchoolList()->at(i)->CenterNo.contains(centerNo,Qt::CaseInsensitive))
+            continue;
+
+        viewModelList->appendRow(new QStandardItem(schools->getSchoolList()->at(i)->SchoolName));
+    }
 }
 
 void SchoolBillManager::SelectedCellChangedBillTable()
@@ -286,17 +301,17 @@ void SchoolBillManager::SaveSchoolEvent()
         progressBar->setVisible(true);
 
         if(query->exec(db->getInsertSchoolBill(getCurrentTableName(), 0,
-                                                           dataInTable(headerTable,0,0),
-                                                           dataInTable(headerTable,0,1),
-                                                           dataInTable(headerTable,0,2),
-                                                           dataInTable(headerTable,0,3),
-                                                           dataInTable(headerTable,0,4),
-                                                           dataInTable(headerTable,0,5),
-                                                           dataInTable(headerTable,0,6),
-                                                           dataInTable(headerTable,0,7),
-                                                           dataInTable(headerTable,0,8),
-                                                           dataInTable(headerTable,0,9),
-                                                           dataInTable(headerTable,0,10))))
+                                               dataInTable(headerTable,0,0),
+                                               dataInTable(headerTable,0,1),
+                                               dataInTable(headerTable,0,2),
+                                               dataInTable(headerTable,0,3),
+                                               dataInTable(headerTable,0,4),
+                                               dataInTable(headerTable,0,5),
+                                               dataInTable(headerTable,0,6),
+                                               dataInTable(headerTable,0,7),
+                                               dataInTable(headerTable,0,8),
+                                               dataInTable(headerTable,0,9),
+                                               dataInTable(headerTable,0,10))))
         {
 
         }else
@@ -341,12 +356,12 @@ void SchoolBillManager::DeleteSchoolEvent()
 
     if(query->exec(db->getDeleteSchoolBill(getCurrentTableName())))
     {
-        resetTable();
+        resetTables();
     }
     else
         qDebug() << db->getDeleteSchoolBill(getCurrentTableName())
                  << "Could not delete School Bill" <<  query->lastError().text()
-                    << query->isActive();
+                 << query->isActive();
 }
 
 QString SchoolBillManager::getCurrentTableName()
@@ -360,4 +375,14 @@ QString SchoolBillManager::dataForTable(int data)
     if(data != 0)
         return QString::number(data);
     return "";
+}
+
+int SchoolBillManager::dataInTable(QTableView *tempTable, int r, int c)
+{
+    bool ok;
+    tempTable->model()->data(tempTable->model()->index(r,c)).toInt(&ok);
+    if(ok)
+        return tempTable->model()->data(tempTable->model()->index(r,c)).toInt();
+    else
+        return 0;
 }
