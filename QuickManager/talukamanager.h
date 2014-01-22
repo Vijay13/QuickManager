@@ -24,6 +24,8 @@ public:
 
     void setUpTable();
 
+    void setUpControl(int TMAdd, int TMUpdate, int TMDelete);
+
 private slots:
     void addTaluka();
 

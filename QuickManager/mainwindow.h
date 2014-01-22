@@ -25,18 +25,23 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-private slots:
     void initialize();
 
     void initializeComponent();
 
     void updateBillOptions();
 
-    void Login();
+    void setUpControl(int TMAdd,int TMUpdate,int TMDelete,
+                      int SMAdd,int SMUpdate,int SMDelete,
+                      int SBMAdd, int SBMUpdate,int SBMDelete);
 
-    void Logout();
+private slots:
 
-    void ChooseDatabase();
+    void LoginEvent();
+
+    void LogoutEvent();
+
+    void ChooseDatabaseEvent();
 
     void AddUserEvent();
 
@@ -48,11 +53,11 @@ private slots:
 
     void SchoolBillManagerEvent();
 
-    void SearchSchool();
+    void SearchSchoolEvent();
 
-    void setFilter();
+    void setFilterEvent();
 
-    void ResetSchool();
+    void ResetSchoolEvent();
 
     void AddSchoolEvent();
 
@@ -88,6 +93,7 @@ private:
     bool isCorrect;
     QString queryStatement;
     QString dirToDatabase;
+    int TMAdd, TMUpdate, TMDelete;
 };
 
 #endif // MAINWINDOW_H

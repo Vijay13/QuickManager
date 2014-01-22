@@ -11,7 +11,8 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    isCorrect(false), queryStatement(""), dirToDatabase("")
+    isCorrect(false), queryStatement(""), dirToDatabase(""),
+    TMAdd(1),TMUpdate(1),TMDelete(1)
 {
     ui->setupUi(this);
 
@@ -50,9 +51,9 @@ void MainWindow::initializeComponent(){
 
     this->updateBillOptions();
 
-    QObject::connect(ui->actionChooseDatabase,SIGNAL(triggered()),this,SLOT( ChooseDatabase()));
-    QObject::connect(ui->pushButtonLogin,SIGNAL(clicked()),this,SLOT( Login()));
-    QObject::connect(ui->actionLogout,SIGNAL(triggered()),this,SLOT( Logout()));
+    QObject::connect(ui->actionChooseDatabase,SIGNAL(triggered()),this,SLOT( ChooseDatabaseEvent()));
+    QObject::connect(ui->pushButtonLogin,SIGNAL(clicked()),this,SLOT( LoginEvent()));
+    QObject::connect(ui->actionLogout,SIGNAL(triggered()),this,SLOT( LogoutEvent()));
     QObject::connect(ui->actionAddUser,SIGNAL(triggered()),this,SLOT( AddUserEvent()));
     QObject::connect(ui->actionAddAdmin,SIGNAL(triggered()),this,SLOT( AddAdminEvent()));
 
@@ -67,10 +68,10 @@ void MainWindow::initializeComponent(){
     QObject::connect(ui->pushButtonPrintSchools,SIGNAL(clicked()),this,SLOT( PrintSchoolEvent()));
     QObject::connect(ui->pushButtonExportSchools,SIGNAL(clicked()),this,SLOT( ExportSchoolEvent()));
 
-    QObject::connect(ui->lineEditSearchBox,SIGNAL(textChanged(const QString &)), SLOT( SearchSchool()) );
-    QObject::connect(ui->comboBoxSelectTaluka,SIGNAL(activated(int)), SLOT( setFilter()) );
-    QObject::connect(ui->comboBoxSelectRout,SIGNAL(activated(int)), SLOT( setFilter()) );
-    QObject::connect(ui->pushButtonResetSchoolSearch,SIGNAL(clicked()), SLOT( ResetSchool()) );
+    QObject::connect(ui->lineEditSearchBox,SIGNAL(textChanged(const QString &)), SLOT( SearchSchoolEvent()) );
+    QObject::connect(ui->comboBoxSelectTaluka,SIGNAL(activated(int)), SLOT( setFilterEvent()) );
+    QObject::connect(ui->comboBoxSelectRout,SIGNAL(activated(int)), SLOT( setFilterEvent()) );
+    QObject::connect(ui->pushButtonResetSchoolSearch,SIGNAL(clicked()), SLOT( ResetSchoolEvent()) );
 
     QObject::connect(ui->pushButtonBMManager,SIGNAL(clicked()), SLOT( SchoolBillManagerEvent()) );
     QObject::connect(ui->pushButtonSaveSchoolBill,SIGNAL(clicked()),SLOT(SaveSchoolBillEvent()));
@@ -113,7 +114,41 @@ void MainWindow::updateBillOptions()
 
 }
 
-void MainWindow::ChooseDatabase()
+void MainWindow::setUpControl(int TMAdd,int TMUpdate,int TMDelete,
+                              int SMAdd,int SMUpdate,int SMDelete,
+                              int SBMAdd, int SBMUpdate,int SBMDelete)
+{
+    this->TMAdd = TMAdd;
+    this->TMUpdate = TMUpdate;
+    this->TMDelete = TMDelete;
+
+    if(SMAdd == 0)
+        ui->pushButtonAddSchool->setEnabled(false);
+    else
+        ui->pushButtonAddSchool->setEnabled(true);
+
+    if(SMUpdate == 0)
+        ui->pushButtonEditSchool->setEnabled(false);
+    else
+        ui->pushButtonEditSchool->setEnabled(true);
+
+    if(SMDelete == 0)
+        ui->pushButtonRemoveSchool->setEnabled(false);
+    else
+        ui->pushButtonRemoveSchool->setEnabled(true);
+
+    if(SBMUpdate == 0 || SBMAdd == 0)
+        ui->pushButtonSaveSchoolBill->setEnabled(false);
+    else
+        ui->pushButtonSaveSchoolBill->setEnabled(true);
+
+    if(SBMDelete == 0)
+        ui->pushButtonDeleteSchoolBill->setEnabled(false);
+    else
+        ui->pushButtonDeleteSchoolBill->setEnabled(true);
+}
+
+void MainWindow::ChooseDatabaseEvent()
 {
     dirToDatabase =  QFileDialog::getExistingDirectory(this, "Select Folder","/",QFileDialog::ShowDirsOnly
                                                        | QFileDialog::DontResolveSymlinks);
@@ -124,7 +159,7 @@ void MainWindow::ChooseDatabase()
     }
 }
 
-void MainWindow::Login()
+void MainWindow::LoginEvent()
 {
     int isAdmin = ui->comboBoxUserAdmin->currentIndex();
     isCorrect = false;
@@ -136,6 +171,15 @@ void MainWindow::Login()
             QString passWord = query->value(query->record().indexOf("Password")).toString();
             if(userName == ui->lineEditUsername->text() && passWord == ui->lineEditPassword->text()){
                 isCorrect = true;
+                setUpControl(query->value(query->record().indexOf("TMAdd")).toInt(),
+                             query->value(query->record().indexOf("TMUpdate")).toInt(),
+                             query->value(query->record().indexOf("TMDelete")).toInt(),
+                             query->value(query->record().indexOf("SMAdd")).toInt(),
+                             query->value(query->record().indexOf("SMUpdate")).toInt(),
+                             query->value(query->record().indexOf("SMDelete")).toInt(),
+                             query->value(query->record().indexOf("SBMAdd")).toInt(),
+                             query->value(query->record().indexOf("SBMUpdate")).toInt(),
+                             query->value(query->record().indexOf("SBMDelete")).toInt());
                 break;
             }
         }
@@ -144,6 +188,7 @@ void MainWindow::Login()
     if(isCorrect){
         ui->AllStackWidget->setCurrentIndex(1);
         if(isAdmin){
+            ui->actionChooseDatabase->setEnabled(false);
             ui->actionAddUser->setEnabled(true);
             ui->actionAddAdmin->setEnabled(true);
         }
@@ -152,7 +197,7 @@ void MainWindow::Login()
     }
 }
 
-void MainWindow::Logout()
+void MainWindow::LogoutEvent()
 {
     ui->AllStackWidget->setCurrentIndex(0);
     ui->lineEditUsername->setText("");
@@ -164,14 +209,14 @@ void MainWindow::Logout()
 
 void MainWindow::AddUserEvent()
 {
-    AddUser *addUser = new AddUser( this, true);
+    AddUser *addUser = new AddUser( this, 0);
     addUser->setWindowTitle("Add User");
     addUser->open();
 }
 
 void MainWindow::AddAdminEvent()
 {
-    AddUser *addUser = new AddUser( this, false);
+    AddUser *addUser = new AddUser( this, 1);
     addUser->setWindowTitle("Add Admin");
     addUser->open();
 }
@@ -180,6 +225,7 @@ void MainWindow::TalukaManagerEvent()
 {
     TalukaManager *tm = new TalukaManager();
     tm->setWindowTitle("Taluka Manager");
+    tm->setUpControl(this->TMAdd, this->TMUpdate, this->TMDelete);
     tm->open();
 }
 
@@ -187,19 +233,19 @@ void MainWindow::SchoolManagerEvent()
 {
     ui->AllStackWidget->setCurrentIndex(2);
     ui->groupBoxControl->setVisible(true);
-    ResetSchool();
+    ResetSchoolEvent();
 }
 
-void MainWindow::SearchSchool(){
+void MainWindow::SearchSchoolEvent(){
     sm->search(ui->lineEditSearchBox->text());
 }
 
-void MainWindow::setFilter(){
+void MainWindow::setFilterEvent(){
     sm->setFilter(ui->comboBoxSelectTaluka->currentText(),
                   ui->comboBoxSelectRout->currentText());
 }
 
-void MainWindow::ResetSchool(){
+void MainWindow::ResetSchoolEvent(){
     ui->comboBoxSelectTaluka->clear();
     ui->comboBoxSelectTaluka->addItem("All Taluka");
     for(int i=0; i<talukas->getTalukaList()->length(); i++){

@@ -60,6 +60,24 @@ void TalukaManager::setUpTable(){
     fm->setTable(table);
 }
 
+void TalukaManager::setUpControl(int TMAdd, int TMUpdate, int TMDelete)
+{
+    if(TMAdd == 0)
+        ui->pushButtonAddTaluka->setEnabled(false);
+    else
+        ui->pushButtonAddTaluka->setEnabled(true);
+
+    if(TMUpdate == 0)
+        ui->pushButtonEditTaluka->setEnabled(false);
+    else
+        ui->pushButtonEditTaluka->setEnabled(true);
+
+    if(TMDelete == 0)
+        ui->pushButtonRemoveTaluka->setEnabled(false);
+    else
+        ui->pushButtonRemoveTaluka->setEnabled(true);
+}
+
 void TalukaManager::addTaluka(){
     TalukaDialog *t = new TalukaDialog();
     t->setWindowTitle("Add Taluka Information");

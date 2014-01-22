@@ -70,12 +70,28 @@ MainDatabase* MainDatabase::Instance(){
 void MainDatabase::Initialize(){
     QSqlQuery query;
 
-    QString createQurey = "CREATE TABLE IF NOT EXISTS USERS(UID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, UserName NOT NULL UNIQUE, Password TEXT NOT NULL, isAdmin BOOL NOT NULL DEFAULT 0);";
+    QString createQurey = "CREATE TABLE IF NOT EXISTS USERS";
+    createQurey += "( UID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,";
+    createQurey += "UserName NOT NULL UNIQUE,";
+    createQurey += "Password TEXT NOT NULL, ";
+    createQurey += "isAdmin BOOL NOT NULL DEFAULT 0, ";
+    createQurey += "TMAdd BOOL NOT NULL DEFAULT 1, ";
+    createQurey += "TMUpdate BOOL NOT NULL DEFAULT 1, ";
+    createQurey += "TMDelete BOOL NOT NULL DEFAULT 1, ";
+    createQurey += "SMAdd BOOL NOT NULL DEFAULT 1, ";
+    createQurey += "SMUpdate BOOL NOT NULL DEFAULT 1, ";
+    createQurey += "SMDelete BOOL NOT NULL DEFAULT 1, ";
+    createQurey += "SBMAdd BOOL NOT NULL DEFAULT 1, ";
+    createQurey += "SBMUpdate BOOL NOT NULL DEFAULT 1, ";
+    createQurey += "SBMDelete BOOL NOT NULL DEFAULT 1);";
 
     Q_ASSERT(query.exec(createQurey));
 
-    if(query.exec(getInsertUserQuery("Admin","Admin",true))){
-    }else{
+    if(query.exec(getInsertUserQuery("Admin","Admin",1,1,1,1,1,1,1,1,1,1)))
+    {
+    }
+    else
+    {
         qDebug("Could not insert Admin");
     }
 
@@ -144,12 +160,23 @@ void MainDatabase::writeNewDBpath(QString newPath)
     file.close();
 }
 
-QString MainDatabase::getInsertUserQuery(QString user, QString pass, bool isAdmin){
-    int admin=0;
-    if(isAdmin){
-        admin = 1;
-    }
-    return "INSERT OR IGNORE INTO USERS( UserName, Password, isAdmin) VALUES( '" + user + "', '" + pass +"', " + QString::number(admin) + ");";
+QString MainDatabase::getInsertUserQuery(QString user, QString pass, int isAdmin,
+                                         int TMAdd, int TMUpdate, int TMDelete,
+                                         int SMAdd, int SMUpdate, int SMDelete,
+                                         int SBMAdd, int SBMUpdate, int SBMDelete){
+    return "INSERT OR IGNORE INTO USERS( UserName, Password, isAdmin , TMAdd, TMUpdate, TMDelete, SMAdd, SMUpdate, SMDelete, SBMAdd, SBMUpdate, SBMDelete) VALUES( "
+            + getText(user) + ", "
+            + getText(pass) +", "
+            + QString::number(isAdmin) + ","
+            + QString::number(TMAdd) + ","
+            + QString::number(TMUpdate) + ","
+            + QString::number(TMDelete) + ","
+            + QString::number(SMAdd) + ","
+            + QString::number(SMUpdate) + ","
+            + QString::number(SMDelete) + ","
+            + QString::number(SBMAdd) + ","
+            + QString::number(SBMUpdate) + ","
+            + QString::number(SBMDelete) + ");";
 }
 
 QString MainDatabase::getInsertTalukaQuery(QString taluka, QString district){

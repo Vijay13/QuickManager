@@ -28,7 +28,10 @@ public:
     //returns pointer to main database file
     QSqlDatabase* getDatabase(){return &mydb;}
 
-    QString getInsertUserQuery(QString user, QString pass, bool isAdmin);
+    QString getInsertUserQuery(QString user, QString pass, int isAdmin,
+                               int TMAdd, int TMUpdate, int TMDelete,
+                               int SMAdd, int SMUpdate, int SMDelete,
+                               int SBMAdd, int SBMUpdate, int SBMDelete);
 
     QString getInsertTalukaQuery(QString taluka, QString district);
 

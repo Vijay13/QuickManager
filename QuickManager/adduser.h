@@ -15,10 +15,12 @@ class AddUser : public QDialog
     Q_OBJECT
 
 public:
-    explicit AddUser(QWidget *parent = 0, bool isuser = true);
+    explicit AddUser(QWidget *parent = 0, int isAdmin = 0);
     ~AddUser();
 
     bool Check();
+
+    void setChecksValue();
 
     void clearFields();
 
@@ -33,7 +35,8 @@ private:
     Ui::AddUser *ui;
     MainDatabase *db;
     QSqlQuery *query;
-    bool isUser;
+    bool isAdmin;
+    int TMAdd,TMUpdate,TMDelete,SMAdd,SMUpdate,SMDelete,SBMAdd,SBMUpdate,SBMDelete;
 };
 
 #endif // ADDUSER_H
