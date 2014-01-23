@@ -2,10 +2,14 @@
 #include <QHeaderView>
 #include <QMessageBox>
 
-SchoolBillManager::SchoolBillManager(QProgressBar* progressBar,QListView* list,
-                                     QTableView* headerTable, QTableView* tableAttendence,
-                                     QLabel* taluka, QLabel* school):
-    progressBar(progressBar), headerTable(headerTable),tableAttendence(tableAttendence),
+SchoolBillManager::SchoolBillManager(QProgressBar *progressBar, QListView *list,
+                                     QTableView *headerTable,
+                                     QTableView *tableAttendence, QTableView *tableAttendenceTotal,
+                                     QTableView *tableBeneficiaries, QTableView *tableBeneficiariesTotal,
+                                     QLabel *taluka, QLabel *school):
+    progressBar(progressBar), headerTable(headerTable),
+    tableAttendence(tableAttendence), tableAttendenceTotal(tableAttendenceTotal),
+    tableBeneficiaries(tableBeneficiaries),tableBeneficiariesTotal(tableBeneficiariesTotal),
     list(list), taluka(taluka), schoolName(school), isTableReset(true)
 {
     schools = AllSchool::Instance();
@@ -18,7 +22,7 @@ SchoolBillManager::SchoolBillManager(QProgressBar* progressBar,QListView* list,
     query = new QSqlQuery(*db->getDatabase());
 
     setUpHeaderTable();
-    setUpTable();
+    setUpTables();
     //this->table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
@@ -63,19 +67,54 @@ void SchoolBillManager::setUpHeaderTable()
                                                      << "Total");
 }
 
-void SchoolBillManager::setUpTable()
+void SchoolBillManager::setUpTables()
 {
     viewModelTableAttendence = new QStandardItemModel(15,12);
+    viewModelTableAttendenceTotal = new QStandardItemModel(15,6);
+    viewModelTableBeneficiaries = new QStandardItemModel(15,12);
+    viewModelTableBeneficiariesTotal = new QStandardItemModel(15,6);
+
     sortModelTableAttendence = new QSortFilterProxyModel();
+    sortModelTableAttendenceTotal = new QSortFilterProxyModel();
+    sortModelTableBeneficiaries = new QSortFilterProxyModel();
+    sortModelTableBeneficiariesTotal = new QSortFilterProxyModel();
+
     sortModelTableAttendence->setSourceModel(viewModelTableAttendence);
+    sortModelTableAttendenceTotal->setSourceModel(viewModelTableAttendenceTotal);
+    sortModelTableBeneficiaries->setSourceModel(viewModelTableBeneficiaries);
+    sortModelTableBeneficiariesTotal->setSourceModel(viewModelTableBeneficiariesTotal);
+
     tableAttendence->setModel(sortModelTableAttendence);
+    tableAttendenceTotal->setModel(sortModelTableAttendenceTotal);
+    tableBeneficiaries->setModel(sortModelTableBeneficiaries);
+    tableBeneficiariesTotal->setModel(sortModelTableBeneficiariesTotal);
+
     viewModelTableAttendence->setHorizontalHeaderLabels( QStringList() << "Date"
-                                               << "SC-B" << "SC-G"
-                                               << "ST-B" << "SC-G"
-                                               << "OBC-B" << "OBC-G"
-                                               << "Gen-B" << "Gen-G"
-                                               << "Total-B" << "Total-G"
-                                               << "Total");
+                                                         << "SC-B" << "SC-G"
+                                                         << "ST-B" << "SC-G"
+                                                         << "OBC-B" << "OBC-G"
+                                                         << "Gen-B" << "Gen-G"
+                                                         << "Total-B" << "Total-G"
+                                                         << "Total");
+
+    viewModelTableAttendenceTotal->setHorizontalHeaderLabels(QStringList() << "T-B"
+                                                             << "T-G" << "Total"
+                                                             << "D-B" << "D-G"
+                                                             << "Diff");
+
+    viewModelTableBeneficiaries->setHorizontalHeaderLabels( QStringList() << "Date"
+                                                            << "SC-B" << "SC-G"
+                                                            << "ST-B" << "SC-G"
+                                                            << "OBC-B" << "OBC-G"
+                                                            << "Gen-B" << "Gen-G"
+                                                            << "Total-B" << "Total-G"
+                                                            << "Total");
+
+
+    viewModelTableBeneficiariesTotal->setHorizontalHeaderLabels(QStringList() << "T-B"
+                                                                << "T-G" << "Total"
+                                                                << "D-B" << "D-G"
+                                                                << "Diff");
     setUpZeroinTable();
 }
 
@@ -102,8 +141,12 @@ void SchoolBillManager::setUpZeroinTable()
     previousColumn = -1;
     for(int row=0; row<15; row++)
     {
-        for(int column=9; column<12; column++)
-            viewModelTableAttendence->setItem(row,column,new QStandardItem("0"));
+        for(int column=0; column<6; column++)
+        {
+            viewModelTableAttendenceTotal->setItem(row,column,new QStandardItem("0"));
+            viewModelTableBeneficiariesTotal->setItem(row,column,new QStandardItem("0"));
+        }
+
     }
 
     viewModelHeaderTable->setItem(0,8,new QStandardItem("0"));
@@ -121,7 +164,9 @@ void SchoolBillManager::setDates()
 
     for(int i=0; i < 15 ; i++)
     {
-        viewModelTableAttendence->setItem(i,0,new QStandardItem(QString::number(++start)));
+        ++start;
+        viewModelTableAttendence->setItem(i,0,new QStandardItem(QString::number(start)));
+        viewModelTableBeneficiaries->setItem(i,0,new QStandardItem(QString::number(start)));
     }
 }
 
@@ -234,30 +279,53 @@ void SchoolBillManager::SchoolCenterNameChanged(QString centerNo)
     }
 }
 
-void SchoolBillManager::SelectedCellChangedBillTable()
+void SchoolBillManager::SelectedCellChangedMainBillTable(QTableView* currentTable)
 {
-    int sum=0,row = tableAttendence->currentIndex().row();
+    if(currentTable == tableAttendence)
+    {
+        currentTableTotal = tableAttendenceTotal;
+        currentView = viewModelTableAttendenceTotal;
+    }
+    else if(currentTable == tableBeneficiaries)
+    {
+        currentTableTotal = tableBeneficiariesTotal;
+        currentView = viewModelTableBeneficiariesTotal;
+    }
+    else
+        return;
+
+    int sum=0,row = currentTable->currentIndex().row();
 
     if(previousRow != row && previousRow != -1)
     {
         // counting boys
         for(int i=1;i<9;i+=2)
         {
-            sum += dataInTable(tableAttendence,previousRow,i);
+            sum += dataInTable(currentTable,previousRow,i);
         }
-        viewModelTableAttendence->setItem(previousRow,9,new QStandardItem(QString::number(sum)));
+        currentView->setItem(previousRow,0,new QStandardItem(QString::number(sum)));
 
         //counting girls
         sum = 0;
         for(int i=2;i<9;i+=2)
         {
-            sum += dataInTable(tableAttendence,previousRow,i);
+            sum += dataInTable(currentTable,previousRow,i);
         }
-        viewModelTableAttendence->setItem(previousRow,10,new QStandardItem(QString::number(sum)));
+        currentView->setItem(previousRow,1,new QStandardItem(QString::number(sum)));
 
         //counting total strength
-        sum = dataInTable(tableAttendence,previousRow,9) + dataInTable(tableAttendence,previousRow,10);
-        viewModelTableAttendence->setItem(previousRow,11,new QStandardItem(QString::number(sum)));
+        sum = dataInTable(currentTableTotal,previousRow,0) + dataInTable(currentTableTotal,previousRow,1);
+        currentView->setItem(previousRow,2,new QStandardItem(QString::number(sum)));
+
+        //seting up diff columns
+        sum = dataInTable(currentTableTotal,previousRow,0) - dataInTable(currentTable,previousRow,9);
+        currentView->setItem(previousRow,3,new QStandardItem(QString::number(sum)));
+
+        sum = dataInTable(currentTableTotal,previousRow,1) - dataInTable(currentTable,previousRow,10);
+        currentView->setItem(previousRow,4,new QStandardItem(QString::number(sum)));
+
+        sum = dataInTable(currentTableTotal,previousRow,2) - dataInTable(currentTable,previousRow,11);
+        currentView->setItem(previousRow,5,new QStandardItem(QString::number(sum)));
     }
     previousRow = row;
 }

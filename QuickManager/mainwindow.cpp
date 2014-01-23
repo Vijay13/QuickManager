@@ -37,6 +37,9 @@ void MainWindow::initialize()
     sm = new SchoolManager(ui->tableViewSchools);
     sbm = new SchoolBillManager(ui->progressBar,ui->listViewSchools ,ui->tableViewTotalBill ,
                                 ui->tableViewMainBillAttendence,
+                                ui->tableViewCheckTableAttendence,
+                                ui->tableViewMainBillBeneficiaries,
+                                ui->tableViewCheckTableBeneficiaries,
                                 ui->labelBMTalukaBody, ui->labelBMSchoolBody);
 }
 
@@ -78,15 +81,19 @@ void MainWindow::initializeComponent(){
     QObject::connect(ui->lineEditBMCenter,SIGNAL(textChanged(QString)),this,SLOT(SchoolBillCenterFilterEvent()));
     QObject::connect(ui->pushButtonSaveSchoolBill,SIGNAL(clicked()),SLOT(SaveSchoolBillEvent()));
     QObject::connect(ui->pushButtonDeleteSchoolBill,SIGNAL(clicked()),SLOT(DeleteSchoolBillEvent()));
+
     QObject::connect(ui->listViewSchools->selectionModel(),
                      SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
                      this, SLOT(SelectedSchoolBillChanged(QItemSelection)));
-    QObject::connect(ui->tableViewMainBillAttendence->selectionModel(),
-                     SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-                     this, SLOT(SelectedCellChangedBillTable(QItemSelection)));
     QObject::connect(ui->tableViewTotalBill->selectionModel(),
                      SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
                      this, SLOT(SelectedCellChangedHeaderTable(QItemSelection)));
+    QObject::connect(ui->tableViewMainBillAttendence->selectionModel(),
+                     SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+                     this, SLOT(SelectedCellChangedAttendenceTable(QItemSelection)));
+    QObject::connect(ui->tableViewMainBillBeneficiaries->selectionModel(),
+                     SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+                     this, SLOT(SelectedCellChangedBeneficiariesTable(QItemSelection)));
 }
 
 void MainWindow::updateBillOptions()
@@ -335,9 +342,14 @@ void MainWindow::SelectedSchoolBillChanged(const QItemSelection& selection)
     sbm->schoolChanged();
 }
 
-void MainWindow::SelectedCellChangedBillTable(const QItemSelection& selection)
+void MainWindow::SelectedCellChangedAttendenceTable(const QItemSelection& selection)
 {
-    sbm->SelectedCellChangedBillTable();
+    sbm->SelectedCellChangedMainBillTable(ui->tableViewMainBillAttendence);
+}
+
+void MainWindow::SelectedCellChangedBeneficiariesTable(const QItemSelection& selection)
+{
+    sbm->SelectedCellChangedMainBillTable(ui->tableViewMainBillBeneficiaries);
 }
 
 void MainWindow::SelectedCellChangedHeaderTable(const QItemSelection& selection)

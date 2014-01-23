@@ -73,7 +73,9 @@ private slots:
 
     void SelectedSchoolBillChanged(const QItemSelection& selection);
 
-    void SelectedCellChangedBillTable(const QItemSelection& selection);
+    void SelectedCellChangedAttendenceTable(const QItemSelection& selection);
+
+    void SelectedCellChangedBeneficiariesTable(const QItemSelection& selection);
 
     void SelectedCellChangedHeaderTable(const QItemSelection& selection);
 

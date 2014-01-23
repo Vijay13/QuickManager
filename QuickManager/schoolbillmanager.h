@@ -13,7 +13,9 @@ class SchoolBillManager
 {
 public:
     SchoolBillManager(QProgressBar* progressBar, QListView* list,
-                      QTableView* headerTable, QTableView* tableAttendence,
+                      QTableView* headerTable,
+                      QTableView* tableAttendence, QTableView* tableAttendenceTotal,
+                      QTableView* tableBeneficiaries, QTableView* tableBeneficiariesTotal,
                       QLabel* taluka, QLabel* school);
 
     static SchoolBillManager* Instance();
@@ -25,7 +27,7 @@ public:
 
     void setUpHeaderTable();
 
-    void setUpTable();
+    void setUpTables();
 
     void resetTables();
 
@@ -37,7 +39,7 @@ public:
 
     void SchoolCenterNameChanged(QString centerNo);
 
-    void SelectedCellChangedBillTable();
+    void SelectedCellChangedMainBillTable(QTableView* currentTable);
 
     void SelectedCellChangedHeaderTable();
 
@@ -58,18 +60,34 @@ private:
     QSqlQuery *query;
     MainDatabase *db;
     QProgressBar* progressBar;
+    AllSchool* schools;
+
     QTableView* headerTable;
     QTableView* tableAttendence;
+    QTableView* tableAttendenceTotal;
+    QTableView* tableBeneficiaries;
+    QTableView* tableBeneficiariesTotal;
     QListView* list;
-    AllSchool* schools;
-    QStandardItemModel* viewModelTableAttendence;
-    QStandardItemModel* viewModelHeaderTable;
-    QSortFilterProxyModel* sortModelTableAttendence;
+
     QStandardItemModel* viewModelList;
+    QStandardItemModel* viewModelHeaderTable;
+    QStandardItemModel* viewModelTableAttendence;
+    QStandardItemModel* viewModelTableAttendenceTotal;
+    QStandardItemModel* viewModelTableBeneficiaries;
+    QStandardItemModel* viewModelTableBeneficiariesTotal;
+
     QSortFilterProxyModel* sortModelList;
+    QSortFilterProxyModel* sortModelTableAttendence;
+    QSortFilterProxyModel* sortModelTableAttendenceTotal;
+    QSortFilterProxyModel* sortModelTableBeneficiaries;
+    QSortFilterProxyModel* sortModelTableBeneficiariesTotal;
+
     QLabel* taluka;
     QLabel* schoolName;
+
     int previousRow,previousColumn;
+    QTableView* currentTableTotal;
+    QStandardItemModel* currentView;
     QString currentSchool, currentSTD, currentTaluka, currentRout,
     currentPeriod, currentMonth, currentYear;
     bool isTableReset;
