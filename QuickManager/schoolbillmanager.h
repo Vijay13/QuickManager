@@ -52,7 +52,7 @@ public:
 
     void setDates();
 
-    QString getCurrentTableName();
+    QString getCurrentAttendenceTableName();
 
     int dataInTable(QTableView* tempTable, int r, int c);
 
@@ -92,7 +92,7 @@ private:
     int previousRow,previousColumn;
     QTableView* currentTableTotal;
     QStandardItemModel* currentView;
-    QString currentSchool, currentSTD, currentTaluka, currentRout,
+    QString selectedTaluka, currentSchool, currentSTD, currentTaluka, currentCenter, currentRout,
     currentPeriod, currentMonth, currentYear;
     bool isTableReset;
 };

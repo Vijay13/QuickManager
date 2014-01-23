@@ -793,9 +793,35 @@
             </widget>
            </item>
            <item>
+            <spacer name="horizontalSpacer_14">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
             <widget class="QLabel" name="labelTalukaTitle">
              <property name="text">
               <string>Taluka:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelBMTalukaBody">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Taluka</string>
              </property>
             </widget>
            </item>
@@ -811,19 +837,6 @@
               </size>
              </property>
             </spacer>
-           </item>
-           <item>
-            <widget class="QLabel" name="labelBMTalukaBody">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Taluka</string>
-             </property>
-            </widget>
            </item>
            <item>
             <widget class="QLabel" name="labelPeriodTitle">
@@ -1098,7 +1111,7 @@
              </property>
              <property name="font">
               <font>
-               <pointsize>12</pointsize>
+               <pointsize>8</pointsize>
               </font>
              </property>
              <property name="editTriggers">
@@ -1214,17 +1227,26 @@
                        <attribute name="horizontalHeaderVisible">
                         <bool>true</bool>
                        </attribute>
+                       <attribute name="horizontalHeaderCascadingSectionResizes">
+                        <bool>true</bool>
+                       </attribute>
                        <attribute name="horizontalHeaderDefaultSectionSize">
                         <number>60</number>
+                       </attribute>
+                       <attribute name="horizontalHeaderMinimumSectionSize">
+                        <number>33</number>
                        </attribute>
                        <attribute name="verticalHeaderVisible">
                         <bool>false</bool>
                        </attribute>
                        <attribute name="verticalHeaderCascadingSectionResizes">
-                        <bool>false</bool>
+                        <bool>true</bool>
                        </attribute>
                        <attribute name="verticalHeaderDefaultSectionSize">
                         <number>30</number>
+                       </attribute>
+                       <attribute name="verticalHeaderMinimumSectionSize">
+                        <number>19</number>
                        </attribute>
                       </widget>
                      </item>

@@ -124,7 +124,7 @@ QList<QString>* MainDatabase::loadDBpath()
     QList<QString>* pathList = new QList<QString>();
 
     QFile file(appDataPath + appDataFileName);
-    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    file.open(QIODevice::WriteOnly |QIODevice::ReadOnly | QIODevice::Text);
     QTextStream in(&file);
     QString line = in.readLine();
 
@@ -282,15 +282,21 @@ QString MainDatabase::getCreateSchoolBillTable(QString tableName)
             "SC_B INTEGER," + "SC_G INTEGER," + "ST_B INTEGER," + "ST_G INTEGER,"
             + "OBC_B INTEGER," + "OBC_G INTEGER," +
             "GEN_B INTEGER," + "GEN_G INTEGER," + "TOTAL_B INTEGER," + "TOTAL_G INTEGER,"
-            + "TOTAL INTEGER" + ")";
+            + "TOTAL INTEGER," + "AUTOTOTAL_B INTEGER,"
+            + "AUTOTOTAL_G INTEGER," + "AUTOTOTAL INTEGER,"
+            + "DIFFTOTAL_B INTEGER," + "DIFFTOTAL_G INTEGER,"
+            + "DIFFTOTAL INTEGER"
+            + ")";
 }
 
 QString MainDatabase::getInsertSchoolBill(QString table, int date, int sc_b, int sc_g,
                                           int st_b, int st_g, int obc_b,
                                           int obc_g, int gen_b, int gen_g,
-                                          int total_b, int total_g, int total)
+                                          int total_b, int total_g, int total,
+                                          int autoTotal_b, int autoTotal_g, int autoTotal,
+                                          int diffTotal_b, int diffTotal_g, int diffTotal)
 {
-    return "INSERT OR REPLACE INTO " + table + "( DATE, SC_B, SC_G, ST_B, ST_G, OBC_B, OBC_G, GEN_B, GEN_G, TOTAL_B, TOTAL_G, TOTAL ) " +
+    return "INSERT OR REPLACE INTO " + table + "( DATE, SC_B, SC_G, ST_B, ST_G, OBC_B, OBC_G, GEN_B, GEN_G, TOTAL_B, TOTAL_G, TOTAL, AUTOTOTAL_B, AUTOTOTAL_G, AUTOTOTAL, DIFFTOTAL_B, DIFFTOTAL_G, DIFFTOTAL ) " +
             "VALUES ( " +
             QString::number(date) + ", " +
             QString::number(sc_b) + ", " +
@@ -303,12 +309,18 @@ QString MainDatabase::getInsertSchoolBill(QString table, int date, int sc_b, int
             QString::number(gen_g) + ", " +
             QString::number(total_b) + ", " +
             QString::number(total_g) + ", " +
-            QString::number(total) + " ) ";
+            QString::number(total) + ", " +
+            QString::number(autoTotal_b) + ", " +
+            QString::number(autoTotal_g) + ", " +
+            QString::number(autoTotal) + ", " +
+            QString::number(diffTotal_b) + ", " +
+            QString::number(diffTotal_g) + ", " +
+            QString::number(diffTotal) + " ) ";
 }
 
 QString MainDatabase::getSchoolBillTable(QString tableName)
 {
-    return "SELECT * FROM " + tableName;
+    return "SELECT * FROM " + tableName ;
 }
 
 QString MainDatabase::getDeleteSchoolBill(QString tableName)
