@@ -2,12 +2,12 @@
 #include <QHeaderView>
 #include <QMessageBox>
 
-SchoolBillManager::SchoolBillManager(QProgressBar *progressBar, QListView *list,
+SchoolBillManager::SchoolBillManager(QPushButton* editButton,QProgressBar *progressBar, QListView *list,
                                      QTableView *headerTable,
                                      QTableView *tableAttendence, QTableView *tableAttendenceTotal,
                                      QTableView *tableBeneficiaries, QTableView *tableBeneficiariesTotal,
                                      QLabel *taluka, QLabel *school):
-    progressBar(progressBar), headerTable(headerTable),
+    editButton(editButton), progressBar(progressBar), headerTable(headerTable),
     tableAttendence(tableAttendence), tableAttendenceTotal(tableAttendenceTotal),
     tableBeneficiaries(tableBeneficiaries),tableBeneficiariesTotal(tableBeneficiariesTotal),
     list(list), taluka(taluka), schoolName(school), isTableReset(true)
@@ -120,18 +120,30 @@ void SchoolBillManager::setUpTables()
 
 void SchoolBillManager::resetTables()
 {
+    progressBar->setValue(0);
+    progressBar->setVisible(true);
+    int rowCount = 0;
+
     for(int column=0; column<8; column++)
     {
         viewModelHeaderTable->setItem(0,column,new QStandardItem(""));
     }
 
+    ++rowCount;
+    progressBar->setValue(rowCount*6.25);
+
     for(int row=0; row < 15; row++)
     {
-        for(int column=1; column<9 ; column++)
+        for(int column=1; column<12 ; column++)
         {
             viewModelTableAttendence->setItem(row,column,new QStandardItem(""));
+            viewModelTableBeneficiaries->setItem(row,column,new QStandardItem(""));
         }
+        ++rowCount;
+        progressBar->setValue(rowCount*6.25);
     }
+
+    progressBar->setVisible(false);
     setUpZeroinTable();
 }
 
@@ -204,30 +216,17 @@ void SchoolBillManager::schoolChanged()
         schoolName->setText(currentSchool);
         if(query->exec(db->getSchoolBillTable(getCurrentTableName())))
         {
-            progressBar->setValue(0);
-            progressBar->setVisible(true);
-            int row = 0;
-            query->next();
-            for(int column=0; column<11; column++)
-            {
-                viewModelHeaderTable->setItem(0,column,new QStandardItem(dataForTable(query->value(column).toInt())));
-            }
-
-            while (query->next()) {
-                for(int column=0; column<12; column++)
-                {
-                    viewModelTableAttendence->setItem(row,column,new QStandardItem(dataForTable(query->value(column).toInt())));
-                }
-                row++;
-                progressBar->setValue(row*7);
-            }
-            progressBar->setVisible(false);
-            isTableReset = false;
+            editButton->setEnabled(true);
         }
         else
         {
-            if(!isTableReset)
-                resetTables();
+            editButton->setEnabled(false);
+        }
+
+        if(!isTableReset)
+        {
+            resetTables();
+            isTableReset = true;
         }
         query->finish();
     }
@@ -348,6 +347,34 @@ void SchoolBillManager::SelectedCellChangedHeaderTable()
 
     sumUp = dataInTable(headerTable,0,8) + dataInTable(headerTable,0,9);
     viewModelHeaderTable->setItem(0,10,new QStandardItem(QString::number(sumUp)));
+}
+
+void SchoolBillManager::EditSchoolEvent()
+{
+    if(query->exec(db->getSchoolBillTable(getCurrentTableName())))
+    {
+        progressBar->setValue(0);
+        progressBar->setVisible(true);
+        int row = 0;
+        query->next();
+        for(int column=0; column<11; column++)
+        {
+            viewModelHeaderTable->setItem(0,column,new QStandardItem(dataForTable(query->value(column).toInt())));
+        }
+
+        while (query->next()) {
+            for(int column=0; column<12; column++)
+            {
+                viewModelTableAttendence->setItem(row,column,new QStandardItem(dataForTable(query->value(column).toInt())));
+            }
+            row++;
+            progressBar->setValue(row*7);
+        }
+        progressBar->setVisible(false);
+        isTableReset = false;
+    }
+
+    query->finish();
 }
 
 void SchoolBillManager::SaveSchoolEvent()

@@ -35,7 +35,7 @@ void MainWindow::initialize()
     talukas = new AllTaluka();
     schools = new AllSchool();
     sm = new SchoolManager(ui->tableViewSchools);
-    sbm = new SchoolBillManager(ui->progressBar,ui->listViewSchools ,ui->tableViewTotalBill ,
+    sbm = new SchoolBillManager(ui->pushButtonEditSchoolBill, ui->progressBar,ui->listViewSchools ,ui->tableViewTotalBill ,
                                 ui->tableViewMainBillAttendence,
                                 ui->tableViewCheckTableAttendence,
                                 ui->tableViewMainBillBeneficiaries,
@@ -81,6 +81,7 @@ void MainWindow::initializeComponent(){
     QObject::connect(ui->lineEditBMCenter,SIGNAL(textChanged(QString)),this,SLOT(SchoolBillCenterFilterEvent()));
     QObject::connect(ui->pushButtonSaveSchoolBill,SIGNAL(clicked()),SLOT(SaveSchoolBillEvent()));
     QObject::connect(ui->pushButtonDeleteSchoolBill,SIGNAL(clicked()),SLOT(DeleteSchoolBillEvent()));
+    QObject::connect(ui->pushButtonEditSchoolBill, SIGNAL(clicked()), SLOT(EditSchoolBillEvent()));
 
     QObject::connect(ui->listViewSchools->selectionModel(),
                      SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
@@ -360,6 +361,12 @@ void MainWindow::SelectedCellChangedHeaderTable(const QItemSelection& selection)
 void MainWindow::SchoolBillCenterFilterEvent()
 {
     sbm->SchoolCenterNameChanged(ui->lineEditBMCenter->text());
+}
+
+
+void MainWindow::EditSchoolBillEvent()
+{
+    sbm->EditSchoolEvent();
 }
 
 void MainWindow::SaveSchoolBillEvent()

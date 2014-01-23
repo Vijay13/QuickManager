@@ -3,6 +3,7 @@
 
 #include <QTableView>
 #include <QListView>
+#include <QPushButton>
 #include <QStandardItemModel>
 #include <QSortFilterProxyModel>
 #include <QLabel>
@@ -12,7 +13,7 @@
 class SchoolBillManager
 {
 public:
-    SchoolBillManager(QProgressBar* progressBar, QListView* list,
+    SchoolBillManager(QPushButton* editButton, QProgressBar* progressBar, QListView* list,
                       QTableView* headerTable,
                       QTableView* tableAttendence, QTableView* tableAttendenceTotal,
                       QTableView* tableBeneficiaries, QTableView* tableBeneficiariesTotal,
@@ -43,6 +44,8 @@ public:
 
     void SelectedCellChangedHeaderTable();
 
+    void EditSchoolEvent();
+
     void SaveSchoolEvent();
 
     void DeleteSchoolEvent();
@@ -58,6 +61,7 @@ public:
 private:
     static SchoolBillManager* instance;
     QSqlQuery *query;
+    QPushButton* editButton;
     MainDatabase *db;
     QProgressBar* progressBar;
     AllSchool* schools;

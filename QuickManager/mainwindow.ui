@@ -1138,8 +1138,8 @@
                 <widget class="QWidget" name="scrollAreaWidgetContents">
                  <property name="geometry">
                   <rect>
-                   <x>-189</x>
-                   <y>-440</y>
+                   <x>0</x>
+                   <y>0</y>
                    <width>973</width>
                    <height>1106</height>
                   </rect>
@@ -1454,9 +1454,9 @@
                </spacer>
               </item>
               <item>
-               <widget class="QPushButton" name="pushButtonDeleteSchoolBill">
+               <widget class="QPushButton" name="pushButtonEditSchoolBill">
                 <property name="text">
-                 <string>Delete</string>
+                 <string>Edit</string>
                 </property>
                </widget>
               </item>
@@ -1475,6 +1475,13 @@
                 </property>
                 <property name="text">
                  <string>Save</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButtonDeleteSchoolBill">
+                <property name="text">
+                 <string>Delete</string>
                 </property>
                </widget>
               </item>

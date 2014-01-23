@@ -81,6 +81,8 @@ private slots:
 
     void SchoolBillCenterFilterEvent();
 
+    void EditSchoolBillEvent();
+
     void SaveSchoolBillEvent();
 
     void DeleteSchoolBillEvent();
