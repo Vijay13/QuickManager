@@ -3,9 +3,9 @@
 #include <QMessageBox>
 
 SchoolBillManager::SchoolBillManager(QProgressBar* progressBar,QListView* list,
-                                     QTableView* headerTable, QTableView* table,
+                                     QTableView* headerTable, QTableView* tableAttendence,
                                      QLabel* taluka, QLabel* school):
-    progressBar(progressBar), headerTable(headerTable),table(table),
+    progressBar(progressBar), headerTable(headerTable),tableAttendence(tableAttendence),
     list(list), taluka(taluka), schoolName(school), isTableReset(true)
 {
     schools = AllSchool::Instance();
@@ -54,7 +54,6 @@ void SchoolBillManager::setUpHeaderTable()
 {
     viewModelHeaderTable = new QStandardItemModel(1,11);
     headerTable->setModel(viewModelHeaderTable);
-    viewModelHeaderTable->setVerticalHeaderLabels(QStringList() << "All Schools");
     viewModelHeaderTable->setHorizontalHeaderLabels( QStringList()
                                                      << "SC-B" << "SC-G"
                                                      << "ST-B" << "SC-G"
@@ -66,11 +65,11 @@ void SchoolBillManager::setUpHeaderTable()
 
 void SchoolBillManager::setUpTable()
 {
-    viewModelTable = new QStandardItemModel(15,12);
-    sortModelTable = new QSortFilterProxyModel();
-    sortModelTable->setSourceModel(viewModelTable);
-    table->setModel(sortModelTable);
-    viewModelTable->setHorizontalHeaderLabels( QStringList() << "Date"
+    viewModelTableAttendence = new QStandardItemModel(15,12);
+    sortModelTableAttendence = new QSortFilterProxyModel();
+    sortModelTableAttendence->setSourceModel(viewModelTableAttendence);
+    tableAttendence->setModel(sortModelTableAttendence);
+    viewModelTableAttendence->setHorizontalHeaderLabels( QStringList() << "Date"
                                                << "SC-B" << "SC-G"
                                                << "ST-B" << "SC-G"
                                                << "OBC-B" << "OBC-G"
@@ -91,7 +90,7 @@ void SchoolBillManager::resetTables()
     {
         for(int column=1; column<9 ; column++)
         {
-            viewModelTable->setItem(row,column,new QStandardItem(""));
+            viewModelTableAttendence->setItem(row,column,new QStandardItem(""));
         }
     }
     setUpZeroinTable();
@@ -104,7 +103,7 @@ void SchoolBillManager::setUpZeroinTable()
     for(int row=0; row<15; row++)
     {
         for(int column=9; column<12; column++)
-            viewModelTable->setItem(row,column,new QStandardItem("0"));
+            viewModelTableAttendence->setItem(row,column,new QStandardItem("0"));
     }
 
     viewModelHeaderTable->setItem(0,8,new QStandardItem("0"));
@@ -122,7 +121,7 @@ void SchoolBillManager::setDates()
 
     for(int i=0; i < 15 ; i++)
     {
-        viewModelTable->setItem(i,0,new QStandardItem(QString::number(++start)));
+        viewModelTableAttendence->setItem(i,0,new QStandardItem(QString::number(++start)));
     }
 }
 
@@ -172,7 +171,7 @@ void SchoolBillManager::schoolChanged()
             while (query->next()) {
                 for(int column=0; column<12; column++)
                 {
-                    viewModelTable->setItem(row,column,new QStandardItem(dataForTable(query->value(column).toInt())));
+                    viewModelTableAttendence->setItem(row,column,new QStandardItem(dataForTable(query->value(column).toInt())));
                 }
                 row++;
                 progressBar->setValue(row*7);
@@ -195,9 +194,9 @@ bool SchoolBillManager::checkData()
 
     for(int i=0; i<15; i++)
     {
-        if(dataInTable(table,i,0) < 1 || dataInTable(table,i,0) > 31)
+        if(dataInTable(tableAttendence,i,0) < 1 || dataInTable(tableAttendence,i,0) > 31)
         {
-            QMessageBox::information(0,"Invalid Date","Date can not be " + QString::number(dataInTable(table,i,0))
+            QMessageBox::information(0,"Invalid Date","Date can not be " + QString::number(dataInTable(tableAttendence,i,0))
                                      + " at " + QString::number(i) ,0,0);
             return false;
         }
@@ -206,7 +205,7 @@ bool SchoolBillManager::checkData()
     {
         for(column=1; column < 12; column ++)
         {
-            if(!(dataInTable(table,row,column) <= dataInTable(headerTable,0,column-1)))
+            if(!(dataInTable(tableAttendence,row,column) <= dataInTable(headerTable,0,column-1)))
             {
                 qDebug() << "Not fair at: " << row << column;
             }
@@ -237,28 +236,28 @@ void SchoolBillManager::SchoolCenterNameChanged(QString centerNo)
 
 void SchoolBillManager::SelectedCellChangedBillTable()
 {
-    int sum=0,row = table->currentIndex().row();
+    int sum=0,row = tableAttendence->currentIndex().row();
 
     if(previousRow != row && previousRow != -1)
     {
         // counting boys
         for(int i=1;i<9;i+=2)
         {
-            sum += dataInTable(table,previousRow,i);
+            sum += dataInTable(tableAttendence,previousRow,i);
         }
-        viewModelTable->setItem(previousRow,9,new QStandardItem(QString::number(sum)));
+        viewModelTableAttendence->setItem(previousRow,9,new QStandardItem(QString::number(sum)));
 
         //counting girls
         sum = 0;
         for(int i=2;i<9;i+=2)
         {
-            sum += dataInTable(table,previousRow,i);
+            sum += dataInTable(tableAttendence,previousRow,i);
         }
-        viewModelTable->setItem(previousRow,10,new QStandardItem(QString::number(sum)));
+        viewModelTableAttendence->setItem(previousRow,10,new QStandardItem(QString::number(sum)));
 
         //counting total strength
-        sum = dataInTable(table,previousRow,9) + dataInTable(table,previousRow,10);
-        viewModelTable->setItem(previousRow,11,new QStandardItem(QString::number(sum)));
+        sum = dataInTable(tableAttendence,previousRow,9) + dataInTable(tableAttendence,previousRow,10);
+        viewModelTableAttendence->setItem(previousRow,11,new QStandardItem(QString::number(sum)));
     }
     previousRow = row;
 }
@@ -320,18 +319,18 @@ void SchoolBillManager::SaveSchoolEvent()
         for(int row=0; row < 15; row++)
         {
             if(query->exec(db->getInsertSchoolBill(getCurrentTableName(),
-                                                   dataInTable(table,row,0),
-                                                   dataInTable(table,row,1),
-                                                   dataInTable(table,row,2),
-                                                   dataInTable(table,row,3),
-                                                   dataInTable(table,row,4),
-                                                   dataInTable(table,row,5),
-                                                   dataInTable(table,row,6),
-                                                   dataInTable(table,row,7),
-                                                   dataInTable(table,row,8),
-                                                   dataInTable(table,row,9),
-                                                   dataInTable(table,row,10),
-                                                   dataInTable(table,row,11))))
+                                                   dataInTable(tableAttendence,row,0),
+                                                   dataInTable(tableAttendence,row,1),
+                                                   dataInTable(tableAttendence,row,2),
+                                                   dataInTable(tableAttendence,row,3),
+                                                   dataInTable(tableAttendence,row,4),
+                                                   dataInTable(tableAttendence,row,5),
+                                                   dataInTable(tableAttendence,row,6),
+                                                   dataInTable(tableAttendence,row,7),
+                                                   dataInTable(tableAttendence,row,8),
+                                                   dataInTable(tableAttendence,row,9),
+                                                   dataInTable(tableAttendence,row,10),
+                                                   dataInTable(tableAttendence,row,11))))
             {
 
             }else

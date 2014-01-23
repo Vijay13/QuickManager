@@ -12,7 +12,8 @@
 class SchoolBillManager
 {
 public:
-    SchoolBillManager(QProgressBar* progressBar, QListView* list,QTableView* headerTable, QTableView* table,
+    SchoolBillManager(QProgressBar* progressBar, QListView* list,
+                      QTableView* headerTable, QTableView* tableAttendence,
                       QLabel* taluka, QLabel* school);
 
     static SchoolBillManager* Instance();
@@ -58,12 +59,12 @@ private:
     MainDatabase *db;
     QProgressBar* progressBar;
     QTableView* headerTable;
-    QTableView* table;
+    QTableView* tableAttendence;
     QListView* list;
     AllSchool* schools;
-    QStandardItemModel* viewModelTable;
+    QStandardItemModel* viewModelTableAttendence;
     QStandardItemModel* viewModelHeaderTable;
-    QSortFilterProxyModel* sortModelTable;
+    QSortFilterProxyModel* sortModelTableAttendence;
     QStandardItemModel* viewModelList;
     QSortFilterProxyModel* sortModelList;
     QLabel* taluka;

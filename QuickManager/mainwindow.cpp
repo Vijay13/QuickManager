@@ -35,7 +35,8 @@ void MainWindow::initialize()
     talukas = new AllTaluka();
     schools = new AllSchool();
     sm = new SchoolManager(ui->tableViewSchools);
-    sbm = new SchoolBillManager(ui->progressBar,ui->listViewSchools ,ui->tableViewTotalBill ,ui->tableViewMainBill,
+    sbm = new SchoolBillManager(ui->progressBar,ui->listViewSchools ,ui->tableViewTotalBill ,
+                                ui->tableViewMainBillAttendence,
                                 ui->labelBMTalukaBody, ui->labelBMSchoolBody);
 }
 
@@ -80,7 +81,7 @@ void MainWindow::initializeComponent(){
     QObject::connect(ui->listViewSchools->selectionModel(),
                      SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
                      this, SLOT(SelectedSchoolBillChanged(QItemSelection)));
-    QObject::connect(ui->tableViewMainBill->selectionModel(),
+    QObject::connect(ui->tableViewMainBillAttendence->selectionModel(),
                      SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
                      this, SLOT(SelectedCellChangedBillTable(QItemSelection)));
     QObject::connect(ui->tableViewTotalBill->selectionModel(),
@@ -290,7 +291,7 @@ void MainWindow::PrintSchoolEvent(){
     {
         fm->clearDocument();
         fm->writeTable(ui->tableViewTotalBill);
-        fm->writeTable(ui->tableViewMainBill);
+        fm->writeTable(ui->tableViewMainBillAttendence);
         fm->printTable();
     }
 
