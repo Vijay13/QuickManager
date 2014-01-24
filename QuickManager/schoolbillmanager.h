@@ -13,7 +13,8 @@
 class SchoolBillManager
 {
 public:
-    SchoolBillManager(QPushButton* editButton, QProgressBar* progressBar, QListView* list,
+    SchoolBillManager(QPushButton* editButton,QPushButton* deleteButton,
+                      QProgressBar* progressBar, QListView* list,
                       QTableView* headerTable,
                       QTableView* tableAttendence, QTableView* tableAttendenceTotal,
                       QTableView* tableBeneficiaries, QTableView* tableBeneficiariesTotal,
@@ -69,13 +70,15 @@ public:
 
     QString dataForTable(int data);
 
+    void setEnableButtons(bool is);
+
 private:
     static SchoolBillManager* instance;
     QSqlQuery *query;
-    QPushButton* editButton;
+    QPushButton *editButton,*deleteButton;
     MainDatabase *db;
-    QProgressBar* progressBar;
-    AllSchool* schools;
+    QProgressBar *progressBar;
+    AllSchool *schools;
 
     QTableView* headerTable;
     QTableView* tableAttendence;

@@ -35,7 +35,8 @@ void MainWindow::initialize()
     talukas = new AllTaluka();
     schools = new AllSchool();
     sm = new SchoolManager(ui->tableViewSchools);
-    sbm = new SchoolBillManager(ui->pushButtonEditSchoolBill, ui->progressBar,ui->listViewSchools ,ui->tableViewTotalBill ,
+    sbm = new SchoolBillManager(ui->pushButtonEditSchoolBill, ui->pushButtonDeleteSchoolBill,
+                                ui->progressBar,ui->listViewSchools ,ui->tableViewTotalBill ,
                                 ui->tableViewMainBillAttendence,
                                 ui->tableViewCheckTableAttendence,
                                 ui->tableViewMainBillBeneficiaries,

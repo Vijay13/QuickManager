@@ -4,12 +4,14 @@
 #include <QMessageBox>
 //#include <QSqlError>
 
-SchoolBillManager::SchoolBillManager(QPushButton* editButton,QProgressBar *progressBar, QListView *list,
+SchoolBillManager::SchoolBillManager(QPushButton* editButton, QPushButton* deleteButton,
+                                     QProgressBar *progressBar, QListView *list,
                                      QTableView *headerTable,
                                      QTableView *tableAttendence, QTableView *tableAttendenceTotal,
                                      QTableView *tableBeneficiaries, QTableView *tableBeneficiariesTotal,
                                      QLabel *taluka, QLabel *school):
-    editButton(editButton), progressBar(progressBar), headerTable(headerTable),
+    editButton(editButton), deleteButton(deleteButton),
+    progressBar(progressBar), headerTable(headerTable),
     tableAttendence(tableAttendence), tableAttendenceTotal(tableAttendenceTotal),
     tableBeneficiaries(tableBeneficiaries),tableBeneficiariesTotal(tableBeneficiariesTotal),
     list(list), taluka(taluka), schoolName(school), isTableReset(true)
@@ -187,7 +189,7 @@ void SchoolBillManager::setDates()
 void SchoolBillManager::navigatedToSBM(QString taluka, QString rout, int std, int period,
                                        QString month, QString year)
 {
-    editButton->setEnabled(false);
+    this->setEnableButtons(false);
     currentSTD = (std == 0) ? "1to5" : "6th8";
     currentPeriod = (period == 0) ? "1to15" : "16to31";
 
@@ -215,11 +217,11 @@ void SchoolBillManager::schoolChanged()
 
         if(query->exec(db->getSchoolBillTable(getCurrentAttendenceTableName())))
         {
-            editButton->setEnabled(true);
+            this->setEnableButtons(true);
         }
         else
         {
-            editButton->setEnabled(false);
+            this->setEnableButtons(false);
         }
 
         if(!isTableReset)
@@ -390,19 +392,12 @@ void SchoolBillManager::DeleteSchoolEvent()
         return;
     }
 
-    if(query->exec(db->getDeleteSchoolBill(getCurrentAttendenceTableName())))
+    if(query->exec(db->getDeleteSchoolBill(getCurrentAttendenceTableName())) && query->exec(db->getDeleteSchoolBill(getCurrentBeneficiariesTableName())))
     {
         resetTables();
     }
     else
-        qDebug() << "Could not delete attendence" <<  query->lastError().text();
-
-    if(query->exec(db->getDeleteSchoolBill(getCurrentBeneficiariesTableName())))
-    {
-        resetTables();
-    }
-    else
-        qDebug() << "Could not delete beneficiaries" <<  query->lastError().text();
+        qDebug() << "Could not delete bill" <<  query->lastError().text();
 }
 
 void SchoolBillManager::InsertDataToDatabase(QString dbTableName, QTableView* headerTable)
@@ -454,7 +449,7 @@ void SchoolBillManager::InsertDataToDatabase(QString dbTableName, QTableView* ma
                                                dataInTable(checkTable,row,4),
                                                dataInTable(checkTable,row,5))))
         {
-            editButton->setEnabled(true);
+            this->setEnableButtons(true);
         }else
             qDebug() << "Failed to insert day";
         query->finish();
@@ -541,4 +536,10 @@ int SchoolBillManager::dataInTable(QTableView *tempTable, int r, int c)
         return tempTable->model()->data(tempTable->model()->index(r,c)).toInt();
     else
         return 0;
+}
+
+void SchoolBillManager::setEnableButtons(bool is)
+{
+    editButton->setEnabled(is);
+    deleteButton->setEnabled(is);
 }

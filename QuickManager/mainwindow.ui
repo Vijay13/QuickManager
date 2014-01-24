@@ -1483,6 +1483,13 @@
                </widget>
               </item>
               <item>
+               <widget class="QPushButton" name="pushButtonDeleteSchoolBill">
+                <property name="text">
+                 <string>Delete</string>
+                </property>
+               </widget>
+              </item>
+              <item>
                <widget class="QPushButton" name="pushButtonSaveSchoolBill">
                 <property name="minimumSize">
                  <size>
@@ -1497,13 +1504,6 @@
                 </property>
                 <property name="text">
                  <string>Save</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="pushButtonDeleteSchoolBill">
-                <property name="text">
-                 <string>Delete</string>
                 </property>
                </widget>
               </item>
