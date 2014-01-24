@@ -187,6 +187,7 @@ void SchoolBillManager::setDates()
 void SchoolBillManager::navigatedToSBM(QString taluka, QString rout, int std, int period,
                                        QString month, QString year)
 {
+    editButton->setEnabled(false);
     currentSTD = (std == 0) ? "1to5" : "6th8";
     currentPeriod = (period == 0) ? "1to15" : "16to31";
 
@@ -349,35 +350,11 @@ void SchoolBillManager::SelectedCellChangedHeaderTable()
 
 void SchoolBillManager::EditSchoolEvent()
 {
-    if(query->exec(db->getSchoolBillTable(getCurrentAttendenceTableName())))
-    {
-        progressBar->setValue(0);
-        progressBar->setVisible(true);
-        int row = 0;
-        query->next();
-        for(int column=0; column<11; column++)
-        {
-            viewModelHeaderTable->setItem(0,column,new QStandardItem(dataForTable(query->value(column).toInt())));
-        }
-
-        while(query->next())
-        {
-            for(int column=0; column<12; column++)
-            {
-                viewModelTableAttendence->setItem(row,column,new QStandardItem(dataForTable(query->value(column).toInt())));
-            }
-            for(int column=12; column<18; column++ )
-            {
-                viewModelTableAttendenceTotal->setItem(row,column - 12,new QStandardItem(query->value(column).toString()));
-            }
-            row++;
-            progressBar->setValue(row*7);
-        }
-        progressBar->setVisible(false);
-        isTableReset = false;
-    }
-
-    query->finish();
+    this->FillDataInTable(getCurrentAttendenceTableName(), viewModelHeaderTable);
+    this->FillDataInTable(getCurrentAttendenceTableName(),
+                          viewModelTableAttendence,viewModelTableAttendenceTotal);
+    this->FillDataInTable(getCurrentBeneficiariesTableName(),
+                          viewModelTableBeneficiaries,viewModelTableBeneficiariesTotal);
 }
 
 void SchoolBillManager::SaveSchoolEvent()
@@ -388,66 +365,21 @@ void SchoolBillManager::SaveSchoolEvent()
         return;
     }
 
-    if(!checkData())
-        qDebug() << "You are stupid Smart";
+    //need to put message box for below check;
+    checkData();
 
     if(query->exec(db->getCreateSchoolBillTable(getCurrentAttendenceTableName())))
     {
-        int progress = 0;
-        progressBar->setValue(progress);
-        progressBar->setVisible(true);
-
-        if(query->exec(db->getInsertSchoolBill(getCurrentAttendenceTableName(), 0,
-                                               dataInTable(headerTable,0,0),
-                                               dataInTable(headerTable,0,1),
-                                               dataInTable(headerTable,0,2),
-                                               dataInTable(headerTable,0,3),
-                                               dataInTable(headerTable,0,4),
-                                               dataInTable(headerTable,0,5),
-                                               dataInTable(headerTable,0,6),
-                                               dataInTable(headerTable,0,7),
-                                               dataInTable(headerTable,0,8),
-                                               dataInTable(headerTable,0,9),
-                                               dataInTable(headerTable,0,10),
-                                               0,0,0,0,0,0)))
-        {
-
-        }else
-            qDebug() << "Could not insert initial total";
-
-        for(int row=0; row < 15; row++)
-        {
-            if(query->exec(db->getInsertSchoolBill(getCurrentAttendenceTableName(),
-                                                   dataInTable(tableAttendence,row,0),
-                                                   dataInTable(tableAttendence,row,1),
-                                                   dataInTable(tableAttendence,row,2),
-                                                   dataInTable(tableAttendence,row,3),
-                                                   dataInTable(tableAttendence,row,4),
-                                                   dataInTable(tableAttendence,row,5),
-                                                   dataInTable(tableAttendence,row,6),
-                                                   dataInTable(tableAttendence,row,7),
-                                                   dataInTable(tableAttendence,row,8),
-                                                   dataInTable(tableAttendence,row,9),
-                                                   dataInTable(tableAttendence,row,10),
-                                                   dataInTable(tableAttendence,row,11),
-                                                   dataInTable(tableAttendenceTotal,row,0),
-                                                   dataInTable(tableAttendenceTotal,row,1),
-                                                   dataInTable(tableAttendenceTotal,row,2),
-                                                   dataInTable(tableAttendenceTotal,row,3),
-                                                   dataInTable(tableAttendenceTotal,row,4),
-                                                   dataInTable(tableAttendenceTotal,row,5))))
-            {
-                editButton->setEnabled(true);
-            }else
-                qDebug() << "Failed to insert day";
-            query->finish();
-            progress += 7; // 100/15 ~ 7
-            progressBar->setValue(progress);
-        }
-        progressBar->setVisible(false);
-        isTableReset = false;
+        this->InsertDataToDatabase(getCurrentAttendenceTableName(),headerTable);
+        this->InsertDataToDatabase(getCurrentAttendenceTableName(),tableAttendence,tableAttendenceTotal);
     }else
-        qDebug() << "Failed to create school bill table";
+        qDebug() << "Failed to create attendence table";
+
+    if(query->exec(db->getCreateSchoolBillTable(getCurrentBeneficiariesTableName())))
+    {
+        this->InsertDataToDatabase(getCurrentBeneficiariesTableName(),tableBeneficiaries,tableBeneficiariesTotal);
+    }else
+        qDebug() << "Failed to create beneficiaries table";
 }
 
 void SchoolBillManager::DeleteSchoolEvent()
@@ -463,14 +395,133 @@ void SchoolBillManager::DeleteSchoolEvent()
         resetTables();
     }
     else
-        qDebug() << db->getDeleteSchoolBill(getCurrentAttendenceTableName())
-                 << "Could not delete School Bill" <<  query->lastError().text()
-                 << query->isActive();
+        qDebug() << "Could not delete attendence" <<  query->lastError().text();
+
+    if(query->exec(db->getDeleteSchoolBill(getCurrentBeneficiariesTableName())))
+    {
+        resetTables();
+    }
+    else
+        qDebug() << "Could not delete beneficiaries" <<  query->lastError().text();
+}
+
+void SchoolBillManager::InsertDataToDatabase(QString dbTableName, QTableView* headerTable)
+{
+    if(query->exec(db->getInsertSchoolBill(dbTableName, 0,
+                                           dataInTable(headerTable,0,0),
+                                           dataInTable(headerTable,0,1),
+                                           dataInTable(headerTable,0,2),
+                                           dataInTable(headerTable,0,3),
+                                           dataInTable(headerTable,0,4),
+                                           dataInTable(headerTable,0,5),
+                                           dataInTable(headerTable,0,6),
+                                           dataInTable(headerTable,0,7),
+                                           dataInTable(headerTable,0,8),
+                                           dataInTable(headerTable,0,9),
+                                           dataInTable(headerTable,0,10),
+                                           0,0,0,0,0,0)))
+    {
+
+    }else
+        qDebug() << "Could not insert initial total";
+}
+
+void SchoolBillManager::InsertDataToDatabase(QString dbTableName, QTableView* mainTable, QTableView* checkTable)
+{
+    int progress = 0;
+    progressBar->setValue(progress);
+    progressBar->setVisible(true);
+
+    for(int row=0; row < 15; row++)
+    {
+        if(query->exec(db->getInsertSchoolBill(dbTableName,
+                                               dataInTable(mainTable,row,0),
+                                               dataInTable(mainTable,row,1),
+                                               dataInTable(mainTable,row,2),
+                                               dataInTable(mainTable,row,3),
+                                               dataInTable(mainTable,row,4),
+                                               dataInTable(mainTable,row,5),
+                                               dataInTable(mainTable,row,6),
+                                               dataInTable(mainTable,row,7),
+                                               dataInTable(mainTable,row,8),
+                                               dataInTable(mainTable,row,9),
+                                               dataInTable(mainTable,row,10),
+                                               dataInTable(mainTable,row,11),
+                                               dataInTable(checkTable,row,0),
+                                               dataInTable(checkTable,row,1),
+                                               dataInTable(checkTable,row,2),
+                                               dataInTable(checkTable,row,3),
+                                               dataInTable(checkTable,row,4),
+                                               dataInTable(checkTable,row,5))))
+        {
+            editButton->setEnabled(true);
+        }else
+            qDebug() << "Failed to insert day";
+        query->finish();
+        progress += 7; // 100/15 ~ 7
+        progressBar->setValue(progress);
+    }
+    progressBar->setVisible(false);
+    isTableReset = false;
+}
+
+
+void SchoolBillManager::FillDataInTable(QString dbTableName,QStandardItemModel* headerTable)
+{
+    if(query->exec(db->getSchoolBillTable(dbTableName)))
+    {
+        query->next();
+        for(int column=0; column<11; column++)
+        {
+            headerTable->setItem(0,column,new QStandardItem(dataForTable(query->value(column+1).toInt())));
+        }
+    }
+    query->finish();
+}
+
+void SchoolBillManager::FillDataInTable(QString dbTableName,
+                                        QStandardItemModel* viewMainTable,QStandardItemModel* viewCheckTable)
+
+{
+    if(query->exec(db->getSchoolBillTable(dbTableName)))
+    {
+        progressBar->setValue(0);
+        progressBar->setVisible(true);
+        int row = 0;
+
+        //since attendence table's first raw is total so we need to skip it
+        if(dbTableName.contains("attendence",Qt::CaseInsensitive))
+            query->next();
+
+        while(query->next())
+        {
+            for(int column=0; column<12; column++)
+            {
+                viewMainTable->setItem(row,column,new QStandardItem(dataForTable(query->value(column).toInt())));
+            }
+            for(int column=12; column<18; column++ )
+            {
+                viewCheckTable->setItem(row,column - 12,new QStandardItem(query->value(column).toString()));
+            }
+            row++;
+            progressBar->setValue(row*7);
+        }
+        progressBar->setVisible(false);
+        isTableReset = false;
+    }
+    query->finish();
 }
 
 QString SchoolBillManager::getCurrentAttendenceTableName()
 {
     return "SchoolBill_Attendence_" + currentCenter.remove(' ') + "_"
+            + currentTaluka.remove(' ') + "_" + currentSTD + "_" + currentPeriod + "_"
+            + currentMonth + "_" + currentYear;
+}
+
+QString SchoolBillManager::getCurrentBeneficiariesTableName()
+{
+    return "SchoolBill_Beneficiaries_" + currentCenter.remove(' ') + "_"
             + currentTaluka.remove(' ') + "_" + currentSTD + "_" + currentPeriod + "_"
             + currentMonth + "_" + currentYear;
 }

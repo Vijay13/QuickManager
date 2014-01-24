@@ -52,7 +52,18 @@ public:
 
     void setDates();
 
+    void InsertDataToDatabase(QString dbTableName, QTableView* headerTable);
+
+    void InsertDataToDatabase(QString dbTableName, QTableView* mainTable, QTableView* checkTable);
+
+    void FillDataInTable(QString dbTableName, QStandardItemModel* headerTable);
+
+    void FillDataInTable(QString dbTableName,
+                         QStandardItemModel* viewMainTable, QStandardItemModel* viewCheckTable);
+
     QString getCurrentAttendenceTableName();
+
+    QString getCurrentBeneficiariesTableName();
 
     int dataInTable(QTableView* tempTable, int r, int c);
 
