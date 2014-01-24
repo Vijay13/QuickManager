@@ -27,6 +27,9 @@ SchoolBillManager::SchoolBillManager(QPushButton* editButton, QPushButton* delet
 
     setUpHeaderTable();
     setUpTables();
+
+    tableAttendence->setItemDelegate(this);
+    tableBeneficiaries->setItemDelegate(this);
     //this->table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
@@ -235,8 +238,6 @@ void SchoolBillManager::schoolChanged()
 
 bool SchoolBillManager::checkData()
 {
-    int row,column;
-
     for(int i=0; i<15; i++)
     {
         if(dataInTable(tableAttendence,i,0) < 1 || dataInTable(tableAttendence,i,0) > 31)
@@ -246,13 +247,14 @@ bool SchoolBillManager::checkData()
             return false;
         }
     }
-    for(row=0; row < 15; row++)
+    for(int row=0; row < 15; row++)
     {
-        for(column=1; column < 12; column ++)
+        for(int column=1; column < 12; column ++)
         {
             if(!(dataInTable(tableAttendence,row,column) <= dataInTable(headerTable,0,column-1)))
             {
-                qDebug() << "Not fair at: " << row << column;
+                //qDebug() << "Not fair at: " << row << column;
+                return false;
             }
         }
     }
@@ -528,7 +530,7 @@ QString SchoolBillManager::dataForTable(int data)
     return "";
 }
 
-int SchoolBillManager::dataInTable(QTableView *tempTable, int r, int c)
+int SchoolBillManager::dataInTable(QTableView *tempTable, int r, int c) const
 {
     bool ok;
     tempTable->model()->data(tempTable->model()->index(r,c)).toInt(&ok);
@@ -542,4 +544,22 @@ void SchoolBillManager::setEnableButtons(bool is)
 {
     editButton->setEnabled(is);
     deleteButton->setEnabled(is);
+}
+
+void SchoolBillManager::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    QStyleOptionViewItem opt = option;
+    initStyleOption(&opt, index);
+
+    if(dataInTable(tableAttendence,index.row(),index.column()) > dataInTable(headerTable,0,index.column()-1))
+    {
+        opt.font.setBold(true);
+    }
+
+    if(dataInTable(tableBeneficiaries,index.row(),index.column()) > dataInTable(headerTable,0,index.column()-1))
+    {
+        opt.font.setBold(true);
+    }
+
+    QStyledItemDelegate::paint(painter, opt, index);
 }

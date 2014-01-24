@@ -9,8 +9,9 @@
 #include <QLabel>
 #include <QProgressBar>
 #include <allschool.h>
+#include <QStyledItemDelegate>
 
-class SchoolBillManager
+class SchoolBillManager : QStyledItemDelegate
 {
 public:
     SchoolBillManager(QPushButton* editButton,QPushButton* deleteButton,
@@ -19,6 +20,8 @@ public:
                       QTableView* tableAttendence, QTableView* tableAttendenceTotal,
                       QTableView* tableBeneficiaries, QTableView* tableBeneficiariesTotal,
                       QLabel* taluka, QLabel* school);
+
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
     static SchoolBillManager* Instance();
 
@@ -66,7 +69,7 @@ public:
 
     QString getCurrentBeneficiariesTableName();
 
-    int dataInTable(QTableView* tempTable, int r, int c);
+    int dataInTable(QTableView* tempTable, int r, int c) const;
 
     QString dataForTable(int data);
 
