@@ -522,6 +522,9 @@
                 <property name="wordWrap">
                  <bool>false</bool>
                 </property>
+                <attribute name="verticalHeaderVisible">
+                 <bool>false</bool>
+                </attribute>
                </widget>
               </item>
              </layout>
@@ -1152,7 +1155,7 @@
                  <property name="geometry">
                   <rect>
                    <x>0</x>
-                   <y>-534</y>
+                   <y>0</y>
                    <width>973</width>
                    <height>1106</height>
                   </rect>

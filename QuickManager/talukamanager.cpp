@@ -45,13 +45,15 @@ void TalukaManager::initialize(){
 void TalukaManager::setUpTable(){
     viewModel->clear();
 
-    viewModel->setHorizontalHeaderLabels( QStringList() << "Taluka"
+    viewModel->setHorizontalHeaderLabels( QStringList() << "Sr.No."
+                                          << "Taluka"
                                           << "District" );
 
     QList<QStandardItem*> itemList;
     for(int i=0; i < talukas->getTalukaList()->length(); i++){
         Taluka* temp = talukas->getTalukaList()->at(i);
-        itemList << new QStandardItem(temp->getTaluka())
+        itemList << new QStandardItem(QString::number(i+1))
+                 << new QStandardItem(temp->getTaluka())
                  << new QStandardItem(temp->getDistrict());
         viewModel->appendRow(itemList);
         itemList.clear();

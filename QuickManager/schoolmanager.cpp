@@ -34,7 +34,7 @@ SchoolManager* SchoolManager::Instance(){
 
 void SchoolManager::setUpTable(){
     viewModel->clear();
-    viewModel->setHorizontalHeaderLabels( QStringList() << "Center No."
+    viewModel->setHorizontalHeaderLabels( QStringList() << "Sr.No." << "Center No."
                                           << "School Name" << "Taluka"
                                           << "Rout No." << "Principal"
                                           << "Principal Mob no." << "Address" );
@@ -42,7 +42,8 @@ void SchoolManager::setUpTable(){
     QList<QStandardItem*> itemList;
     for(int i=0; i < schools->getSchoolList()->length(); i++){
         School* temp = schools->getSchoolList()->at(i);
-        itemList << new QStandardItem(temp->CenterNo)
+        itemList << new QStandardItem(QString::number(i+1))
+                 << new QStandardItem(temp->CenterNo)
                  << new QStandardItem(temp->SchoolName)
                  << new QStandardItem(temp->Taluka)
                  << new QStandardItem(temp->RoutNo)
@@ -110,6 +111,7 @@ void SchoolManager::setFilter(QString selectedTaluka, QString selectedRout){
                                           << "Rout No." << "Principal"
                                           << "Principal Mob no." << "Address" );
 
+    int count = 1;
     QList<QStandardItem*> itemList;
     for(int i=0; i < schools->getSchoolList()->length(); i++){
         School* temp = schools->getSchoolList()->at(i);
@@ -124,7 +126,8 @@ void SchoolManager::setFilter(QString selectedTaluka, QString selectedRout){
                 continue;
         }
 
-        itemList << new QStandardItem(temp->CenterNo)
+        itemList << new QStandardItem(QString::number(count))
+                 << new QStandardItem(temp->CenterNo)
                  << new QStandardItem(temp->SchoolName)
                  << new QStandardItem(temp->Taluka)
                  << new QStandardItem(temp->RoutNo)
@@ -133,5 +136,6 @@ void SchoolManager::setFilter(QString selectedTaluka, QString selectedRout){
                  << new QStandardItem(temp->Address);
         viewModel->appendRow(itemList);
         itemList.clear();
+        count++;
     }
 }
