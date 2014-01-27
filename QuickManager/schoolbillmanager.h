@@ -109,7 +109,7 @@ private:
     QLabel* taluka;
     QLabel* schoolName;
 
-    int previousRow,previousColumn;
+    int previousRow,previousColumn, rowCount;
     QTableView* currentTableTotal;
     QStandardItemModel* currentView;
     bool isTableReset;

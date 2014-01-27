@@ -25,6 +25,8 @@ SchoolBillManager::SchoolBillManager(QPushButton* editButton, QPushButton* delet
     db = MainDatabase::Instance();
     query = new QSqlQuery(*db->getDatabase());
 
+    rowCount = 15;
+
     setUpHeaderTable();
     setUpTables();
 
@@ -76,10 +78,10 @@ void SchoolBillManager::setUpHeaderTable()
 
 void SchoolBillManager::setUpTables()
 {
-    viewModelTableAttendence = new QStandardItemModel(15,12);
-    viewModelTableAttendenceTotal = new QStandardItemModel(15,6);
-    viewModelTableBeneficiaries = new QStandardItemModel(15,12);
-    viewModelTableBeneficiariesTotal = new QStandardItemModel(15,6);
+    viewModelTableAttendence = new QStandardItemModel(rowCount,12);
+    viewModelTableAttendenceTotal = new QStandardItemModel(rowCount,6);
+    viewModelTableBeneficiaries = new QStandardItemModel(rowCount,12);
+    viewModelTableBeneficiariesTotal = new QStandardItemModel(rowCount,6);
 
     sortModelTableAttendence = new QSortFilterProxyModel();
     sortModelTableAttendenceTotal = new QSortFilterProxyModel();
@@ -131,7 +133,7 @@ void SchoolBillManager::resetTables()
     progressBar->setVisible(true);
     int rowCount = 0;
 
-    for(int column=0; column<8; column++)
+    for(int column=0; column<viewModelHeaderTable->columnCount() - 3; column++)
     {
         viewModelHeaderTable->setItem(0,column,new QStandardItem(""));
     }
@@ -139,9 +141,9 @@ void SchoolBillManager::resetTables()
     ++rowCount;
     progressBar->setValue(rowCount*6.25);
 
-    for(int row=0; row < 15; row++)
+    for(int row=0; row < this->rowCount; row++)
     {
-        for(int column=1; column<12 ; column++)
+        for(int column=1; column<viewModelTableAttendence->columnCount() ; column++)
         {
             viewModelTableAttendence->setItem(row,column,new QStandardItem(""));
             viewModelTableBeneficiaries->setItem(row,column,new QStandardItem(""));
@@ -158,14 +160,13 @@ void SchoolBillManager::setUpZeroinTable()
 {
     previousRow = -1;
     previousColumn = -1;
-    for(int row=0; row<15; row++)
+    for(int row=0; row < this->rowCount; row++)
     {
-        for(int column=0; column<6; column++)
+        for(int column=0; column < viewModelTableAttendenceTotal->columnCount(); column++)
         {
             viewModelTableAttendenceTotal->setItem(row,column,new QStandardItem("0"));
             viewModelTableBeneficiariesTotal->setItem(row,column,new QStandardItem("0"));
         }
-
     }
 
     viewModelHeaderTable->setItem(0,8,new QStandardItem("0"));
@@ -181,7 +182,7 @@ void SchoolBillManager::setDates()
     else
         start = 15;
 
-    for(int i=0; i < 15 ; i++)
+    for(int i=0; i < this->rowCount ; i++)
     {
         ++start;
         viewModelTableAttendence->setItem(i,0,new QStandardItem(QString::number(start)));
@@ -202,8 +203,23 @@ void SchoolBillManager::navigatedToSBM(QString taluka, QString rout, int std, in
     selectedTaluka = taluka;
     currentRout = rout;
 
+    if(currentPeriod == "16to31")
+    {
+        rowCount = 16;
+    }
+    else
+    {
+        rowCount = 15;
+    }
+
+    viewModelTableAttendence->setRowCount(rowCount);
+    viewModelTableAttendenceTotal->setRowCount(rowCount);
+    viewModelTableBeneficiaries->setRowCount(rowCount);
+    viewModelTableBeneficiariesTotal->setRowCount(rowCount);
+
     setDates();
     setUpList();
+    resetTables();
 }
 
 void SchoolBillManager::schoolChanged()
@@ -429,7 +445,7 @@ void SchoolBillManager::InsertDataToDatabase(QString dbTableName, QTableView* ma
     progressBar->setValue(progress);
     progressBar->setVisible(true);
 
-    for(int row=0; row < 15; row++)
+    for(int row=0; row < rowCount; row++)
     {
         if(query->exec(db->getInsertSchoolBill(dbTableName,
                                                dataInTable(mainTable,row,0),
