@@ -14,6 +14,9 @@
 class SchoolBillManager : QStyledItemDelegate
 {
 public:
+    QString selectedTaluka, currentSchool, currentSTD, currentTaluka, currentCenter, currentRout,
+    currentPeriod, currentMonth, currentYear;
+
     SchoolBillManager(QPushButton* editButton,QPushButton* deleteButton,
                       QProgressBar* progressBar, QListView* list,
                       QTableView* headerTable,
@@ -109,8 +112,6 @@ private:
     int previousRow,previousColumn;
     QTableView* currentTableTotal;
     QStandardItemModel* currentView;
-    QString selectedTaluka, currentSchool, currentSTD, currentTaluka, currentCenter, currentRout,
-    currentPeriod, currentMonth, currentYear;
     bool isTableReset;
 };
 

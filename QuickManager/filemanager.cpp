@@ -66,6 +66,18 @@ void FileManager::printTable(){
     }
 }
 
+void FileManager::writeHeader(QString title)
+{
+    QTextStream out(&strStream);
+    out << "<h3 align=\"center\">" + title + "</h3>\n";
+}
+
+void FileManager::writeLine(QString line)
+{
+    QTextStream out(&strStream);
+    out << "<p align=\"center\">" + line + "</p>\n";
+}
+
 void FileManager::writeTable(QTableView* table)
 {
     if(table == NULL)
@@ -85,14 +97,23 @@ void FileManager::writeTable(QTableView* table)
 
     // headers
     out << "<thead><tr bgcolor=#f0f0f0>";
+
+    if(table->accessibleName() == "Total")
+        out << QString("<th>%1</th>").arg("R.No ");
+
     for (int column = 0; column < columnCount; column++)
         if (!table->isColumnHidden(column))
             out << QString("<th>%1</th>").arg(table->model()->headerData(column, Qt::Horizontal).toString());
     out << "</tr></thead>\n";
 
+
+
     // data table
     for (int row = 0; row < rowCount; row++) {
         out << "<tr>";
+        if (table->accessibleName() == "Total" && row == 0) {
+            out << QString("<td bkcolor=0>%1</td>").arg(QString("&nbsp;"));
+        }
         for (int column = 0; column < columnCount; column++) {
             if (!table->isColumnHidden(column)) {
                 QString data = table->model()->data(table->model()->index(row, column)).toString().simplified();
@@ -103,7 +124,8 @@ void FileManager::writeTable(QTableView* table)
     }
     out <<  "</table>\n"
             "</body>\n"
-            "</html>\n" << "<br /><br />";
+            "</html>\n";
+            // << "<br />"; //remove comment to add space after table
 }
 
 void FileManager::clearDocument()

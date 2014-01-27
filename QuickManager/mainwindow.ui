@@ -1152,7 +1152,7 @@
                  <property name="geometry">
                   <rect>
                    <x>0</x>
-                   <y>0</y>
+                   <y>-534</y>
                    <width>973</width>
                    <height>1106</height>
                   </rect>
@@ -1223,6 +1223,9 @@
                         <font>
                          <pointsize>10</pointsize>
                         </font>
+                       </property>
+                       <property name="accessibleName">
+                        <string>Total</string>
                        </property>
                        <attribute name="horizontalHeaderVisible">
                         <bool>true</bool>
@@ -1320,6 +1323,9 @@
                          <height>16777215</height>
                         </size>
                        </property>
+                       <property name="accessibleName">
+                        <string>Attendence</string>
+                       </property>
                        <property name="editTriggers">
                         <set>QAbstractItemView::AnyKeyPressed|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
                        </property>
@@ -1406,6 +1412,9 @@
                          <width>722</width>
                          <height>16777215</height>
                         </size>
+                       </property>
+                       <property name="accessibleName">
+                        <string>Beneficiaries</string>
                        </property>
                        <attribute name="horizontalHeaderDefaultSectionSize">
                         <number>60</number>

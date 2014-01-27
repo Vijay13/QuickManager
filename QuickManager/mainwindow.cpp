@@ -178,19 +178,19 @@ void MainWindow::LoginEvent()
 
     if(query->exec(queryStatement)){
         while(query->next()){
-            QString userName = query->value(query->record().indexOf("UserName")).toString();
-            QString passWord = query->value(query->record().indexOf("Password")).toString();
+            QString userName = query->value("UserName").toString();
+            QString passWord = query->value("Password").toString();
             if(userName == ui->lineEditUsername->text() && passWord == ui->lineEditPassword->text()){
                 isCorrect = true;
-                setUpControl(query->value(query->record().indexOf("TMAdd")).toInt(),
-                             query->value(query->record().indexOf("TMUpdate")).toInt(),
-                             query->value(query->record().indexOf("TMDelete")).toInt(),
-                             query->value(query->record().indexOf("SMAdd")).toInt(),
-                             query->value(query->record().indexOf("SMUpdate")).toInt(),
-                             query->value(query->record().indexOf("SMDelete")).toInt(),
-                             query->value(query->record().indexOf("SBMAdd")).toInt(),
-                             query->value(query->record().indexOf("SBMUpdate")).toInt(),
-                             query->value(query->record().indexOf("SBMDelete")).toInt());
+                setUpControl(query->value("TMAdd").toInt(),
+                             query->value("TMUpdate").toInt(),
+                             query->value("TMDelete").toInt(),
+                             query->value("SMAdd").toInt(),
+                             query->value("SMUpdate").toInt(),
+                             query->value("SMDelete").toInt(),
+                             query->value("SBMAdd").toInt(),
+                             query->value("SBMUpdate").toInt(),
+                             query->value("SBMDelete").toInt());
                 break;
             }
         }
@@ -203,9 +203,11 @@ void MainWindow::LoginEvent()
             ui->actionAddUser->setEnabled(true);
             ui->actionAddAdmin->setEnabled(true);
         }
+        this->setWindowTitle("Quick Manager Akshaypatra - " + query->value("UserName").toString());
     }else{
         ui->ErrorLable->setText("Incorrect Username or Password");
     }
+    query->finish();
 }
 
 void MainWindow::LogoutEvent()
@@ -216,6 +218,7 @@ void MainWindow::LogoutEvent()
     ui->ErrorLable->setText("");
     ui->actionAddUser->setEnabled(false);
     ui->actionAddAdmin->setEnabled(false);
+    this->setWindowTitle("Quick Manager Akshaypatra");
 }
 
 void MainWindow::AddUserEvent()
@@ -299,8 +302,17 @@ void MainWindow::PrintSchoolEvent(){
     }else if(ui->AllStackWidget->currentIndex() == 3)
     {
         fm->clearDocument();
+        fm->writeLine("Month: " + sbm->currentMonth +
+                      this->getSpace(20) +"Year: " + sbm->currentYear +
+                      this->getSpace(20) +"STD: " + sbm->currentSTD);
+        fm->writeLine("School: " + sbm->currentSchool +
+                      this->getSpace(20) +"Taluka: " + sbm->currentTaluka +
+                      this->getSpace(20) +"Center No.: " + sbm->currentCenter);
         fm->writeTable(ui->tableViewTotalBill);
+        fm->writeHeader("ATTENDENCE");
         fm->writeTable(ui->tableViewMainBillAttendence);
+        fm->writeHeader("BENEFICIARIES");
+        fm->writeTable(ui->tableViewMainBillBeneficiaries);
         fm->printTable();
     }
 
@@ -378,4 +390,13 @@ void MainWindow::SaveSchoolBillEvent()
 void MainWindow::DeleteSchoolBillEvent()
 {
     sbm->DeleteSchoolEvent();
+}
+
+//private methods
+QString MainWindow::getSpace(int count)
+{
+    QString space;
+    for(int i=0;i<count;i++)
+        space  += "&nbsp;";
+    return space;
 }

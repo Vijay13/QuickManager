@@ -561,5 +561,10 @@ void SchoolBillManager::paint(QPainter *painter, const QStyleOptionViewItem &opt
         opt.font.setBold(true);
     }
 
+    if(dataInTable(tableAttendence,index.row(),index.column()) < dataInTable(tableBeneficiaries,index.row(),index.column()))
+    {
+        opt.font.setBold(true);
+    }
+
     QStyledItemDelegate::paint(painter, opt, index);
 }

@@ -18,6 +18,10 @@ public:
 
     void printTable();
 
+    void writeHeader(QString title);
+
+    void writeLine(QString line);
+
     void writeTable(QTableView* table);
 
     void clearDocument();

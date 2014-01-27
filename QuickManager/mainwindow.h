@@ -100,6 +100,8 @@ private:
     QString queryStatement;
     QString dirToDatabase;
     int TMAdd, TMUpdate, TMDelete;
+
+    QString getSpace(int count);
 };
 
 #endif // MAINWINDOW_H
