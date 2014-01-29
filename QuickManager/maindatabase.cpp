@@ -47,10 +47,19 @@ void MainDatabase::Open(QString dirToDatabase)
 
 void MainDatabase::setAppDataPath()
 {
+
+#ifdef Q_WS_WIN
     // this is where stdlib.h is being used
     appDataPath = getenv("LOCALAPPDATA");
     appDataPath.replace("\\","/");
     appDataPath += "/" + QCoreApplication::applicationName() + "/AppData";
+#endif
+
+#ifdef Q_OS_LINUX
+    appDataPath = QDir::currentPath();
+#endif
+
+    Q_ASSERT(!appDataPath.isEmpty());
 
     if(!QDir(appDataPath).exists())
     {
