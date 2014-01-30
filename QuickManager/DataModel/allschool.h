@@ -1,7 +1,7 @@
 #ifndef ALLSCHOOL_H
 #define ALLSCHOOL_H
 
-#include <school.h>
+#include <DataModel/school.h>
 
 class AllSchool
 {

@@ -3,8 +3,8 @@
 
 #include <QDebug>
 #include <QDialog>
-#include <alltaluka.h>
-#include <maindatabase.h>
+#include "DataModel/alltaluka.h"
+#include "maindatabase.h"
 
 namespace Ui {
 class TalukaDialog;

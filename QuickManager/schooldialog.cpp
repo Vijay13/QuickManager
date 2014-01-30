@@ -1,6 +1,6 @@
 #include "schooldialog.h"
 #include "ui_schooldialog.h"
-#include "schoolmanager.h"
+#include "DataManager/schoolmanager.h"
 
 SchoolDialog::SchoolDialog(QWidget *parent, int sid):
     QDialog(parent),

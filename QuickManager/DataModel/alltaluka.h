@@ -3,7 +3,7 @@
 
 #include <QList>
 #include <maindatabase.h>
-#include <taluka.h>
+#include <DataModel/taluka.h>
 
 class AllTaluka
 {

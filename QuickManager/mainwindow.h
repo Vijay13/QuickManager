@@ -6,12 +6,12 @@
 #include <QDebug>
 
 #include "maindatabase.h"
-#include "alltaluka.h"
-#include "allschool.h"
-#include "filemanager.h"
+#include "DataModel/alltaluka.h"
+#include "DataModel/allschool.h"
+#include "DataManager/filemanager.h"
+#include "DataManager/schoolmanager.h"
+#include "DataManager/schoolbillmanager.h"
 #include "talukamanager.h"
-#include "schoolmanager.h"
-#include "schoolbillmanager.h"
 
 namespace Ui {
 class MainWindow;

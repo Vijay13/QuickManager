@@ -2,9 +2,10 @@
 #define SCHOOLDIALOG_H
 
 #include <QDialog>
-#include <alltaluka.h>
-#include <allschool.h>
-#include <maindatabase.h>
+
+#include "DataModel/alltaluka.h"
+#include "DataModel/allschool.h"
+#include "maindatabase.h"
 
 namespace Ui {
 class SchoolDialog;

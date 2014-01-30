@@ -5,8 +5,8 @@
 #include <QTableView>
 #include <QStandardItemModel>
 #include <QSortFilterProxyModel>
-#include "filemanager.h"
-#include "alltaluka.h"
+#include "DataManager/filemanager.h"
+#include "DataModel/alltaluka.h"
 
 namespace Ui {
 class TalukaManager;
