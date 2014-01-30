@@ -51,8 +51,9 @@ void MainWindow::initializeComponent(){
     ui->actionAddUser->setDisabled(true);
     ui->actionAddAdmin->setDisabled(true);
     ui->AllStackWidget->setCurrentIndex(1);
-    ui->groupBoxControl->setVisible(false);
     ui->progressBar->setVisible(false);
+
+    this->setVisiblity(false);
 
     this->updateBillOptions();
 
@@ -246,7 +247,7 @@ void MainWindow::TalukaManagerEvent()
 void MainWindow::SchoolManagerEvent()
 {
     ui->AllStackWidget->setCurrentIndex(2);
-    ui->groupBoxControl->setVisible(true);
+    this->setVisiblity(true);
     ResetSchoolEvent();
 }
 
@@ -330,13 +331,13 @@ void MainWindow::ExportSchoolEvent(){
 void MainWindow::BackEvent()
 {
     ui->AllStackWidget->setCurrentIndex(1);
-    ui->groupBoxControl->setVisible(false);
+    this->setVisiblity(false);
 }
 
 void MainWindow::SchoolBillManagerEvent()
 {
     ui->AllStackWidget->setCurrentIndex(3);
-    ui->groupBoxControl->setVisible(true);
+    this->setVisiblity(true);
 
     ui->labelBMSTDBody->setText(ui->comboBoxBMSTD->currentText());
     ui->labelBMPeriodBody->setText(ui->comboBoxBMPeriod->currentText());
@@ -390,6 +391,13 @@ void MainWindow::SaveSchoolBillEvent()
 void MainWindow::DeleteSchoolBillEvent()
 {
     sbm->DeleteSchoolEvent();
+}
+
+void MainWindow::setVisiblity(bool visible)
+{
+    ui->pushButtonPrintSchools->setVisible(visible);
+    ui->pushButtonExportSchools->setVisible(visible);
+    ui->progressBar->setVisible(visible);
 }
 
 //private methods

@@ -87,6 +87,8 @@ private slots:
 
     void DeleteSchoolBillEvent();
 
+    void setVisiblity(bool visible);
+
 private:
     Ui::MainWindow *ui;
     QSqlQuery *query;
