@@ -38,7 +38,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -73,7 +73,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -127,7 +127,7 @@
    <property name="title">
     <string>Teacher</string>
    </property>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -168,7 +168,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -315,7 +315,7 @@
      </property>
     </item>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>140</x>
@@ -381,7 +381,7 @@
     <rect>
      <x>420</x>
      <y>380</y>
-     <width>158</width>
+     <width>168</width>
      <height>27</height>
     </rect>
    </property>
@@ -433,13 +433,13 @@
      <x>20</x>
      <y>10</y>
      <width>281</width>
-     <height>201</height>
+     <height>221</height>
     </rect>
    </property>
    <property name="title">
-    <string>General Details</string>
+    <string>General Details of School</string>
    </property>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>12</x>
@@ -480,7 +480,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>12</x>
@@ -521,7 +521,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>11</x>
@@ -546,7 +546,7 @@
         </size>
        </property>
        <property name="text">
-        <string>School Name</string>
+        <string>Name</string>
        </property>
       </widget>
      </item>
@@ -562,13 +562,13 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>11</x>
       <y>141</y>
       <width>261</width>
-      <height>51</height>
+      <height>72</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_6">
@@ -601,7 +601,7 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>31</x>
@@ -626,7 +626,7 @@
        </size>
       </property>
       <property name="text">
-       <string>Landline No.</string>
+       <string>Landline</string>
       </property>
      </widget>
     </item>
@@ -642,7 +642,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -653,7 +653,7 @@
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_9"/>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -664,7 +664,7 @@
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_10"/>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -675,7 +675,7 @@
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_11"/>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -686,7 +686,7 @@
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_12"/>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -697,7 +697,7 @@
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_13"/>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -708,7 +708,7 @@
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_14"/>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
