@@ -48,7 +48,7 @@ void MainDatabase::Open(QString dirToDatabase)
 void MainDatabase::setAppDataPath()
 {
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     // this is where stdlib.h is being used
     appDataPath = getenv("LOCALAPPDATA");
     appDataPath.replace("\\","/");

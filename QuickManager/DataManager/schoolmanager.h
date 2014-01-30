@@ -4,7 +4,7 @@
 #include <QTableView>
 #include <QStandardItemModel>
 #include <QSortFilterProxyModel>
-#include <allschool.h>
+#include "DataModel/allschool.h"
 
 class SchoolManager
 {

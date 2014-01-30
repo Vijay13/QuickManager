@@ -15,31 +15,31 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     maindatabase.cpp \
-    alltaluka.cpp \
-    taluka.cpp \
     adduser.cpp \
     talukadialog.cpp \
-    school.cpp \
-    allschool.cpp \
     schooldialog.cpp \
-    schoolmanager.cpp \
     talukamanager.cpp \
-    filemanager.cpp \
-    schoolbillmanager.cpp
+    DataModel/allschool.cpp \
+    DataModel/alltaluka.cpp \
+    DataModel/school.cpp \
+    DataModel/taluka.cpp \
+    DataManager/filemanager.cpp \
+    DataManager/schoolbillmanager.cpp \
+    DataManager/schoolmanager.cpp
 
 HEADERS  += mainwindow.h \
     maindatabase.h \
-    alltaluka.h \
-    taluka.h \
     adduser.h \
     talukadialog.h \
-    school.h \
-    allschool.h \
     schooldialog.h \
-    schoolmanager.h \
     talukamanager.h \
-    filemanager.h \
-    schoolbillmanager.h
+    DataModel/allschool.h \
+    DataModel/alltaluka.h \
+    DataModel/school.h \
+    DataModel/taluka.h \
+    DataManager/filemanager.h \
+    DataManager/schoolbillmanager.h \
+    DataManager/schoolmanager.h
 
 FORMS    += mainwindow.ui \
     adduser.ui \

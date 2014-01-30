@@ -8,8 +8,10 @@
 #include <QSortFilterProxyModel>
 #include <QLabel>
 #include <QProgressBar>
-#include <allschool.h>
 #include <QStyledItemDelegate>
+
+
+#include "DataModel/allschool.h"
 
 class SchoolBillManager : QStyledItemDelegate
 {
