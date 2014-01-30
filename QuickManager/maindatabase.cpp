@@ -126,6 +126,9 @@ void MainDatabase::Initialize(){
 
     Q_ASSERT(query.exec(createQurey));
 
+    createQurey = "CREATE TABLE IF NOT EXISTS ERRORS(EID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, USER TEXT, DISC TEXT, STATUS TEXT, DATE TEXT, MODEL TEXT);";
+    Q_ASSERT(query.exec(createQurey));
+
 }
 
 QList<QString>* MainDatabase::loadDBpath()
@@ -280,10 +283,6 @@ QString MainDatabase::getAllSchoolQuery(){
     return "SELECT * FROM SCHOOLS";
 }
 
-QString MainDatabase::getText(QString string){
-    return "'" + string + "'";
-}
-
 QString MainDatabase::getCreateSchoolBillTable(QString tableName)
 {
     return "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
@@ -335,4 +334,24 @@ QString MainDatabase::getSchoolBillTable(QString tableName)
 QString MainDatabase::getDeleteSchoolBill(QString tableName)
 {
     return "DROP TABLE IF EXISTS " + tableName;
+}
+
+QString MainDatabase::getInsertErrorQuery(QString user, QString disc, QString status, QString date, QString model)
+{
+    return "INSERT INTO ERRORS (USER,DISC,STATUS,DATE,MODEL) VALUES ( " + getText(user) + ","
+            + getText(disc) + "," + getText(status) + "," + getText(date) + "," + getText(model) + " )";
+}
+
+QString MainDatabase::getDeleteErrorQuery(QString disc,QString date)
+{
+    return "DELETE FROM ERRORS WHERE DESC = " + getText(disc) + "AND DATE = " + getText(date);
+}
+
+QString MainDatabase::getAllErrorsQuery()
+{
+    return "SELECT * FROM ERRORS";
+}
+
+QString MainDatabase::getText(QString string){
+    return "'" + string + "'";
 }

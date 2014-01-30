@@ -203,14 +203,7 @@ void SchoolBillManager::navigatedToSBM(QString taluka, QString rout, int std, in
     selectedTaluka = taluka;
     currentRout = rout;
 
-    if(currentPeriod == "16to31")
-    {
-        rowCount = 16;
-    }
-    else
-    {
-        rowCount = 15;
-    }
+    rowCount = (currentPeriod == "16to31") ? 16:15;
 
     viewModelTableAttendence->setRowCount(rowCount);
     viewModelTableAttendenceTotal->setRowCount(rowCount);

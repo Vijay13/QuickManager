@@ -57,8 +57,6 @@ public:
 
     QString getAllSchoolQuery();
 
-    QString getText(QString string);
-
     QString getCreateSchoolBillTable(QString tableName);
 
     QString getInsertSchoolBill(QString table, int date, int sc_b, int sc_g,
@@ -72,7 +70,15 @@ public:
 
     QString getDeleteSchoolBill(QString tableName);
 
+    QString getInsertErrorQuery(QString user,QString disc,QString status,QString date,QString model);
+
+    QString getDeleteErrorQuery(QString disc,QString date);
+
+    QString getAllErrorsQuery();
+
     QString getAppDataPath() const{return appDataPath;}
+
+    QString getText(QString string);
 
 private:
     QSqlDatabase mydb;

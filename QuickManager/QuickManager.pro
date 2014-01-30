@@ -25,7 +25,9 @@ SOURCES += main.cpp\
     DataModel/taluka.cpp \
     DataManager/filemanager.cpp \
     DataManager/schoolbillmanager.cpp \
-    DataManager/schoolmanager.cpp
+    DataManager/schoolmanager.cpp \
+    DataModel/qmerror.cpp \
+    DataModel/allerror.cpp
 
 HEADERS  += mainwindow.h \
     maindatabase.h \
@@ -39,7 +41,9 @@ HEADERS  += mainwindow.h \
     DataModel/taluka.h \
     DataManager/filemanager.h \
     DataManager/schoolbillmanager.h \
-    DataManager/schoolmanager.h
+    DataManager/schoolmanager.h \
+    DataModel/qmerror.h \
+    DataModel/allerror.h
 
 FORMS    += mainwindow.ui \
     adduser.ui \
