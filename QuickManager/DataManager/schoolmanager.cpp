@@ -100,7 +100,7 @@ void SchoolManager::removeSchool(){
 
 
 void SchoolManager::search(QString searchText){
-    sortModel->setFilterKeyColumn(1);
+    sortModel->setFilterKeyColumn(2);
     sortModel->setFilterFixedString( searchText );
 }
 
