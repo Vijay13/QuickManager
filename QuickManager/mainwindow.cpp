@@ -397,7 +397,8 @@ void MainWindow::setVisiblity(bool visible)
 {
     ui->pushButtonPrintSchools->setVisible(visible);
     ui->pushButtonExportSchools->setVisible(visible);
-    ui->progressBar->setVisible(visible);
+    ui->pushButtonBack->setVisible(visible);
+    ui->progressBar->setVisible(false);
 }
 
 //private methods
