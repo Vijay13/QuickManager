@@ -18,6 +18,12 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="accessibleName">
+   <string>Quick Manager</string>
+  </property>
+  <property name="accessibleDescription">
+   <string>Quick Manager : Database Managment System for Food Aid Organization</string>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>

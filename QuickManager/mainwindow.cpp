@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     TMAdd(1),TMUpdate(1),TMDelete(1)
 {
     ui->setupUi(this);
+    this->setWindowState(Qt::WindowMaximized);
 
     initialize();
     initializeComponent();
