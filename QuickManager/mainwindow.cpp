@@ -43,6 +43,7 @@ void MainWindow::initialize()
                                 ui->tableViewMainBillBeneficiaries,
                                 ui->tableViewCheckTableBeneficiaries,
                                 ui->labelBMTalukaBody, ui->labelBMSchoolBody);
+    flm = new FoodListManager(ui->tableViewFoodList);
 }
 
 void MainWindow::initializeComponent(){
@@ -51,12 +52,13 @@ void MainWindow::initializeComponent(){
     ui->lineEditPassword->setEchoMode(QLineEdit::Password);
     ui->actionAddUser->setDisabled(true);
     ui->actionAddAdmin->setDisabled(true);
-    ui->AllStackWidget->setCurrentIndex(1);
+    ui->AllStackWidget->setCurrentIndex(0);
     ui->progressBar->setVisible(false);
 
     this->setVisiblity(false);
 
     this->updateBillOptions();
+    this->updateFLOptions();
 
     QObject::connect(ui->actionChooseDatabase,SIGNAL(triggered()),this,SLOT( ChooseDatabaseEvent()));
     QObject::connect(ui->pushButtonLogin,SIGNAL(clicked()),this,SLOT( LoginEvent()));
@@ -98,6 +100,8 @@ void MainWindow::initializeComponent(){
     QObject::connect(ui->tableViewMainBillBeneficiaries->selectionModel(),
                      SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
                      this, SLOT(SelectedCellChangedBeneficiariesTable(QItemSelection)));
+
+    QObject::connect(ui->pushButtonFoodList,SIGNAL(clicked()),SLOT(FoodListEvent()));
 }
 
 void MainWindow::updateBillOptions()
@@ -316,8 +320,12 @@ void MainWindow::PrintSchoolEvent(){
         fm->writeHeader("BENEFICIARIES");
         fm->writeTable(ui->tableViewMainBillBeneficiaries);
         fm->printTable();
+    }else if(ui->AllStackWidget->currentIndex() == 4){
+        fm->clearDocument();
+        fm->writeHeader("FOOD LIST");
+        fm->writeTable(ui->tableViewFoodList);
+        fm->printTable();
     }
-
 }
 
 void MainWindow::ExportSchoolEvent(){
@@ -409,4 +417,17 @@ QString MainWindow::getSpace(int count)
     for(int i=0;i<count;i++)
         space  += "&nbsp;";
     return space;
+}
+
+void MainWindow::updateFLOptions(){
+    ui->comboBoxFLRout->clear();
+    for(int i=0; i<schools->getAllRouts()->length();i++){
+        ui->comboBoxFLRout->addItem(schools->getAllRouts()->at(i));
+    }
+}
+
+void MainWindow::FoodListEvent(){
+    ui->AllStackWidget->setCurrentIndex(4);
+    this->setVisiblity(true);
+    flm->setUpTables(ui->comboBoxFLRout->currentText());
 }

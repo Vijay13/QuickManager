@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     DataManager/schoolbillmanager.cpp \
     DataManager/schoolmanager.cpp \
     DataModel/qmerror.cpp \
-    DataModel/allerror.cpp
+    DataModel/allerror.cpp \
+    DataManager/foodlistmanager.cpp
 
 HEADERS  += mainwindow.h \
     maindatabase.h \
@@ -43,7 +44,8 @@ HEADERS  += mainwindow.h \
     DataManager/schoolbillmanager.h \
     DataManager/schoolmanager.h \
     DataModel/qmerror.h \
-    DataModel/allerror.h
+    DataModel/allerror.h \
+    DataManager/foodlistmanager.h
 
 FORMS    += mainwindow.ui \
     adduser.ui \

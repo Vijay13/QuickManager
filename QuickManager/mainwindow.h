@@ -11,6 +11,7 @@
 #include "DataManager/filemanager.h"
 #include "DataManager/schoolmanager.h"
 #include "DataManager/schoolbillmanager.h"
+#include "DataManager/foodlistmanager.h"
 #include "talukamanager.h"
 
 namespace Ui {
@@ -89,6 +90,10 @@ private slots:
 
     void setVisiblity(bool visible);
 
+    void updateFLOptions();
+
+    void FoodListEvent();
+
 private:
     Ui::MainWindow *ui;
     QSqlQuery *query;
@@ -98,6 +103,7 @@ private:
     AllSchool *schools;
     SchoolManager *sm;
     SchoolBillManager *sbm;
+    FoodListManager *flm;
     bool isCorrect;
     QString queryStatement;
     QString dirToDatabase;
