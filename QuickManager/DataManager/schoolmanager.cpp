@@ -106,7 +106,7 @@ void SchoolManager::search(QString searchText){
 
 void SchoolManager::setFilter(QString selectedTaluka, QString selectedRout){
     viewModel->clear();
-    viewModel->setHorizontalHeaderLabels( QStringList() << "Center No."
+    viewModel->setHorizontalHeaderLabels( QStringList() << "Sr.No."  << "Center No."
                                           << "School Name" << "Taluka"
                                           << "Rout No." << "Principal"
                                           << "Principal Mob no." << "Address" );

@@ -35,7 +35,7 @@ void FoodListManager::setUpTables(QString rout){
 
     for(int i = 0; i < schools->getSchoolList()->length(); i++){
         if(schools->getSchoolList()->at(i)->RoutNo == rout){
-            viewModel->setItem(i,0,new QStandardItem(schools->getSchoolList()->at(i)->SchoolName));
+            viewModel->setItem(i,0,new QStandardItem(schools->getSchoolList()->at(i)->CenterNo));
             viewModel->setItem(i,1,new QStandardItem(schools->getSchoolList()->at(i)->SchoolName));
         }
     }
