@@ -17,6 +17,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowState(Qt::WindowMaximized);
 
+    qDebug() << QDir::currentPath().mid(0, QDir::currentPath().lastIndexOf('/'));
+    QPixmap pix(QDir::currentPath().mid(0, QDir::currentPath().lastIndexOf('/')) + "/QuickManager/img/APLogo.png");
+    ui->labelLogo->setPixmap(pix);
+
     initialize();
     initializeComponent();
 }
