@@ -307,9 +307,13 @@ void MainWindow::PrintSchoolEvent(){
     if(ui->AllStackWidget->currentIndex() == 2)
     {
         fm->clearDocument();
+        fm->writeHeader(this->getSpace(75) + "School List");
+        fm->writeLine("Taluka: " + ui->comboBoxSelectTaluka->currentText() +
+                      this->getSpace(40) + "Rout: " + ui->comboBoxSelectRout->currentText() );
         fm->writeTable(ui->tableViewSchools);
         fm->printTable();
-    }else if(ui->AllStackWidget->currentIndex() == 3)
+    }
+    else if(ui->AllStackWidget->currentIndex() == 3)
     {
         fm->clearDocument();
         fm->writeLine("Month: " + sbm->currentMonth +
@@ -319,14 +323,14 @@ void MainWindow::PrintSchoolEvent(){
                       this->getSpace(20) +"Taluka: " + sbm->currentTaluka +
                       this->getSpace(20) +"Center No.: " + sbm->currentCenter);
         fm->writeTable(ui->tableViewTotalBill);
-        fm->writeHeader("ATTENDENCE");
+        fm->writeHeader(this->getSpace(75) + "ATTENDENCE");
         fm->writeTable(ui->tableViewMainBillAttendence);
-        fm->writeHeader("BENEFICIARIES");
+        fm->writeHeader(this->getSpace(75) + "BENEFICIARIES");
         fm->writeTable(ui->tableViewMainBillBeneficiaries);
         fm->printTable();
     }else if(ui->AllStackWidget->currentIndex() == 4){
         fm->clearDocument();
-        fm->writeHeader("FOOD LIST");
+        fm->writeHeader(this->getSpace(75) + "FOOD LIST for Schools of Route: " + ui->comboBoxFLRout->currentText());
         fm->writeTable(ui->tableViewFoodList);
         fm->printTable();
     }
@@ -336,9 +340,13 @@ void MainWindow::ExportSchoolEvent(){
     if(ui->AllStackWidget->currentIndex() == 2)
     {
         fm->setTable(ui->tableViewSchools);
-        fm->exportCSV();
+    }else if(ui->AllStackWidget->currentIndex() == 4){
+        fm->setTable(ui->tableViewFoodList);
+    }else{
+        return;
     }
 
+    fm->exportCSV();
 }
 
 void MainWindow::BackEvent()

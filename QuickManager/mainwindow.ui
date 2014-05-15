@@ -34,7 +34,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="MainStackWidget">
        <layout class="QGridLayout" name="gridLayout">
@@ -555,7 +555,7 @@
           <item>
            <widget class="QLabel" name="label">
             <property name="text">
-             <string>Root:</string>
+             <string>Route </string>
             </property>
            </widget>
           </item>
@@ -1277,8 +1277,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>1050</width>
-                   <height>1188</height>
+                   <width>1044</width>
+                   <height>1167</height>
                   </rect>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -1754,7 +1754,7 @@
      <x>0</x>
      <y>0</y>
      <width>1100</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
