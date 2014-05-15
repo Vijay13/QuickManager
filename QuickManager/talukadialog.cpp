@@ -26,13 +26,15 @@ TalukaDialog::~TalukaDialog()
 
 void TalukaDialog::on_pushButtonSave_clicked()
 {
+    QString talukaName = ui->lineEditTaluka->text().replace(',',' ');
+    QString districtName = ui->lineEditDistrict->text().replace(',',' ');
     if(this->Check()){
         if(TID == -1){
-            talukas->getTalukaList()->append(new Taluka(ui->lineEditTaluka->text(), ui->lineEditDistrict->text()));
+            talukas->getTalukaList()->append(new Taluka(talukaName, districtName));
         }else if(TID > -1){
-            if(query->exec(db->getUpdateTalukaQuery( TID, ui->lineEditTaluka->text(), ui->lineEditDistrict->text()))){
+            if(query->exec(db->getUpdateTalukaQuery( TID, talukaName, districtName))){
                 talukas->removeTaluka(oldTaluka, oldDistrict);
-                talukas->getTalukaList()->append(new Taluka(TID, ui->lineEditTaluka->text(), ui->lineEditDistrict->text()));
+                talukas->getTalukaList()->append(new Taluka(TID, talukaName, districtName));
             }else{
                 qDebug() << "Taluka not updated";
             }

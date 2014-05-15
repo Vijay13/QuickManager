@@ -52,20 +52,20 @@ bool SchoolDialog::Check(){
         return false;
     }
 
-    CenterNo = ui->lineEditCenterNo->text();
-    Taluka = ui->comboBoxTaluka->currentText();
-    SchoolName = ui->lineEditSchoolName->text();
-    Address = ui->textEditSchoolAddress->toPlainText();
-    Principal = ui->lineEditPrincipal->text();
-    PrincipalMobNo = ui->lineEditPrincipalMobNo->text();
-    PrincipalLandline = ui->lineEditPrincipalLandNo->text();
-    Teacher = ui->lineEditTeacherName->text();
-    TeacherMobNo = ui->lineEditTeacherMobNo->text();
-    PrincipalAddress = ui->textEditPrincipalAddress->toPlainText();
-    RoutNo = ui->lineEditRoutNo->text();
-    girlMIXboy = ui->comboBoxGender->currentText();
-    Type = ui->comboBoxType->currentText();
-    isPrimary = ui->comboBoxStd->currentText();
+    CenterNo = ui->lineEditCenterNo->text().replace(',',' ');
+    Taluka = ui->comboBoxTaluka->currentText().replace(',',' ');
+    SchoolName = ui->lineEditSchoolName->text().replace(',',' ');
+    Address = ui->textEditSchoolAddress->toPlainText().replace(',',' ');
+    Principal = ui->lineEditPrincipal->text().replace(',',' ');
+    PrincipalMobNo = ui->lineEditPrincipalMobNo->text().replace(',',' ');
+    PrincipalLandline = ui->lineEditPrincipalLandNo->text().replace(',',' ');
+    Teacher = ui->lineEditTeacherName->text().replace(',',' ');
+    TeacherMobNo = ui->lineEditTeacherMobNo->text().replace(',',' ');
+    PrincipalAddress = ui->textEditPrincipalAddress->toPlainText().replace(',',' ');
+    RoutNo = ui->lineEditRoutNo->text().replace(',',' ');
+    girlMIXboy = ui->comboBoxGender->currentText().replace(',',' ');
+    Type = ui->comboBoxType->currentText().replace(',',' ');
+    isPrimary = ui->comboBoxStd->currentText().replace(',',' ');
 
     return true;
 }
