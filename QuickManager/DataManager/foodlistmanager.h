@@ -12,20 +12,35 @@
 class FoodListManager
 {
 public:
-    FoodListManager(QTableView *tableFoodList);
+    FoodListManager(QTableView *tableFoodList, QProgressBar *progressBar);
 
-    void setUpTables(QString rout);
+    void setUpTables(QString date,QString rout);
+
+    void fillDataInTable();
+
+    void deleteFoodListEvent();
+
+public slots:
+    void saveFoodListEvent();
+
 private:
     QSqlQuery *query;
     MainDatabase *db;
     QProgressBar *progressBar;
     AllSchool *schools;
+    QString date,rout;
 
     QTableView* table;
     QStandardItemModel* viewModel;
     QSortFilterProxyModel* sortModel;
 
     void setUpHeaderTable();
+
+    QString getTableName();
+
+    void insertDataToTable(QString tableName, QTableView* table);
+
+    int dataInTable(QTableView *tempTable, int r, int c) const;
 
 };
 

@@ -47,7 +47,7 @@ void MainWindow::initialize()
                                 ui->tableViewMainBillBeneficiaries,
                                 ui->tableViewCheckTableBeneficiaries,
                                 ui->labelBMTalukaBody, ui->labelBMSchoolBody);
-    flm = new FoodListManager(ui->tableViewFoodList);
+    flm = new FoodListManager(ui->tableViewFoodList, ui->progressBar);
 }
 
 void MainWindow::initializeComponent(){
@@ -106,6 +106,8 @@ void MainWindow::initializeComponent(){
                      this, SLOT(SelectedCellChangedBeneficiariesTable(QItemSelection)));
 
     QObject::connect(ui->pushButtonFoodList,SIGNAL(clicked()),SLOT(FoodListEvent()));
+    QObject::connect(ui->pushButtonFLSave,SIGNAL(clicked()),SLOT(SaveFoodListEvent()));
+    QObject::connect(ui->pushButtonFLDelete,SIGNAL(clicked()),SLOT(DeleteFoodListEvent()));
 }
 
 void MainWindow::updateBillOptions()
@@ -258,6 +260,7 @@ void MainWindow::SchoolManagerEvent()
     ui->AllStackWidget->setCurrentIndex(2);
     this->setVisiblity(true);
     ResetSchoolEvent();
+    this->removeEmptyRows(ui->tableViewSchools);
 }
 
 void MainWindow::SearchSchoolEvent(){
@@ -441,5 +444,24 @@ void MainWindow::updateFLOptions(){
 void MainWindow::FoodListEvent(){
     ui->AllStackWidget->setCurrentIndex(4);
     this->setVisiblity(true);
-    flm->setUpTables(ui->comboBoxFLRout->currentText());
+    flm->setUpTables(ui->dateEditForFoodList->date().toString("dd_MM_yyyy"),ui->comboBoxFLRout->currentText());
+    this->removeEmptyRows(ui->tableViewFoodList);
+}
+
+void MainWindow::SaveFoodListEvent(){
+    flm->saveFoodListEvent();
+}
+
+void MainWindow::DeleteFoodListEvent(){
+    flm->deleteFoodListEvent();
+    this->BackEvent();
+}
+
+void MainWindow::removeEmptyRows(QTableView *table){
+    for(int row=0; row < table->model()->rowCount(); row++){
+        if(table->model()->data(table->model()->index(row,0)).toString().isEmpty()){
+            table->model()->removeRow(row);
+            row--;
+        }
+    }
 }

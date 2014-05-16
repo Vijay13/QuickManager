@@ -94,6 +94,12 @@ private slots:
 
     void FoodListEvent();
 
+    void SaveFoodListEvent();
+
+    void DeleteFoodListEvent();
+
+    void removeEmptyRows(QTableView *table);
+
 private:
     Ui::MainWindow *ui;
     QSqlQuery *query;

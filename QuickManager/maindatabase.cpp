@@ -336,6 +336,52 @@ QString MainDatabase::getDeleteSchoolBill(QString tableName)
     return "DROP TABLE IF EXISTS " + tableName;
 }
 
+QString MainDatabase::getCreateFoodListTable(QString tableName){
+    return "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
+            "CENTER TEXT PRIMARY KEY NOT NULL, " +
+            "SCHOOL TEXT, " + "STD_1 INTEGER, " + "STD_6 INTEGER, " +
+            "ROTI_B INTEGER, " + "ROTI_M INTEGER, " + "ROTI_S INTEGER, " +
+            "ROTI_BATCH_NO INTEGER, " + "RICE_B INTEGER, " + "RICE_M INTEGER, " + "RICE_S INTEGER, " +
+            "RICE_BATCH_NO INTEGER, " + "SUBJI_B INTEGER, " + "SUBJI_M INTEGER, " + "SUBJI_S INTEGER, " +
+            "SUBJI_BATCH_NO INTEGER, " + "TOTAL INTEGER" + ")";
+}
+
+QString MainDatabase::getInsertFoodList(QString table, QString center, QString schoolName,
+                                        int std_1, int std_6, int roti_b, int roti_m, int roti_s,
+                                        int batch_no_roti, int rice_b, int rice_m, int rice_s,
+                                        int batch_no_rice, int subji_b, int subji_m, int subji_s,
+                                        int batch_no_subji, int total){
+
+    return "INSERT OR REPLACE INTO " + table + "( CENTER, SCHOOL, STD_1, STD_6, ROTI_B, ROTI_M, ROTI_S, ROTI_BATCH_NO, RICE_B, RICE_M, RICE_S, RICE_BATCH_NO, SUBJI_B, SUBJI_M, SUBJI_S, SUBJI_BATCH_NO, TOTAL ) " +
+            "VALUES ( " +
+            getText(center) + ", " +
+            getText(schoolName) + ", " +
+            QString::number(std_1) + ", " +
+            QString::number(std_6) + ", " +
+            QString::number(roti_b) + ", " +
+            QString::number(roti_m) + ", " +
+            QString::number(roti_s) + ", " +
+            QString::number(batch_no_roti) + ", " +
+            QString::number(rice_b) + ", " +
+            QString::number(rice_m) + ", " +
+            QString::number(rice_s) + ", " +
+            QString::number(batch_no_rice) + ", " +
+            QString::number(subji_b) + ", " +
+            QString::number(subji_m) + ", " +
+            QString::number(subji_s) + ", " +
+            QString::number(batch_no_subji) + ", " +
+            QString::number(total) + ") ";
+
+}
+
+QString MainDatabase::getFoodListTable(QString tableName){
+    return "SELECT * FROM " + tableName ;
+}
+
+QString MainDatabase::getDeleteFoodListTable(QString tableName){
+    return "DROP TABLE IF EXISTS " + tableName ;
+}
+
 QString MainDatabase::getInsertErrorQuery(QString user, QString disc, QString status, QString date, QString model)
 {
     return "INSERT INTO ERRORS (USER,DISC,STATUS,DATE,MODEL) VALUES ( " + getText(user) + ","

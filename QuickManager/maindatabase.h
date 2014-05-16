@@ -70,6 +70,18 @@ public:
 
     QString getDeleteSchoolBill(QString tableName);
 
+    QString getCreateFoodListTable(QString tableName);
+
+    QString getInsertFoodList(QString table, QString center, QString schoolName,
+                              int std_1, int std_6, int roti_b, int roti_m, int roti_s,
+                              int batch_no_roti, int rice_b, int rice_m, int rice_s,
+                              int batch_no_rice, int subji_b, int subji_m, int subji_s,
+                              int batch_no_subji, int total);
+
+    QString getFoodListTable(QString tableName);
+
+    QString getDeleteFoodListTable(QString tableName);
+
     QString getInsertErrorQuery(QString user,QString disc,QString status,QString date,QString model);
 
     QString getDeleteErrorQuery(QString disc,QString date);
