@@ -336,6 +336,10 @@ QString MainDatabase::getDeleteSchoolBill(QString tableName)
     return "DROP TABLE IF EXISTS " + tableName;
 }
 
+/*
+ * There can be two school with same center no belonging to one rout
+ * So the creation of below mentioned table needs to be reimplemented.
+ * */
 QString MainDatabase::getCreateFoodListTable(QString tableName){
     return "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
             "CENTER TEXT PRIMARY KEY NOT NULL, " +

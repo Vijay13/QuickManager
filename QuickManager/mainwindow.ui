@@ -34,7 +34,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="MainStackWidget">
        <layout class="QGridLayout" name="gridLayout">
@@ -1278,7 +1278,7 @@
                    <x>0</x>
                    <y>0</y>
                    <width>1044</width>
-                   <height>1167</height>
+                   <height>1168</height>
                   </rect>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -1327,7 +1327,7 @@
                       <property name="minimumSize">
                        <size>
                         <width>662</width>
-                        <height>55</height>
+                        <height>56</height>
                        </size>
                       </property>
                       <property name="maximumSize">
@@ -1345,7 +1345,7 @@
                        <string>Total</string>
                       </property>
                       <attribute name="horizontalHeaderVisible">
-                       <bool>false</bool>
+                       <bool>true</bool>
                       </attribute>
                       <attribute name="horizontalHeaderCascadingSectionResizes">
                        <bool>true</bool>
@@ -1360,7 +1360,7 @@
                        <bool>false</bool>
                       </attribute>
                       <attribute name="horizontalHeaderStretchLastSection">
-                       <bool>false</bool>
+                       <bool>true</bool>
                       </attribute>
                       <attribute name="verticalHeaderVisible">
                        <bool>false</bool>

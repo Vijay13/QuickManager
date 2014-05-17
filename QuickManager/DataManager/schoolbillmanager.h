@@ -13,6 +13,11 @@
 
 #include "DataModel/allschool.h"
 
+
+/*
+ * Manages operation of schoolbill page of mainwindow
+ * */
+
 class SchoolBillManager : QStyledItemDelegate
 {
 public:

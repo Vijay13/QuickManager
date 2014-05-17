@@ -52,3 +52,6 @@ FORMS    += mainwindow.ui \
     talukadialog.ui \
     schooldialog.ui \
     talukamanager.ui
+
+OTHER_FILES += \
+    ../README.md

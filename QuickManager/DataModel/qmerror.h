@@ -4,6 +4,10 @@
 #include <QString>
 #include "maindatabase.h"
 
+/*
+ * This class contains details of errors in data anywhere in database
+ * which are required to be reported to manager
+ * */
 class QMError
 {
 public:

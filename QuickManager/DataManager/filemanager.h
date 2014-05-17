@@ -5,6 +5,11 @@
 #include <QTextStream>
 #include <QPrinter>
 
+
+/*
+ * This class implements functionalities like print and export
+ * for use from anywhere in Application
+ * */
 class FileManager
 {
 public:
@@ -14,8 +19,14 @@ public:
 
     static FileManager* Instance();
 
+    /*
+     * Exports last set table into .csv file
+     * */
     void exportCSV();
 
+    /*
+     * Prints last set table along with headers and lines
+     * */
     void printTable();
 
     void writeHeader(QString title);

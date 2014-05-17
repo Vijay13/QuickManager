@@ -9,6 +9,9 @@
 
 #include "DataModel/allschool.h"
 
+/*
+ * Manages operation of foodlist page of mainwindow
+ * */
 class FoodListManager
 {
 public:

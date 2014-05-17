@@ -3,6 +3,10 @@
 
 #include "DataModel/qmerror.h"
 
+/*
+ * This class contains list of all error
+ * Any error is added or removed from here only
+ * */
 class AllError
 {
 public:
